@@ -10,7 +10,6 @@
     <meta name="description" content="Professional medicine tracking system for patients and healthcare providers with secure authentication">
     <title>Medicine Tracker - Professional Healthcare Management System</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/face-api.js/0.22.2/face-api.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -881,217 +880,6 @@
                 color: #f9fafb;
             }
         }
-
-        /* FACE RECOGNITION STYLES */
-        .face-recognition-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .camera-container {
-            position: relative;
-            border-radius: 1rem;
-            overflow: hidden;
-            background: #000;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .camera-video {
-            width: 320px;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 1rem;
-        }
-
-        .camera-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .face-overlay {
-            position: absolute;
-            border: 3px solid #10b981;
-            border-radius: 0.5rem;
-            background: rgba(16, 185, 129, 0.1);
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .face-overlay.detecting {
-            border-color: #f59e0b;
-            background: rgba(245, 158, 11, 0.1);
-            animation: pulse 2s infinite;
-        }
-
-        .face-overlay.matched {
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.2);
-            animation: success-flash 0.5s ease;
-        }
-
-        .face-overlay.no-match {
-            border-color: #ef4444;
-            background: rgba(239, 68, 68, 0.2);
-            animation: error-shake 0.5s ease;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-        }
-
-        @keyframes success-flash {
-            0% { background: rgba(16, 185, 129, 0.1); }
-            50% { background: rgba(16, 185, 129, 0.4); }
-            100% { background: rgba(16, 185, 129, 0.2); }
-        }
-
-        @keyframes error-shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .face-instructions {
-            text-align: center;
-            padding: 1rem;
-            background: #eff6ff;
-            border-radius: 0.75rem;
-            border: 1px solid #bfdbfe;
-            max-width: 320px;
-        }
-
-        .face-instructions.warning {
-            background: #fef3c7;
-            border-color: #fbbf24;
-            color: #92400e;
-        }
-
-        .face-instructions.success {
-            background: #dcfce7;
-            border-color: #22c55e;
-            color: #166534;
-        }
-
-        .face-instructions.error {
-            background: #fee2e2;
-            border-color: #ef4444;
-            color: #991b1b;
-        }
-
-        .face-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .camera-controls {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .face-login-toggle {
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        .face-registration-step {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            border: 2px solid #e5e7eb;
-            transition: all 0.3s ease;
-        }
-
-        .face-registration-step.active {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .face-registration-step.completed {
-            border-color: #10b981;
-            background: #f0fdf4;
-        }
-
-        .step-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-
-        .step-number {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            background: #e5e7eb;
-            color: #6b7280;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-
-        .step-number.active {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .step-number.completed {
-            background: #10b981;
-            color: white;
-        }
-
-        .loading-spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #e5e7eb;
-            border-top: 2px solid #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Mobile adjustments for face recognition */
-        @media (max-width: 640px) {
-            .camera-video {
-                width: 280px;
-                height: 210px;
-            }
-
-            .face-instructions {
-                max-width: 280px;
-                padding: 0.75rem;
-                font-size: 0.875rem;
-            }
-
-            .camera-controls {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .camera-controls .btn {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1144,17 +932,7 @@
             signupForm: {
                 email: '', password: '', confirmPassword: '', name: '', 
                 dateOfBirth: '', phone: '', specialty: '', license: '', hospital: ''
-            },
-            // Face Recognition States
-            faceApiLoaded: false,
-            cameraStream: null,
-            faceLoginMode: false,
-            faceRegistrationMode: false,
-            faceRegistrationStep: 0,
-            faceDescriptors: [],
-            faceDetectionStatus: 'idle', // idle, detecting, found, no-face, multiple-faces
-            currentFaceDescriptor: null,
-            showFaceRegistration: false
+            }
         };
 
         // Constants
@@ -1240,289 +1018,6 @@
             } catch (error) {
                 return defaultValue;
             }
-        }
-
-        // FACE RECOGNITION FUNCTIONS
-        
-        async function initializeFaceAPI() {
-            if (AppState.faceApiLoaded) return true;
-            
-            try {
-                // Load face-api.js models
-                await Promise.all([
-                    faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights/'),
-                    faceapi.nets.faceLandmark68Net.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights/'),
-                    faceapi.nets.faceRecognitionNet.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights/'),
-                    faceapi.nets.faceExpressionNet.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights/')
-                ]);
-                
-                AppState.faceApiLoaded = true;
-                console.log('Face-API.js models loaded successfully');
-                return true;
-            } catch (error) {
-                console.error('Failed to load Face-API.js models:', error);
-                return false;
-            }
-        }
-
-        async function startCamera() {
-            try {
-                AppState.cameraStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        width: 320, 
-                        height: 240,
-                        facingMode: 'user'
-                    } 
-                });
-                return AppState.cameraStream;
-            } catch (error) {
-                console.error('Camera access denied:', error);
-                alert('Camera access is required for face recognition. Please allow camera access and try again.');
-                return null;
-            }
-        }
-
-        function stopCamera() {
-            if (AppState.cameraStream) {
-                AppState.cameraStream.getTracks().forEach(track => track.stop());
-                AppState.cameraStream = null;
-            }
-        }
-
-        async function detectFaces(video, canvas) {
-            if (!AppState.faceApiLoaded) return [];
-            
-            const detections = await faceapi
-                .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-                .withFaceLandmarks()
-                .withFaceDescriptors();
-            
-            // Clear previous drawings
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw face boxes
-            if (detections.length > 0) {
-                const resizedDetections = faceapi.resizeResults(detections, { width: canvas.width, height: canvas.height });
-                faceapi.draw.drawDetections(canvas, resizedDetections);
-                faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-            }
-            
-            return detections;
-        }
-
-        async function registerFace(video) {
-            const detections = await detectFaces(video, document.getElementById('face-canvas'));
-            
-            if (detections.length === 0) {
-                AppState.faceDetectionStatus = 'no-face';
-                return null;
-            }
-            
-            if (detections.length > 1) {
-                AppState.faceDetectionStatus = 'multiple-faces';
-                return null;
-            }
-            
-            AppState.faceDetectionStatus = 'found';
-            return detections[0].descriptor;
-        }
-
-        async function recognizeFace(video) {
-            const detections = await detectFaces(video, document.getElementById('face-canvas'));
-            
-            if (detections.length === 0) {
-                AppState.faceDetectionStatus = 'no-face';
-                return null;
-            }
-            
-            if (detections.length > 1) {
-                AppState.faceDetectionStatus = 'multiple-faces';
-                return null;
-            }
-            
-            const queryDescriptor = detections[0].descriptor;
-            
-            // Get all registered users' face data
-            const allUsers = [...AppState.patients, ...AppState.doctors];
-            
-            for (const user of allUsers) {
-                const userFaceData = loadFromStorage(`face_${user.id}`, null);
-                if (userFaceData && userFaceData.descriptors) {
-                    for (const storedDescriptor of userFaceData.descriptors) {
-                        const distance = faceapi.euclideanDistance(queryDescriptor, storedDescriptor);
-                        if (distance < 0.5) { // Threshold for face matching
-                            AppState.faceDetectionStatus = 'matched';
-                            return { user, confidence: 1 - distance };
-                        }
-                    }
-                }
-            }
-            
-            AppState.faceDetectionStatus = 'no-match';
-            return null;
-        }
-
-        function saveFaceDescriptors(userId, descriptors) {
-            const faceData = {
-                userId,
-                descriptors,
-                registrationDate: new Date().toISOString(),
-                version: '1.0'
-            };
-            
-            saveToStorage(`face_${userId}`, faceData);
-        }
-
-        function getUserFaceData(userId) {
-            return loadFromStorage(`face_${userId}`, null);
-        }
-
-        function deleteFaceData(userId) {
-            localStorage.removeItem(`face_${userId}`);
-        }
-
-        async function handleFaceLogin() {
-            AppState.faceLoginMode = true;
-            render();
-            
-            if (!await initializeFaceAPI()) {
-                alert('Face recognition is not available. Using regular login.');
-                AppState.faceLoginMode = false;
-                render();
-                return;
-            }
-            
-            const stream = await startCamera();
-            if (!stream) {
-                AppState.faceLoginMode = false;
-                render();
-                return;
-            }
-            
-            // Start face recognition process
-            const video = document.getElementById('face-video');
-            video.srcObject = stream;
-            
-            video.onloadedmetadata = () => {
-                video.play();
-                startFaceRecognitionLoop(video);
-            };
-        }
-
-        async function startFaceRecognitionLoop(video) {
-            const recognitionInterval = setInterval(async () => {
-                if (!AppState.faceLoginMode) {
-                    clearInterval(recognitionInterval);
-                    return;
-                }
-                
-                const result = await recognizeFace(video);
-                
-                if (result) {
-                    clearInterval(recognitionInterval);
-                    stopCamera();
-                    
-                    // Auto-login the recognized user
-                    AppState.currentUser = { 
-                        ...result.user, 
-                        role: AppState.patients.includes(result.user) ? 'patient' : 'doctor' 
-                    };
-                    AppState.showLogin = false;
-                    AppState.faceLoginMode = false;
-                    loadUserData();
-                    render();
-                    
-                    // Show success message
-                    setTimeout(() => {
-                        alert(`Welcome back, ${result.user.name}! Face recognition successful.`);
-                    }, 500);
-                }
-                
-                render(); // Update UI with detection status
-            }, 100);
-        }
-
-        async function handleFaceRegistration() {
-            AppState.showFaceRegistration = true;
-            AppState.faceRegistrationStep = 0;
-            AppState.faceDescriptors = [];
-            render();
-            
-            if (!await initializeFaceAPI()) {
-                alert('Face registration is not available.');
-                AppState.showFaceRegistration = false;
-                render();
-                return;
-            }
-        }
-
-        async function startFaceRegistrationStep() {
-            const stream = await startCamera();
-            if (!stream) {
-                AppState.showFaceRegistration = false;
-                render();
-                return;
-            }
-            
-            const video = document.getElementById('face-video');
-            video.srcObject = stream;
-            
-            video.onloadedmetadata = () => {
-                video.play();
-                startFaceRegistrationLoop(video);
-            };
-        }
-
-        async function startFaceRegistrationLoop(video) {
-            let sampleCount = 0;
-            const maxSamples = 5;
-            const tempDescriptors = [];
-            
-            const registrationInterval = setInterval(async () => {
-                if (!AppState.showFaceRegistration) {
-                    clearInterval(registrationInterval);
-                    return;
-                }
-                
-                const descriptor = await registerFace(video);
-                
-                if (descriptor) {
-                    tempDescriptors.push(descriptor);
-                    sampleCount++;
-                    
-                    // Update progress
-                    const progressElement = document.getElementById('registration-progress');
-                    if (progressElement) {
-                        progressElement.textContent = `${sampleCount}/${maxSamples} face samples captured`;
-                    }
-                    
-                    if (sampleCount >= maxSamples) {
-                        clearInterval(registrationInterval);
-                        stopCamera();
-                        
-                        // Save descriptors
-                        AppState.faceDescriptors = tempDescriptors;
-                        AppState.faceRegistrationStep = 1;
-                        render();
-                    }
-                }
-                
-                render();
-            }, 500);
-        }
-
-        function completeFaceRegistration() {
-            if (AppState.faceDescriptors.length === 0) {
-                alert('No face data captured. Please try again.');
-                return;
-            }
-            
-            // This will be called after user account is created
-            // The face descriptors will be saved with the user ID
-            AppState.showFaceRegistration = false;
-            AppState.faceRegistrationStep = 0;
-            render();
         }
 
         function loadUserData() {
@@ -1650,12 +1145,6 @@
                 };
                 AppState.patients.push(patientUser);
                 saveToStorage('patients_global', AppState.patients);
-                
-                // Save face descriptors if available
-                if (AppState.faceDescriptors.length > 0) {
-                    saveFaceDescriptors(patientUser.id, AppState.faceDescriptors);
-                    AppState.faceDescriptors = [];
-                }
             } else {
                 const doctorUser = {
                     ...newUser,
@@ -1665,17 +1154,10 @@
                 };
                 AppState.doctors.push(doctorUser);
                 saveToStorage('doctors_global', AppState.doctors);
-                
-                // Save face descriptors if available
-                if (AppState.faceDescriptors.length > 0) {
-                    saveFaceDescriptors(doctorUser.id, AppState.faceDescriptors);
-                    AppState.faceDescriptors = [];
-                }
             }
 
-            alert('Account created successfully! You can now login with your face or password.');
+            alert('Account created successfully! Please login.');
             AppState.showSignup = false;
-            AppState.showFaceRegistration = false;
             AppState.signupForm = {
                 email: '', password: '', confirmPassword: '', name: '', 
                 dateOfBirth: '', phone: '', specialty: '', license: '', hospital: ''
@@ -1685,14 +1167,6 @@
         }
 
         function handleLogout() {
-            // Clean up face recognition resources
-            stopCamera();
-            AppState.faceLoginMode = false;
-            AppState.faceRegistrationMode = false;
-            AppState.showFaceRegistration = false;
-            AppState.faceDetectionStatus = 'idle';
-            AppState.currentFaceDescriptor = null;
-            
             AppState.currentUser = null;
             AppState.currentPatient = null;
             AppState.medications = [];
@@ -1844,212 +1318,6 @@
 
         // UI COMPONENTS
 
-        function createFaceRecognitionComponent() {
-            if (!AppState.faceLoginMode) return null;
-            
-            const container = createElement('div', { className: 'face-recognition-container' }, [
-                createElement('div', { className: 'camera-container' }, [
-                    createElement('video', {
-                        id: 'face-video',
-                        className: 'camera-video',
-                        autoplay: true,
-                        muted: true,
-                        playsInline: true
-                    }),
-                    createElement('canvas', {
-                        id: 'face-canvas',
-                        className: 'camera-canvas',
-                        width: '320',
-                        height: '240'
-                    })
-                ]),
-                createFaceInstructions(),
-                createElement('div', { className: 'camera-controls' }, [
-                    createElement('button', {
-                        className: 'btn btn-secondary btn-sm',
-                        onClick: () => {
-                            stopCamera();
-                            AppState.faceLoginMode = false;
-                            render();
-                        }
-                    }, [createIcon('x', 16), 'Cancel']),
-                    createElement('button', {
-                        className: 'btn btn-primary btn-sm',
-                        onClick: () => {
-                            stopCamera();
-                            AppState.faceLoginMode = false;
-                            render();
-                        }
-                    }, [createIcon('keyboard', 16), 'Use Password'])
-                ])
-            ]);
-            
-            return container;
-        }
-
-        function createFaceInstructions() {
-            let instructionClass = 'face-instructions';
-            let icon = 'camera';
-            let status = 'Position your face in the camera view';
-            let detail = 'Make sure your face is well-lit and clearly visible';
-            
-            switch (AppState.faceDetectionStatus) {
-                case 'detecting':
-                    instructionClass += ' warning';
-                    icon = 'search';
-                    status = 'Detecting face...';
-                    detail = 'Please stay still while we analyze your face';
-                    break;
-                case 'no-face':
-                    instructionClass += ' warning';
-                    icon = 'alert-circle';
-                    status = 'No face detected';
-                    detail = 'Please position your face in the camera view';
-                    break;
-                case 'multiple-faces':
-                    instructionClass += ' warning';
-                    icon = 'users';
-                    status = 'Multiple faces detected';
-                    detail = 'Please ensure only one person is in view';
-                    break;
-                case 'found':
-                    instructionClass += ' success';
-                    icon = 'check-circle';
-                    status = 'Face detected successfully';
-                    detail = 'Analyzing for recognition...';
-                    break;
-                case 'matched':
-                    instructionClass += ' success';
-                    icon = 'unlock';
-                    status = 'Face recognized!';
-                    detail = 'Logging you in...';
-                    break;
-                case 'no-match':
-                    instructionClass += ' error';
-                    icon = 'x-circle';
-                    status = 'Face not recognized';
-                    detail = 'Please try again or use password login';
-                    break;
-            }
-            
-            return createElement('div', { className: instructionClass }, [
-                createElement('div', { className: 'face-status' }, [
-                    createIcon(icon, 20),
-                    status
-                ]),
-                createElement('div', { className: 'text-sm' }, [detail])
-            ]);
-        }
-
-        function createFaceRegistrationModal() {
-            if (!AppState.showFaceRegistration) return null;
-            
-            const modal = createElement('div', { className: 'modal' });
-            const content = createElement('div', { className: 'modal-content' });
-            
-            const header = createElement('div', { className: 'flex items-center justify-between mb-4' }, [
-                createElement('h3', { className: 'text-lg font-bold' }, ['Set Up Face Recognition']),
-                createElement('button', {
-                    className: 'btn btn-secondary btn-sm',
-                    onClick: () => {
-                        stopCamera();
-                        AppState.showFaceRegistration = false;
-                        AppState.faceDescriptors = [];
-                        render();
-                    }
-                }, [createIcon('x', 16)])
-            ]);
-            
-            let stepContent;
-            
-            if (AppState.faceRegistrationStep === 0) {
-                stepContent = createElement('div', {}, [
-                    createElement('div', { className: 'face-registration-step active' }, [
-                        createElement('div', { className: 'step-header' }, [
-                            createElement('div', { className: 'step-number active' }, ['1']),
-                            createElement('div', {}, [
-                                createElement('h4', { className: 'font-medium' }, ['Capture Your Face']),
-                                createElement('p', { className: 'text-sm text-gray-600' }, [
-                                    'We\'ll take multiple photos to ensure accurate recognition'
-                                ])
-                            ])
-                        ]),
-                        AppState.cameraStream ? createElement('div', { className: 'face-recognition-container' }, [
-                            createElement('div', { className: 'camera-container' }, [
-                                createElement('video', {
-                                    id: 'face-video',
-                                    className: 'camera-video',
-                                    autoplay: true,
-                                    muted: true,
-                                    playsInline: true
-                                }),
-                                createElement('canvas', {
-                                    id: 'face-canvas',
-                                    className: 'camera-canvas',
-                                    width: '320',
-                                    height: '240'
-                                })
-                            ]),
-                            createFaceInstructions(),
-                            createElement('div', { className: 'text-center mt-4' }, [
-                                createElement('div', { 
-                                    id: 'registration-progress',
-                                    className: 'text-sm text-gray-600 mb-2'
-                                }, ['0/5 face samples captured']),
-                                createElement('div', { className: 'w-full bg-gray-200 rounded-full h-2' }, [
-                                    createElement('div', { 
-                                        className: 'bg-blue-600 h-2 rounded-full transition-all duration-300',
-                                        style: { width: '0%' }
-                                    })
-                                ])
-                            ])
-                        ]) : createElement('div', { className: 'text-center py-8' }, [
-                            createElement('button', {
-                                className: 'btn btn-primary',
-                                onClick: startFaceRegistrationStep
-                            }, [createIcon('camera', 16), 'Start Camera'])
-                        ])
-                    ])
-                ]);
-            } else {
-                stepContent = createElement('div', {}, [
-                    createElement('div', { className: 'face-registration-step completed' }, [
-                        createElement('div', { className: 'step-header' }, [
-                            createElement('div', { className: 'step-number completed' }, [
-                                createIcon('check', 14)
-                            ]),
-                            createElement('div', {}, [
-                                createElement('h4', { className: 'font-medium text-green-800' }, ['Face Registration Complete!']),
-                                createElement('p', { className: 'text-sm text-green-600' }, [
-                                    'Your face has been successfully registered for secure login'
-                                ])
-                            ])
-                        ]),
-                        createElement('div', { className: 'text-center py-4' }, [
-                            createIcon('check-circle', 48, 'text-green-500'),
-                            createElement('p', { className: 'mt-2 text-gray-600' }, [
-                                'You can now complete your account registration'
-                            ])
-                        ])
-                    ])
-                ]);
-            }
-            
-            content.appendChild(header);
-            content.appendChild(stepContent);
-            modal.appendChild(content);
-            
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    stopCamera();
-                    AppState.showFaceRegistration = false;
-                    render();
-                }
-            });
-            
-            return modal;
-        }
-
         function createLoginScreen() {
             const container = createElement('div', { className: 'login-container' });
             const card = createElement('div', { className: 'login-card' });
@@ -2079,22 +1347,7 @@
             ]);
 
             let formContent;
-            
-            // Face Recognition Login
-            if (AppState.faceLoginMode) {
-                formContent = createElement('div', {}, [
-                    createElement('div', { className: 'text-center mb-4' }, [
-                        createElement('h3', { className: 'text-lg font-medium text-gray-800' }, [
-                            'Face Recognition Login'
-                        ]),
-                        createElement('p', { className: 'text-sm text-gray-600 mt-1' }, [
-                            'Look at the camera to login automatically'
-                        ])
-                    ]),
-                    createFaceRecognitionComponent()
-                ]);
-            } else if (!AppState.showSignup) {
-                // Regular Login Form
+            if (!AppState.showSignup) {
                 formContent = createElement('form', {
                     onSubmit: (e) => {
                         e.preventDefault();
@@ -2127,26 +1380,15 @@
                             required: true
                         })
                     ]),
-                    createElement('div', { className: 'space-y-3' }, [
-                        createElement('button', {
-                            type: 'submit',
-                            className: 'btn btn-primary w-full'
-                        }, [
-                            createIcon('lock', 16),
-                            `Sign In as ${AppState.loginType === 'patient' ? 'Patient' : 'Doctor'}`
-                        ]),
-                        createElement('button', {
-                            type: 'button',
-                            className: 'btn btn-secondary w-full',
-                            onClick: handleFaceLogin
-                        }, [
-                            createIcon('camera', 16),
-                            'Login with Face Recognition'
-                        ])
+                    createElement('button', {
+                        type: 'submit',
+                        className: 'btn btn-primary w-full'
+                    }, [
+                        createIcon('lock', 16),
+                        `Sign In as ${AppState.loginType === 'patient' ? 'Patient' : 'Doctor'}`
                     ])
                 ]);
             } else {
-                // Signup Form
                 formContent = createElement('form', {
                     onSubmit: (e) => {
                         e.preventDefault();
@@ -2267,22 +1509,12 @@
                             })
                         ])
                     ],
-                    createElement('div', { className: 'space-y-3' }, [
-                        createElement('button', {
-                            type: 'button',
-                            className: 'btn btn-secondary w-full',
-                            onClick: handleFaceRegistration
-                        }, [
-                            createIcon('camera', 16),
-                            'Set Up Face Recognition (Optional)'
-                        ]),
-                        createElement('button', {
-                            type: 'submit',
-                            className: 'btn btn-success w-full'
-                        }, [
-                            createIcon('user-check', 16),
-                            `Create ${AppState.loginType === 'patient' ? 'Patient' : 'Doctor'} Account`
-                        ])
+                    createElement('button', {
+                        type: 'submit',
+                        className: 'btn btn-success w-full'
+                    }, [
+                        createIcon('user-check', 16),
+                        `Create ${AppState.loginType === 'patient' ? 'Patient' : 'Doctor'} Account`
                     ])
                 ]);
             }
@@ -2291,10 +1523,6 @@
                 createElement('button', {
                     className: 'text-blue-600 hover:text-blue-800 text-sm',
                     onClick: () => {
-                        // Reset face recognition state when switching
-                        stopCamera();
-                        AppState.faceLoginMode = false;
-                        AppState.showFaceRegistration = false;
                         AppState.showSignup = !AppState.showSignup;
                         render();
                     }
@@ -2304,15 +1532,8 @@
             card.appendChild(header);
             card.appendChild(toggle);
             card.appendChild(formContent);
-            if (!AppState.faceLoginMode) {
-                card.appendChild(toggleLink);
-            }
+            card.appendChild(toggleLink);
             container.appendChild(card);
-            
-            // Add face registration modal if active
-            if (AppState.showFaceRegistration) {
-                container.appendChild(createFaceRegistrationModal());
-            }
             
             return container;
         }
@@ -2987,6 +2208,7 @@
                         ])
                     ]
                 ]),
+
                 createElement('div', { className: 'flex flex-col md:flex-row gap-2 mt-6' }, [
                     createElement('button', {
                         type: 'submit',
@@ -3134,7 +2356,7 @@
         }
 
         // Initialize Application
-        async function init() {
+        function init() {
             const savedUser = loadFromStorage('currentUser', null);
             if (savedUser) {
                 AppState.currentUser = savedUser;
@@ -3142,21 +2364,10 @@
                 loadUserData();
             }
 
-            // Initialize Face API in the background
-            try {
-                await initializeFaceAPI();
-                console.log('Face recognition ready');
-            } catch (error) {
-                console.log('Face recognition not available:', error);
-            }
-
             render();
         }
 
         window.addEventListener('beforeunload', () => {
-            // Clean up resources
-            stopCamera();
-            
             if (AppState.currentUser) {
                 saveToStorage('currentUser', AppState.currentUser);
                 saveUserData();
