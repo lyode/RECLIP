@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#3b82f6">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -161,13 +161,16 @@
 
         .input {
             width: 100%;
-            padding: 0.875rem 1rem;
+            padding: 1rem 1.25rem;
             border: 2px solid var(--gray-200);
             border-radius: 0.75rem;
-            font-size: 1rem;
-            min-height: 48px;
+            font-size: 1.125rem;
+            min-height: 52px;
             background: white;
             transition: all 0.3s ease;
+            -webkit-appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .input:focus {
@@ -175,6 +178,23 @@
             border-color: var(--primary-color);
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
             transform: translateY(-1px);
+        }
+
+        /* Mobile-specific input improvements */
+        @media (max-width: 768px) {
+            .input {
+                font-size: 1.125rem;
+                min-height: 56px;
+                padding: 1.125rem 1.25rem;
+                border-width: 2px;
+                -webkit-user-select: text;
+                user-select: text;
+            }
+            
+            .input:focus {
+                transform: none;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            }
         }
 
         .grid {
@@ -699,6 +719,21 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
+        /* Mobile login improvements */
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 1.5rem;
+                margin: 1rem;
+                border-radius: 1rem;
+                max-width: none;
+            }
+            
+            .login-container {
+                padding: 0.5rem;
+                align-items: center;
+            }
+        }
+
         .modal {
             position: fixed;
             top: 0;
@@ -826,6 +861,33 @@
 
         .color-option.selected::after {
             opacity: 1;
+        }
+
+        /* Mobile touch and input optimizations */
+        @media (max-width: 768px) {
+            * {
+                -webkit-tap-highlight-color: transparent;
+                -webkit-touch-callout: none;
+            }
+            
+            input, textarea, select {
+                -webkit-appearance: none;
+                border-radius: 0.75rem;
+                font-size: 1.125rem !important; /* Prevents zoom on iOS */
+            }
+            
+            .login-card input {
+                font-size: 1.125rem !important;
+                padding: 1.25rem 1.5rem !important;
+                min-height: 60px !important;
+                border: 2px solid var(--gray-300) !important;
+                background: #ffffff !important;
+            }
+            
+            .login-card input:focus {
+                border-color: var(--primary-color) !important;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+            }
         }
 
         /* Mobile Responsive Design */
@@ -1264,6 +1326,11 @@
                 createElement('div', { className: 'flex items-center justify-center mb-4' }, [
                     createIcon('pill', 32),
                     createElement('h1', { className: 'text-2xl font-bold text-gray-800 ml-2' }, ['Medicine Tracker'])
+                ]),
+                createElement('div', { className: 'bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4' }, [
+                    createElement('p', { className: 'text-sm text-blue-700' }, [
+                        '📱 Demo Mode: Enter any email and password to login'
+                    ])
                 ])
             ]);
 
@@ -1304,6 +1371,11 @@
                                 AppState.loginForm.email = e.target.value;
                             },
                             placeholder: 'Enter your email (demo mode)',
+                            autocomplete: 'email',
+                            autocapitalize: 'none',
+                            autocorrect: 'off',
+                            spellcheck: 'false',
+                            inputmode: 'email',
                             required: true
                         })
                     ]),
@@ -1317,6 +1389,7 @@
                                 AppState.loginForm.password = e.target.value;
                             },
                             placeholder: 'Enter password (demo mode)',
+                            autocomplete: 'current-password',
                             required: true
                         })
                     ]),
