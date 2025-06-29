@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicine Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Medicine Tracker">
+    <meta name="description" content="Professional medicine tracking system for patients and healthcare providers with secure authentication">
+    <title>Medicine Tracker - Professional Healthcare Management System</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
     <style>
         * {
@@ -115,6 +120,7 @@
         .gap-4 { gap: 1rem; }
 
         .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
 
         .hidden { display: none; }
         .w-full { width: 100%; }
@@ -141,9 +147,20 @@
         .text-gray-700 { color: #374151; }
         .text-gray-800 { color: #1f2937; }
         .text-blue-600 { color: #2563eb; }
+        .text-blue-700 { color: #1d4ed8; }
+        .text-blue-800 { color: #1e40af; }
         .text-green-600 { color: #059669; }
+        .text-green-700 { color: #047857; }
+        .text-green-800 { color: #065f46; }
         .text-red-600 { color: #dc2626; }
+        .text-red-700 { color: #b91c1c; }
+        .text-red-800 { color: #991b1b; }
         .text-yellow-600 { color: #d97706; }
+        .text-yellow-700 { color: #b45309; }
+        .text-yellow-800 { color: #92400e; }
+        .text-indigo-800 { color: #3730a3; }
+        .text-purple-600 { color: #9333ea; }
+        .text-purple-800 { color: #6b21a8; }
 
         .mb-1 { margin-bottom: 0.25rem; }
         .mb-2 { margin-bottom: 0.5rem; }
@@ -153,6 +170,7 @@
         .mt-1 { margin-top: 0.25rem; }
         .mt-2 { margin-top: 0.5rem; }
         .mt-4 { margin-top: 1rem; }
+        .ml-1 { margin-left: 0.25rem; }
         .ml-2 { margin-left: 0.5rem; }
 
         .p-1 { padding: 0.25rem; }
@@ -163,14 +181,24 @@
         .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
         .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
         .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
 
         .bg-white { background: white; }
         .bg-gray-50 { background: #f9fafb; }
         .bg-gray-100 { background: #f3f4f6; }
         .bg-green-50 { background: #f0fdf4; }
+        .bg-green-100 { background: #dcfce7; }
         .bg-red-50 { background: #fef2f2; }
+        .bg-red-100 { background: #fee2e2; }
         .bg-yellow-50 { background: #fffbeb; }
+        .bg-yellow-100 { background: #fef3c7; }
         .bg-blue-50 { background: #eff6ff; }
+        .bg-blue-100 { background: #dbeafe; }
+        .bg-purple-50 { background: #faf5ff; }
+        .bg-purple-100 { background: #f3e8ff; }
+        .bg-orange-100 { background: #fed7aa; }
+        .bg-red-500 { background: #ef4444; }
 
         .border { border: 1px solid #d1d5db; }
         .border-2 { border: 2px solid #d1d5db; }
@@ -178,6 +206,7 @@
         .border-red-500 { border-color: #ef4444; }
         .border-gray-300 { border-color: #d1d5db; }
         .border-yellow-200 { border-color: #fde047; }
+        .border-blue-200 { border-color: #bfdbfe; }
 
         .rounded { border-radius: 0.25rem; }
         .rounded-lg { border-radius: 0.5rem; }
@@ -313,21 +342,6 @@
             transform: scale(1.1);
         }
 
-        .header-mobile {
-            padding: 1rem;
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1f2937;
-        }
-
         .action-buttons {
             display: flex;
             gap: 0.5rem;
@@ -353,6 +367,44 @@
 
         .search-input {
             padding-left: 3rem !important;
+        }
+
+        .notification-badge {
+            background: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            border-radius: 9999px;
+            padding: 0.25rem 0.5rem;
+            margin-left: 0.25rem;
+            min-width: 1.25rem;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .effect-card {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .effect-mild { border-left: 4px solid #10b981; }
+        .effect-moderate { border-left: 4px solid #f59e0b; }
+        .effect-severe { border-left: 4px solid #ef4444; }
+        .effect-positive { border-left: 4px solid #3b82f6; }
+
+        .max-h-60 {
+            max-height: 15rem;
+        }
+
+        .max-h-96 {
+            max-height: 24rem;
+        }
+
+        .overflow-y-auto {
+            overflow-y: auto;
         }
 
         /* Mobile Responsive Design */
@@ -382,11 +434,6 @@
 
             .text-2xl {
                 font-size: 1.25rem;
-            }
-
-            .flex-wrap-mobile {
-                flex-direction: column;
-                align-items: stretch;
             }
 
             .action-buttons {
@@ -420,11 +467,6 @@
                 max-height: 90vh;
                 overflow-y: auto;
             }
-
-            .grid-dose-mobile {
-                grid-template-columns: 1fr;
-                gap: 0.75rem;
-            }
         }
 
         /* Tablet Design */
@@ -455,10 +497,6 @@
             .card {
                 padding: 1.5rem;
                 margin-bottom: 1.5rem;
-            }
-
-            .header-mobile {
-                display: none;
             }
 
             .btn {
@@ -520,17 +558,13 @@
             loginType: 'patient',
             showSignup: false,
             currentPatient: null,
-            patients: [
-                { id: 1, email: 'john.doe@email.com', password: 'patient123', name: 'John Doe', dateOfBirth: '1985-06-15', phone: '+1234567890', assignedDoctor: 1 },
-                { id: 2, email: 'jane.smith@email.com', password: 'patient123', name: 'Jane Smith', dateOfBirth: '1990-03-22', phone: '+1234567891', assignedDoctor: 1 }
-            ],
-            doctors: [
-                { id: 1, email: 'dr.wilson@hospital.com', password: 'doctor123', name: 'Dr. Sarah Wilson', specialty: 'Internal Medicine', license: 'MD12345', hospital: 'City General Hospital' },
-                { id: 2, email: 'dr.johnson@clinic.com', password: 'doctor123', name: 'Dr. Michael Johnson', specialty: 'Cardiology', license: 'MD67890', hospital: 'Heart Care Clinic' }
-            ],
+            patients: [],
+            doctors: [],
             medications: [],
             doses: [],
             remarks: [],
+            messages: [], // Doctor-Patient messages
+            doseEffects: [], // Dose-specific effect tracking
             patientFiles: [],
             selectedDate: new Date().toISOString().split('T')[0],
             searchTerm: '',
@@ -539,7 +573,14 @@
             showRemarkModal: false,
             showBulkEdit: false,
             showHistoryModal: false,
+            showMessagesModal: false, // Messages modal
+            showSendMessageModal: false, // Send message modal
+            showDoseEffectModal: false, // Dose effect modal
+            showPatientAssignModal: false, // Patient assignment modal
             selectedDoseHistory: null,
+            selectedDoseForEffect: null, // Selected dose for adding effects
+            currentMessage: { text: '', patientId: null }, // Current message being composed
+            currentDoseEffect: { medicationId: null, time: '', date: '', effect: '', severity: 'mild' }, // Current dose effect
             currentRemark: { date: '', text: '', type: 'note' },
             newMed: {
                 name: '',
@@ -587,8 +628,15 @@
             });
 
             children.forEach(child => {
+                if (child === null || child === undefined) return;
                 if (typeof child === 'string') {
                     element.appendChild(document.createTextNode(child));
+                } else if (Array.isArray(child)) {
+                    child.forEach(subChild => {
+                        if (subChild !== null && subChild !== undefined) {
+                            element.appendChild(subChild);
+                        }
+                    });
                 } else if (child) {
                     element.appendChild(child);
                 }
@@ -623,11 +671,28 @@
         }
 
         function loadUserData() {
+            // Load global patient and doctor lists
+            const globalPatients = loadFromStorage('patients_global', []);
+            const globalDoctors = loadFromStorage('doctors_global', []);
+            const globalPatientFiles = loadFromStorage('patientFiles_global', []);
+            
+            AppState.patients = globalPatients;
+            AppState.doctors = globalDoctors;
+            AppState.patientFiles = globalPatientFiles;
+            
             if (AppState.currentUser) {
                 const userKey = `${AppState.currentUser.role}_${AppState.currentUser.id}`;
                 AppState.medications = loadFromStorage(`medications_${userKey}`, []);
                 AppState.doses = loadFromStorage(`doses_${userKey}`, []);
                 AppState.remarks = loadFromStorage(`remarks_${userKey}`, []);
+                AppState.doseEffects = loadFromStorage(`doseEffects_${userKey}`, []);
+                
+                // Load messages for patient (received from doctor) or doctor (sent to patients)
+                if (AppState.currentUser.role === 'patient') {
+                    AppState.messages = loadFromStorage(`messages_patient_${AppState.currentUser.id}`, []);
+                } else {
+                    AppState.messages = loadFromStorage(`messages_doctor_${AppState.currentUser.id}`, []);
+                }
             }
         }
 
@@ -637,7 +702,77 @@
                 saveToStorage(`medications_${userKey}`, AppState.medications);
                 saveToStorage(`doses_${userKey}`, AppState.doses);
                 saveToStorage(`remarks_${userKey}`, AppState.remarks);
+                saveToStorage(`doseEffects_${userKey}`, AppState.doseEffects);
+                
+                // Save messages
+                if (AppState.currentUser.role === 'patient') {
+                    saveToStorage(`messages_patient_${AppState.currentUser.id}`, AppState.messages);
+                } else {
+                    saveToStorage(`messages_doctor_${AppState.currentUser.id}`, AppState.messages);
+                }
             }
+        }
+
+        // Patient Assignment Functions
+        function assignPatientToDoctor(patientId, doctorId) {
+            const patientIndex = AppState.patients.findIndex(p => p.id === patientId);
+            if (patientIndex >= 0) {
+                AppState.patients[patientIndex].assignedDoctor = doctorId;
+                saveToStorage('patients_global', AppState.patients);
+                
+                // Create assignment record
+                const assignment = {
+                    id: Date.now(),
+                    patientId,
+                    doctorId,
+                    assignedDate: new Date().toISOString(),
+                    assignedBy: AppState.currentUser.id,
+                    status: 'active'
+                };
+                
+                const assignments = loadFromStorage('patient_assignments', []);
+                assignments.push(assignment);
+                saveToStorage('patient_assignments', assignments);
+                
+                render();
+                return true;
+            }
+            return false;
+        }
+
+        function unassignPatientFromDoctor(patientId) {
+            const patientIndex = AppState.patients.findIndex(p => p.id === patientId);
+            if (patientIndex >= 0) {
+                AppState.patients[patientIndex].assignedDoctor = null;
+                saveToStorage('patients_global', AppState.patients);
+                
+                // Update assignment record
+                const assignments = loadFromStorage('patient_assignments', []);
+                const assignmentIndex = assignments.findIndex(a => a.patientId === patientId && a.status === 'active');
+                if (assignmentIndex >= 0) {
+                    assignments[assignmentIndex].status = 'inactive';
+                    assignments[assignmentIndex].unassignedDate = new Date().toISOString();
+                    saveToStorage('patient_assignments', assignments);
+                }
+                
+                render();
+                return true;
+            }
+            return false;
+        }
+
+        function getAssignedPatients() {
+            if (!AppState.currentUser || AppState.currentUser.role !== 'doctor') return [];
+            return AppState.patients.filter(p => p.assignedDoctor === AppState.currentUser.id);
+        }
+
+        function getUnassignedPatients() {
+            return AppState.patients.filter(p => !p.assignedDoctor);
+        }
+
+        function getPatientAssignmentHistory(patientId) {
+            const assignments = loadFromStorage('patient_assignments', []);
+            return assignments.filter(a => a.patientId === patientId);
         }
 
         // Authentication Functions
@@ -657,8 +792,59 @@
         }
 
         function handleSignup(formData) {
+            // Validation
+            if (!formData.name.trim()) {
+                alert('Please enter your full name');
+                return false;
+            }
+            
+            if (!formData.email.trim() || !formData.email.includes('@')) {
+                alert('Please enter a valid email address');
+                return false;
+            }
+            
+            if (formData.password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return false;
+            }
+            
             if (formData.password !== formData.confirmPassword) {
                 alert('Passwords do not match');
+                return false;
+            }
+
+            // Patient-specific validation
+            if (AppState.loginType === 'patient') {
+                if (!formData.dateOfBirth) {
+                    alert('Please enter your date of birth');
+                    return false;
+                }
+                if (!formData.phone.trim()) {
+                    alert('Please enter your phone number');
+                    return false;
+                }
+            }
+
+            // Doctor-specific validation
+            if (AppState.loginType === 'doctor') {
+                if (!formData.specialty.trim()) {
+                    alert('Please enter your medical specialty');
+                    return false;
+                }
+                if (!formData.license.trim()) {
+                    alert('Please enter your medical license number');
+                    return false;
+                }
+                if (!formData.hospital.trim()) {
+                    alert('Please enter your hospital or clinic name');
+                    return false;
+                }
+            }
+
+            // Check if email already exists
+            const allUsers = AppState.loginType === 'patient' ? AppState.patients : AppState.doctors;
+            if (allUsers.find(u => u.email === formData.email)) {
+                alert('Email already exists');
                 return false;
             }
 
@@ -677,6 +863,7 @@
                     assignedDoctor: null
                 };
                 AppState.patients.push(patientUser);
+                saveToStorage('patients_global', AppState.patients);
             } else {
                 const doctorUser = {
                     ...newUser,
@@ -685,6 +872,7 @@
                     hospital: formData.hospital
                 };
                 AppState.doctors.push(doctorUser);
+                saveToStorage('doctors_global', AppState.doctors);
             }
 
             alert('Account created successfully! Please login.');
@@ -703,7 +891,133 @@
             AppState.medications = [];
             AppState.doses = [];
             AppState.remarks = [];
+            AppState.messages = [];
+            AppState.doseEffects = [];
             AppState.showLogin = true;
+            render();
+        }
+
+        // Message Functions
+        function sendMessage(patientId, messageText) {
+            const message = {
+                id: Date.now(),
+                fromDoctorId: AppState.currentUser.id,
+                toPatientId: patientId,
+                doctorName: AppState.currentUser.name,
+                text: messageText,
+                timestamp: new Date().toISOString(),
+                read: false
+            };
+            
+            // Save to doctor's sent messages
+            AppState.messages.push(message);
+            saveToStorage(`messages_doctor_${AppState.currentUser.id}`, AppState.messages);
+            
+            // Save to patient's received messages
+            const patientMessages = loadFromStorage(`messages_patient_${patientId}`, []);
+            patientMessages.push(message);
+            saveToStorage(`messages_patient_${patientId}`, patientMessages);
+            
+            alert('Message sent successfully!');
+            AppState.currentMessage = { text: '', patientId: null };
+            AppState.showSendMessageModal = false;
+            render();
+        }
+
+        function markMessageAsRead(messageId) {
+            const messageIndex = AppState.messages.findIndex(m => m.id === messageId);
+            if (messageIndex >= 0) {
+                AppState.messages[messageIndex].read = true;
+                saveUserData();
+                render();
+            }
+        }
+
+        function getUnreadMessageCount() {
+            return AppState.messages.filter(m => !m.read).length;
+        }
+
+        // Dose Effect Functions
+        function addDoseEffect(medicationId, time, date, effect, severity) {
+            const doseEffect = {
+                id: Date.now(),
+                medicationId,
+                time,
+                date,
+                effect,
+                severity,
+                timestamp: new Date().toISOString(),
+                patientId: AppState.currentUser.id
+            };
+            
+            AppState.doseEffects.push(doseEffect);
+            saveUserData();
+            
+            AppState.currentDoseEffect = { medicationId: null, time: '', date: '', effect: '', severity: 'mild' };
+            AppState.showDoseEffectModal = false;
+            render();
+        }
+
+        function getDoseEffects(medicationId, time, date) {
+            return AppState.doseEffects.filter(de => 
+                de.medicationId === medicationId && 
+                de.time === time && 
+                de.date === date
+            );
+        }
+
+        function deleteDoseEffect(effectId) {
+            AppState.doseEffects = AppState.doseEffects.filter(de => de.id !== effectId);
+            saveUserData();
+            render();
+        }
+
+        // Patient Management Functions
+        function uploadPatientFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.medications && Array.isArray(data.medications) && 
+                        data.doses && Array.isArray(data.doses)) {
+                        
+                        const patientName = prompt('Enter patient name:');
+                        if (!patientName) return;
+                        
+                        const patientFile = {
+                            id: Date.now(),
+                            name: patientName,
+                            uploadDate: new Date().toISOString(),
+                            fileName: file.name,
+                            uploadedBy: AppState.currentUser.id,
+                            data: data
+                        };
+                        
+                        AppState.patientFiles.push(patientFile);
+                        saveToStorage('patientFiles_global', AppState.patientFiles);
+                        render();
+                        alert('Patient data uploaded successfully!');
+                    } else {
+                        alert('Invalid file format.');
+                    }
+                } catch (error) {
+                    alert('Error reading file.');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function viewPatientFile(patientFile) {
+            AppState.currentPatient = patientFile;
+            AppState.medications = patientFile.data.medications || [];
+            AppState.doses = patientFile.data.doses || [];
+            AppState.remarks = patientFile.data.remarks || [];
+            AppState.doseEffects = patientFile.data.doseEffects || [];
             render();
         }
 
@@ -784,15 +1098,62 @@
             return { total, taken, missed, pending: total - taken - missed };
         }
 
-        // Export/Import Functions
+        // Bulk Operations
+        function copyDay(fromDate, toDate) {
+            const fromDoses = AppState.doses.filter(d => d.date === fromDate);
+            fromDoses.forEach(dose => {
+                const newKey = `${toDate}-${dose.medicationId}-${dose.time}`;
+                const newDose = {
+                    ...dose,
+                    key: newKey,
+                    date: toDate,
+                    timestamp: new Date().toISOString(),
+                    editedBy: 'Copy Operation'
+                };
+                
+                const existingIndex = AppState.doses.findIndex(d => d.key === newKey);
+                if (existingIndex >= 0) {
+                    AppState.doses[existingIndex] = newDose;
+                } else {
+                    AppState.doses.push(newDose);
+                }
+            });
+            
+            saveUserData();
+            render();
+            alert('Day copied successfully!');
+        }
+
+        function copyWeek(fromDate) {
+            const startDate = new Date(fromDate);
+            const dayOfWeek = startDate.getDay();
+            const mondayOfWeek = new Date(startDate);
+            mondayOfWeek.setDate(startDate.getDate() - dayOfWeek + 1);
+            
+            for (let i = 0; i < 7; i++) {
+                const sourceDate = new Date(mondayOfWeek);
+                sourceDate.setDate(mondayOfWeek.getDate() + i);
+                
+                const targetDate = new Date(sourceDate);
+                targetDate.setDate(sourceDate.getDate() + 7);
+                
+                copyDay(sourceDate.toISOString().split('T')[0], targetDate.toISOString().split('T')[0]);
+            }
+            
+            alert('Week copied to next week successfully!');
+        }
+
+        // Export/Import
         function exportData() {
             const data = {
                 medications: AppState.medications,
                 doses: AppState.doses,
                 remarks: AppState.remarks,
+                messages: AppState.messages,
+                doseEffects: AppState.doseEffects,
                 patientInfo: AppState.currentUser?.role === 'patient' ? AppState.currentUser : AppState.currentPatient,
                 exportDate: new Date().toISOString(),
-                version: '2.0'
+                version: '3.0'
             };
             
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -824,6 +1185,8 @@
                         AppState.medications = data.medications;
                         AppState.doses = data.doses;
                         AppState.remarks = data.remarks || [];
+                        AppState.messages = data.messages || [];
+                        AppState.doseEffects = data.doseEffects || [];
                         saveUserData();
                         render();
                         alert('Data imported successfully!');
@@ -867,18 +1230,6 @@
                         render();
                     }
                 }, [createIcon('stethoscope', 18), 'Doctor'])
-            ]);
-
-            // Demo Credentials
-            const demoCredentials = createElement('div', { 
-                className: 'mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg'
-            }, [
-                createElement('h4', { className: 'text-sm font-medium text-yellow-800 mb-2' }, ['Demo Credentials:']),
-                createElement('div', { className: 'text-xs text-yellow-700' }, [
-                    AppState.loginType === 'patient' ? 
-                        'Patient: john.doe@email.com / patient123' :
-                        'Doctor: dr.wilson@hospital.com / doctor123'
-                ])
             ]);
 
             // Form Content
@@ -926,16 +1277,136 @@
                     ])
                 ]);
             } else {
-                // Signup Form - simplified for demo
-                formContent = createElement('div', {}, [
-                    createElement('p', { className: 'text-center text-gray-600' }, ['Signup functionality available in demo']),
+                // Signup Form
+                formContent = createElement('form', {
+                    onSubmit: (e) => {
+                        e.preventDefault();
+                        handleSignup(AppState.signupForm);
+                    }
+                }, [
+                    createElement('div', { className: 'mb-4' }, [
+                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Full Name *']),
+                        createElement('input', {
+                            type: 'text',
+                            className: 'input',
+                            value: AppState.signupForm.name,
+                            onInput: (e) => {
+                                AppState.signupForm.name = e.target.value;
+                            },
+                            required: true
+                        })
+                    ]),
+                    createElement('div', { className: 'mb-4' }, [
+                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Email *']),
+                        createElement('input', {
+                            type: 'email',
+                            className: 'input',
+                            value: AppState.signupForm.email,
+                            onInput: (e) => {
+                                AppState.signupForm.email = e.target.value;
+                            },
+                            required: true
+                        })
+                    ]),
+                    createElement('div', { className: 'mb-4' }, [
+                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Password *']),
+                        createElement('input', {
+                            type: 'password',
+                            className: 'input',
+                            value: AppState.signupForm.password,
+                            onInput: (e) => {
+                                AppState.signupForm.password = e.target.value;
+                            },
+                            required: true
+                        })
+                    ]),
+                    createElement('div', { className: 'mb-4' }, [
+                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Confirm Password *']),
+                        createElement('input', {
+                            type: 'password',
+                            className: 'input',
+                            value: AppState.signupForm.confirmPassword,
+                            onInput: (e) => {
+                                AppState.signupForm.confirmPassword = e.target.value;
+                            },
+                            required: true
+                        })
+                    ]),
+                    // Patient-specific fields
+                    AppState.loginType === 'patient' ? [
+                        createElement('div', { className: 'mb-4' }, [
+                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Date of Birth *']),
+                            createElement('input', {
+                                type: 'date',
+                                className: 'input',
+                                value: AppState.signupForm.dateOfBirth,
+                                onInput: (e) => {
+                                    AppState.signupForm.dateOfBirth = e.target.value;
+                                },
+                                required: true
+                            })
+                        ]),
+                        createElement('div', { className: 'mb-6' }, [
+                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Phone *']),
+                            createElement('input', {
+                                type: 'tel',
+                                className: 'input',
+                                value: AppState.signupForm.phone,
+                                onInput: (e) => {
+                                    AppState.signupForm.phone = e.target.value;
+                                },
+                                required: true
+                            })
+                        ])
+                    ] : [
+                        // Doctor-specific fields
+                        createElement('div', { className: 'mb-4' }, [
+                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Medical Specialty *']),
+                            createElement('input', {
+                                type: 'text',
+                                className: 'input',
+                                placeholder: 'e.g., Internal Medicine',
+                                value: AppState.signupForm.specialty,
+                                onInput: (e) => {
+                                    AppState.signupForm.specialty = e.target.value;
+                                },
+                                required: true
+                            })
+                        ]),
+                        createElement('div', { className: 'mb-4' }, [
+                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Medical License *']),
+                            createElement('input', {
+                                type: 'text',
+                                className: 'input',
+                                placeholder: 'e.g., MD12345',
+                                value: AppState.signupForm.license,
+                                onInput: (e) => {
+                                    AppState.signupForm.license = e.target.value;
+                                },
+                                required: true
+                            })
+                        ]),
+                        createElement('div', { className: 'mb-6' }, [
+                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Hospital/Clinic *']),
+                            createElement('input', {
+                                type: 'text',
+                                className: 'input',
+                                placeholder: 'e.g., City General Hospital',
+                                value: AppState.signupForm.hospital,
+                                onInput: (e) => {
+                                    AppState.signupForm.hospital = e.target.value;
+                                },
+                                required: true
+                            })
+                        ])
+                    ],
                     createElement('button', {
-                        className: 'btn btn-secondary w-full mt-4',
-                        onClick: () => {
-                            AppState.showSignup = false;
-                            render();
-                        }
-                    }, ['Back to Login'])
+                        type: 'submit',
+                        className: 'btn btn-success w-full'
+                    }, [
+                        createIcon('user-check', 16),
+                        `Create ${AppState.loginType === 'patient' ? 'Patient' : 'Doctor'} Account`
+                    ])
                 ]);
             }
 
@@ -952,7 +1423,6 @@
 
             card.appendChild(header);
             card.appendChild(toggle);
-            card.appendChild(demoCredentials);
             card.appendChild(formContent);
             card.appendChild(toggleLink);
             container.appendChild(card);
@@ -961,6 +1431,144 @@
         }
 
         function createMainInterface() {
+            // Doctor Mode Dashboard
+            if (AppState.currentUser.role === 'doctor' && !AppState.currentPatient) {
+                const assignedPatients = getAssignedPatients();
+                const unassignedPatients = getUnassignedPatients();
+                
+                const container = createElement('div', { className: 'max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen' });
+                const mainCard = createElement('div', { className: 'bg-white rounded-lg shadow-lg p-6 mb-6' });
+                
+                // Header
+                const header = createElement('div', { className: 'flex items-center justify-between mb-6' }, [
+                    createElement('div', {}, [
+                        createElement('h1', { className: 'text-3xl font-bold text-gray-800 flex items-center gap-2' }, [
+                            createIcon('stethoscope', 32),
+                            'Doctor Dashboard'
+                        ]),
+                        createElement('p', { className: 'text-gray-600' }, [`Welcome, Dr. ${AppState.currentUser.name}`]),
+                        createElement('p', { className: 'text-sm text-gray-500' }, [`${AppState.currentUser.specialty} • ${AppState.currentUser.hospital}`])
+                    ]),
+                    createElement('div', { className: 'flex gap-2' }, [
+                        createElement('button', {
+                            className: 'btn btn-primary',
+                            onClick: () => {
+                                AppState.showPatientAssignModal = true;
+                                render();
+                            }
+                        }, [createIcon('users', 16), 'Manage Patients']),
+                        createElement('button', {
+                            className: 'btn btn-secondary',
+                            onClick: handleLogout
+                        }, [createIcon('log-out', 16), 'Logout'])
+                    ])
+                ]);
+
+                // Stats
+                const stats = createElement('div', { className: 'grid grid-cols-1 md:grid-cols-4 gap-4 mb-6' }, [
+                    createElement('div', { className: 'bg-blue-100 p-4 rounded-lg text-center' }, [
+                        createElement('div', { className: 'text-3xl font-bold text-blue-800' }, [assignedPatients.length.toString()]),
+                        createElement('div', { className: 'text-sm text-blue-600' }, ['Assigned Patients'])
+                    ]),
+                    createElement('div', { className: 'bg-yellow-100 p-4 rounded-lg text-center' }, [
+                        createElement('div', { className: 'text-3xl font-bold text-yellow-800' }, [unassignedPatients.length.toString()]),
+                        createElement('div', { className: 'text-sm text-yellow-600' }, ['Available Patients'])
+                    ]),
+                    createElement('div', { className: 'bg-green-100 p-4 rounded-lg text-center' }, [
+                        createElement('div', { className: 'text-3xl font-bold text-green-800' }, [AppState.patientFiles.length.toString()]),
+                        createElement('div', { className: 'text-sm text-green-600' }, ['Patient Files'])
+                    ]),
+                    createElement('div', { className: 'bg-orange-100 p-4 rounded-lg text-center' }, [
+                        createElement('button', {
+                            className: 'w-full bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-colors',
+                            onClick: () => document.getElementById('patient-file-input').click()
+                        }, [createIcon('upload', 16), 'Upload Data'])
+                    ])
+                ]);
+
+                // Hidden file input
+                const fileInput = createElement('input', {
+                    type: 'file',
+                    accept: '.json',
+                    style: { display: 'none' },
+                    id: 'patient-file-input',
+                    onChange: uploadPatientFile
+                });
+
+                // Assigned Patients Section
+                const assignedSection = createElement('div', { className: 'mb-6' }, [
+                    createElement('h2', { className: 'text-xl font-bold text-gray-800 mb-4 flex items-center gap-2' }, [
+                        createIcon('user-check', 20),
+                        `My Assigned Patients (${assignedPatients.length})`
+                    ]),
+                    assignedPatients.length === 0 ? 
+                        createElement('div', { className: 'text-center py-4 bg-gray-50 rounded-lg' }, [
+                            createElement('p', { className: 'text-gray-500' }, ['No patients assigned yet']),
+                            createElement('button', {
+                                className: 'btn btn-primary btn-sm mt-2',
+                                onClick: () => {
+                                    AppState.showPatientAssignModal = true;
+                                    render();
+                                }
+                            }, ['Assign Patients'])
+                        ]) :
+                        createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4' }, 
+                            assignedPatients.map(patient =>
+                                createElement('div', { className: 'bg-blue-50 p-4 rounded-lg border border-blue-200' }, [
+                                    createElement('div', { className: 'flex items-center justify-between mb-2' }, [
+                                        createElement('h3', { className: 'font-bold text-gray-800' }, [patient.name]),
+                                        createElement('div', { className: 'flex gap-1' }, [
+                                            createElement('button', {
+                                                className: 'btn btn-primary btn-sm',
+                                                onClick: () => {
+                                                    AppState.currentMessage.patientId = patient.id;
+                                                    AppState.showSendMessageModal = true;
+                                                    render();
+                                                },
+                                                title: 'Send Message'
+                                            }, [createIcon('message-square', 14)]),
+                                            createElement('button', {
+                                                className: 'btn btn-danger btn-sm',
+                                                onClick: () => {
+                                                    if (confirm(`Unassign ${patient.name} from your care?`)) {
+                                                        unassignPatientFromDoctor(patient.id);
+                                                    }
+                                                },
+                                                title: 'Unassign Patient'
+                                            }, [createIcon('user-minus', 14)])
+                                        ])
+                                    ]),
+                                    createElement('p', { className: 'text-sm text-gray-600' }, [`DOB: ${patient.dateOfBirth}`]),
+                                    createElement('p', { className: 'text-sm text-gray-600' }, [`Phone: ${patient.phone}`]),
+                                    createElement('p', { className: 'text-sm text-gray-600' }, [`Email: ${patient.email}`]),
+                                    createElement('div', { className: 'mt-2 text-xs text-blue-600' }, [
+                                        `Assigned: ${new Date(getPatientAssignmentHistory(patient.id).pop()?.assignedDate || '').toLocaleDateString()}`
+                                    ])
+                                ])
+                            )
+                        )
+                ]);
+
+                mainCard.appendChild(header);
+                mainCard.appendChild(stats);
+                mainCard.appendChild(fileInput);
+                mainCard.appendChild(assignedSection);
+                container.appendChild(mainCard);
+
+                // Patient Assignment Modal
+                if (AppState.showPatientAssignModal) {
+                    container.appendChild(createPatientAssignmentModal());
+                }
+
+                // Send Message Modal
+                if (AppState.showSendMessageModal) {
+                    container.appendChild(createSendMessageModal());
+                }
+
+                return container;
+            }
+
+            // Patient/Main Interface
             const container = createElement('div', { className: 'container' });
             
             // Main Card
@@ -969,7 +1577,7 @@
             // Header - Responsive Layout
             const headerContent = createElement('div', { className: 'flex flex-col gap-4' }, [
                 createElement('div', { className: 'flex items-start justify-between flex-wrap gap-4' }, [
-                    createElement('div', { className: 'flex-1 min-w-0' }, [
+                    createElement('div', {}, [
                         createElement('h1', { className: 'text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-2 flex-wrap' }, [
                             createIcon('pill', 32),
                             createElement('span', { className: 'break-words' }, [
@@ -978,9 +1586,47 @@
                         ]),
                         createElement('p', { className: 'text-sm text-gray-600 mt-1' }, [
                             AppState.currentUser.role === 'doctor' ? 'Doctor View - Monitoring Patient' : `Patient: ${AppState.currentUser.email}`
-                        ])
+                        ]),
+                        // Show assigned doctor for patients
+                        AppState.currentUser.role === 'patient' ? (() => {
+                            const assignedDoctor = AppState.doctors.find(d => d.id === AppState.currentUser.assignedDoctor);
+                            return assignedDoctor ? createElement('p', { className: 'text-xs text-blue-600 mt-1' }, [
+                                `👨‍⚕️ Your Doctor: Dr. ${assignedDoctor.name} (${assignedDoctor.specialty})`
+                            ]) : createElement('p', { className: 'text-xs text-gray-500 mt-1' }, [
+                                '⚠️ No doctor assigned yet'
+                            ]);
+                        })() : null
                     ]),
                     createElement('div', { className: 'action-buttons' }, [
+                        // Messages button for patients
+                        AppState.currentUser.role === 'patient' ? createElement('button', {
+                            className: 'btn btn-primary btn-sm',
+                            onClick: () => {
+                                AppState.showMessagesModal = true;
+                                // Mark messages as read when opening
+                                AppState.messages.forEach(m => m.read = true);
+                                saveUserData();
+                                render();
+                            }
+                        }, [
+                            createIcon('mail', 16), 
+                            'Messages',
+                            getUnreadMessageCount() > 0 ? createElement('span', { 
+                                className: 'notification-badge'
+                            }, [getUnreadMessageCount().toString()]) : null
+                        ]) : null,
+                        
+                        // Send message button for doctors
+                        AppState.currentUser.role === 'doctor' && AppState.currentPatient ? createElement('button', {
+                            className: 'btn btn-primary btn-sm',
+                            onClick: () => {
+                                AppState.currentMessage.patientId = AppState.currentPatient.id || 
+                                    AppState.patients.find(p => p.name === AppState.currentPatient.name)?.id;
+                                AppState.showSendMessageModal = true;
+                                render();
+                            }
+                        }, [createIcon('send', 16), 'Send Message']) : null,
+                        
                         createElement('button', {
                             className: 'btn btn-danger btn-sm',
                             onClick: handleLogout
@@ -1046,14 +1692,30 @@
             ]);
 
             // Quick Actions - Mobile Friendly
-            const quickActions = createElement('div', { className: 'flex flex-wrap gap-2 mb-4' }, [
+            const quickActionItems = [
                 createElement('button', {
                     className: 'btn btn-warning btn-sm',
                     onClick: () => {
                         AppState.showRemarkModal = true;
                         render();
                     }
-                }, [createIcon('message-square', 14), 'Add Remark']),
+                }, [createIcon('message-square', 14), 'Add Remark'])
+            ];
+
+            // Patient-specific quick actions
+            if (AppState.currentUser.role === 'patient') {
+                quickActionItems.push(createElement('button', {
+                    className: 'btn btn-primary btn-sm',
+                    onClick: () => {
+                        const recentEffects = AppState.doseEffects
+                            .filter(e => e.date >= new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0])
+                            .length;
+                        alert(`You have logged ${recentEffects} medication effects in the past week. Keep tracking to help your doctor!`);
+                    }
+                }, [createIcon('activity', 14), 'My Effects']));
+            }
+
+            quickActionItems.push(
                 createElement('button', {
                     className: 'btn btn-secondary btn-sm',
                     onClick: () => {
@@ -1068,7 +1730,9 @@
                     className: 'btn btn-secondary btn-sm',
                     onClick: () => copyWeek(AppState.selectedDate)
                 }, [createIcon('calendar', 14), 'Copy Week'])
-            ]);
+            );
+
+            const quickActions = createElement('div', { className: 'flex flex-wrap gap-2 mb-4' }, quickActionItems);
 
             // Search - Mobile Optimized
             const searchSection = createElement('div', { className: 'search-container' }, [
@@ -1094,6 +1758,32 @@
             mainCard.appendChild(searchSection);
             container.appendChild(mainCard);
 
+            // Assignment Status Alert for Patients
+            if (AppState.currentUser.role === 'patient') {
+                const assignedDoctor = AppState.doctors.find(d => d.id === AppState.currentUser.assignedDoctor);
+                if (!assignedDoctor) {
+                    const assignmentAlert = createElement('div', { className: 'card bg-yellow-50 border border-yellow-200' }, [
+                        createElement('div', { className: 'flex items-center gap-3' }, [
+                            createIcon('alert-triangle', 24, 'text-yellow-600'),
+                            createElement('div', { className: 'flex-1' }, [
+                                createElement('h4', { className: 'font-medium text-yellow-800' }, ['No Doctor Assigned']),
+                                createElement('p', { className: 'text-sm text-yellow-700 mt-1' }, [
+                                    'You are not currently assigned to a doctor. Contact your healthcare provider to get assigned for better monitoring and communication.'
+                                ])
+                            ]),
+                            createElement('button', {
+                                className: 'btn btn-warning btn-sm',
+                                onClick: () => {
+                                    const availableDoctors = AppState.doctors.map(d => `${d.name} - ${d.specialty}`).join('\n');
+                                    alert(`Available Doctors:\n\n${availableDoctors}\n\nPlease contact your healthcare provider to request assignment.`);
+                                }
+                            }, ['View Doctors'])
+                        ])
+                    ]);
+                    container.appendChild(assignmentAlert);
+                }
+            }
+
             // Date Remarks
             const dateRemarks = AppState.remarks.filter(r => r.date === AppState.selectedDate);
             if (dateRemarks.length > 0) {
@@ -1117,6 +1807,63 @@
                 container.appendChild(remarksCard);
             }
 
+            // Patient Activity Summary for Doctors
+            if (AppState.currentUser.role === 'doctor') {
+                const assignedPatients = getAssignedPatients();
+                const today = new Date().toISOString().split('T')[0];
+                
+                // Calculate overall statistics for all assigned patients
+                let totalMedications = 0;
+                let totalDosesToday = 0;
+                let totalDosesTaken = 0;
+                let totalRecentEffects = 0;
+                
+                assignedPatients.forEach(patient => {
+                    const patientKey = `patient_${patient.id}`;
+                    const patientMeds = loadFromStorage(`medications_${patientKey}`, []);
+                    const patientDoses = loadFromStorage(`doses_${patientKey}`, []);
+                    const patientEffects = loadFromStorage(`doseEffects_${patientKey}`, []);
+                    
+                    totalMedications += patientMeds.length;
+                    const todayDoses = patientDoses.filter(d => d.date === today);
+                    totalDosesToday += patientMeds.reduce((sum, med) => sum + med.times.length, 0);
+                    totalDosesTaken += todayDoses.filter(d => d.status === 'taken').length;
+                    totalRecentEffects += patientEffects.filter(e => 
+                        e.date >= new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]
+                    ).length;
+                });
+
+                if (assignedPatients.length > 0) {
+                    const activityCard = createElement('div', { className: 'card' }, [
+                        createElement('h4', { className: 'font-medium text-indigo-800 mb-3 flex items-center gap-2' }, [
+                            createIcon('activity', 16),
+                            'Patient Activity Overview'
+                        ]),
+                        createElement('div', { className: 'grid grid-cols-2 md:grid-cols-4 gap-4' }, [
+                            createElement('div', { className: 'text-center p-3 bg-blue-50 rounded-lg' }, [
+                                createElement('div', { className: 'text-2xl font-bold text-blue-800' }, [totalMedications.toString()]),
+                                createElement('div', { className: 'text-xs text-blue-600' }, ['Total Medications'])
+                            ]),
+                            createElement('div', { className: 'text-center p-3 bg-green-50 rounded-lg' }, [
+                                createElement('div', { className: 'text-2xl font-bold text-green-800' }, [
+                                    totalDosesToday > 0 ? Math.round((totalDosesTaken / totalDosesToday) * 100) + '%' : '0%'
+                                ]),
+                                createElement('div', { className: 'text-xs text-green-600' }, ['Compliance Today'])
+                            ]),
+                            createElement('div', { className: 'text-center p-3 bg-yellow-50 rounded-lg' }, [
+                                createElement('div', { className: 'text-2xl font-bold text-yellow-800' }, [totalRecentEffects.toString()]),
+                                createElement('div', { className: 'text-xs text-yellow-600' }, ['Effects This Week'])
+                            ]),
+                            createElement('div', { className: 'text-center p-3 bg-purple-50 rounded-lg' }, [
+                                createElement('div', { className: 'text-2xl font-bold text-purple-800' }, [assignedPatients.length.toString()]),
+                                createElement('div', { className: 'text-xs text-purple-600' }, ['Active Patients'])
+                            ])
+                        ])
+                    ]);
+                    container.appendChild(activityCard);
+                }
+            }
+
             // Add Form Modal
             if (AppState.showAddForm) {
                 container.appendChild(createAddMedicineForm());
@@ -1125,6 +1872,21 @@
             // Remark Modal
             if (AppState.showRemarkModal) {
                 container.appendChild(createRemarkModal());
+            }
+
+            // Messages Modal (for patients)
+            if (AppState.showMessagesModal) {
+                container.appendChild(createMessagesModal());
+            }
+
+            // Send Message Modal (for doctors)
+            if (AppState.showSendMessageModal) {
+                container.appendChild(createSendMessageModal());
+            }
+
+            // Dose Effect Modal (for patients)
+            if (AppState.showDoseEffectModal) {
+                container.appendChild(createDoseEffectModal());
             }
 
             // Medications List
@@ -1142,7 +1904,7 @@
                         AppState.medications.length === 0 ? 'Add your first medicine to get started' : 'Try adjusting your search'
                     ]),
                     AppState.medications.length === 0 ? createElement('div', { className: 'text-sm text-gray-400' }, [
-                        createElement('p', {}, ['💡 Welcome! Your medication data is secure and private.'])
+                        createElement('p', {}, ['🚀 Welcome to your personal medicine tracker! Create an account to get started.'])
                     ]) : null
                 ]);
                 container.appendChild(emptyState);
@@ -1153,6 +1915,126 @@
             }
 
             return container;
+        }
+
+        function createMedicationCard(med) {
+            const card = createElement('div', { className: 'card' });
+
+            const header = createElement('div', { className: 'flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4' }, [
+                createElement('div', { className: 'flex items-start gap-3 flex-1 min-w-0' }, [
+                    createElement('div', {
+                        className: 'w-4 h-4 rounded-full flex-shrink-0 mt-1',
+                        style: { backgroundColor: med.color }
+                    }),
+                    createElement('div', { className: 'flex-1 min-w-0' }, [
+                        createElement('h3', { className: 'text-lg font-bold text-gray-800 break-words' }, [med.name]),
+                        createElement('p', { className: 'text-gray-600 text-sm' }, [
+                            `${med.dosage} • ${frequencyOptions[med.frequency].label}`
+                        ]),
+                        med.notes ? createElement('p', { className: 'text-sm text-gray-500 mt-1 break-words' }, [med.notes]) : null
+                    ])
+                ]),
+                createElement('div', { className: 'flex gap-2 flex-shrink-0' }, [
+                    createElement('button', {
+                        className: 'btn btn-primary btn-sm',
+                        onClick: () => {
+                            AppState.editingMed = med;
+                            AppState.newMed = { ...med };
+                            AppState.showAddForm = true;
+                            render();
+                        }
+                    }, [createIcon('edit', 16)]),
+                    createElement('button', {
+                        className: 'btn btn-danger btn-sm',
+                        onClick: () => {
+                            if (confirm('Are you sure you want to delete this medication?')) {
+                                deleteMedication(med.id);
+                            }
+                        }
+                    }, [createIcon('trash-2', 16)])
+                ])
+            ]);
+
+            const timesGrid = createElement('div', { className: 'grid grid-1 md:grid-2 lg:grid-3 gap-3' }, 
+                med.times.map(time => {
+                    const status = getDoseStatus(med.id, time);
+                    const isHistorical = AppState.selectedDate < new Date().toISOString().split('T')[0];
+                    const canEdit = AppState.currentUser.role === 'patient' || isHistorical;
+
+                    return createElement('div', {
+                        className: `dose-card ${status === 'taken' ? 'dose-taken' : status === 'missed' ? 'dose-missed' : ''}`
+                    }, [
+                        createElement('div', { className: 'flex items-center justify-between mb-3' }, [
+                            createElement('div', { className: 'flex items-center gap-2' }, [
+                                createIcon('clock', 16),
+                                createElement('span', { className: 'font-medium' }, [time])
+                            ]),
+                            createElement('div', { className: 'flex gap-1' }, [
+                                status === 'taken' ? createIcon('check-circle', 16, 'text-green-600') : null,
+                                status === 'missed' ? createIcon('x-circle', 16, 'text-red-600') : null,
+                                createElement('button', {
+                                    className: 'p-1 text-gray-400 hover:text-gray-600 transition-colors',
+                                    onClick: () => {
+                                        // Show dose history
+                                        alert(`Dose history for ${med.name} at ${time} on ${AppState.selectedDate}`);
+                                    }
+                                }, [createIcon('rotate-ccw', 12)])
+                            ])
+                        ]),
+                        createElement('div', { className: 'grid grid-2 gap-1 mb-2' }, [
+                            createElement('button', {
+                                className: `btn btn-sm ${status === 'taken' ? 'btn-success' : 'btn-secondary'}`,
+                                disabled: !canEdit,
+                                onClick: () => markDose(med.id, time, 'taken')
+                            }, ['Taken']),
+                            createElement('button', {
+                                className: `btn btn-sm ${status === 'missed' ? 'btn-danger' : 'btn-secondary'}`,
+                                disabled: !canEdit,
+                                onClick: () => markDose(med.id, time, 'missed')
+                            }, ['Missed'])
+                        ]),
+                        // Add effect button for patients when dose is taken
+                        AppState.currentUser.role === 'patient' && status === 'taken' ? createElement('button', {
+                            className: 'btn btn-warning btn-sm w-full mt-1',
+                            onClick: () => {
+                                AppState.selectedDoseForEffect = { medicationId: med.id, time, date: AppState.selectedDate };
+                                AppState.currentDoseEffect = { 
+                                    medicationId: med.id, 
+                                    time, 
+                                    date: AppState.selectedDate, 
+                                    effect: '', 
+                                    severity: 'mild' 
+                                };
+                                AppState.showDoseEffectModal = true;
+                                render();
+                            }
+                        }, [createIcon('edit-3', 12), 'Add Effect']) : null,
+                        // Show existing effects
+                        ...getDoseEffects(med.id, time, AppState.selectedDate).map(effect =>
+                            createElement('div', { className: 'mt-2 p-2 bg-blue-50 rounded text-xs' }, [
+                                createElement('div', { className: 'flex items-center justify-between' }, [
+                                    createElement('span', { className: 'font-medium text-blue-800' }, [
+                                        `${effect.severity.charAt(0).toUpperCase() + effect.severity.slice(1)} Effect:`
+                                    ]),
+                                    AppState.currentUser.role === 'patient' ? createElement('button', {
+                                        className: 'text-red-600 hover:text-red-800',
+                                        onClick: () => {
+                                            if (confirm('Delete this effect record?')) {
+                                                deleteDoseEffect(effect.id);
+                                            }
+                                        }
+                                    }, [createIcon('x', 10)]) : null
+                                ]),
+                                createElement('div', { className: 'text-blue-700 mt-1' }, [effect.effect])
+                            ])
+                        )
+                    ]);
+                })
+            );
+
+            card.appendChild(header);
+            card.appendChild(timesGrid);
+            return card;
         }
 
         function createAddMedicineForm() {
@@ -1318,91 +2200,6 @@
             return modal;
         }
 
-        function createMedicationCard(med) {
-            const card = createElement('div', { className: 'card' });
-
-            const header = createElement('div', { className: 'flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4' }, [
-                createElement('div', { className: 'flex items-start gap-3 flex-1 min-w-0' }, [
-                    createElement('div', {
-                        className: 'w-4 h-4 rounded-full flex-shrink-0 mt-1',
-                        style: { backgroundColor: med.color }
-                    }),
-                    createElement('div', { className: 'flex-1 min-w-0' }, [
-                        createElement('h3', { className: 'text-lg font-bold text-gray-800 break-words' }, [med.name]),
-                        createElement('p', { className: 'text-gray-600 text-sm' }, [
-                            `${med.dosage} • ${frequencyOptions[med.frequency].label}`
-                        ]),
-                        med.notes ? createElement('p', { className: 'text-sm text-gray-500 mt-1 break-words' }, [med.notes]) : null
-                    ])
-                ]),
-                createElement('div', { className: 'flex gap-2 flex-shrink-0' }, [
-                    createElement('button', {
-                        className: 'btn btn-primary btn-sm',
-                        onClick: () => {
-                            AppState.editingMed = med;
-                            AppState.newMed = { ...med };
-                            AppState.showAddForm = true;
-                            render();
-                        }
-                    }, [createIcon('edit', 16)]),
-                    createElement('button', {
-                        className: 'btn btn-danger btn-sm',
-                        onClick: () => {
-                            if (confirm('Are you sure you want to delete this medication?')) {
-                                deleteMedication(med.id);
-                            }
-                        }
-                    }, [createIcon('trash-2', 16)])
-                ])
-            ]);
-
-            const timesGrid = createElement('div', { className: 'grid grid-1 md:grid-2 lg:grid-3 gap-3' }, 
-                med.times.map(time => {
-                    const status = getDoseStatus(med.id, time);
-                    const isHistorical = AppState.selectedDate < new Date().toISOString().split('T')[0];
-                    const canEdit = AppState.currentUser.role === 'patient' || isHistorical;
-
-                    return createElement('div', {
-                        className: `dose-card ${status === 'taken' ? 'dose-taken' : status === 'missed' ? 'dose-missed' : ''}`
-                    }, [
-                        createElement('div', { className: 'flex items-center justify-between mb-3' }, [
-                            createElement('div', { className: 'flex items-center gap-2' }, [
-                                createIcon('clock', 16),
-                                createElement('span', { className: 'font-medium' }, [time])
-                            ]),
-                            createElement('div', { className: 'flex gap-1' }, [
-                                status === 'taken' ? createIcon('check-circle', 16, 'text-green-600') : null,
-                                status === 'missed' ? createIcon('x-circle', 16, 'text-red-600') : null,
-                                createElement('button', {
-                                    className: 'p-1 text-gray-400 hover:text-gray-600 transition-colors',
-                                    onClick: () => {
-                                        // Show dose history
-                                        alert(`Dose history for ${med.name} at ${time} on ${AppState.selectedDate}`);
-                                    }
-                                }, [createIcon('rotate-ccw', 12)])
-                            ])
-                        ]),
-                        createElement('div', { className: 'grid grid-2 gap-1' }, [
-                            createElement('button', {
-                                className: `btn btn-sm ${status === 'taken' ? 'btn-success' : 'btn-secondary'}`,
-                                disabled: !canEdit,
-                                onClick: () => markDose(med.id, time, 'taken')
-                            }, ['Taken']),
-                            createElement('button', {
-                                className: `btn btn-sm ${status === 'missed' ? 'btn-danger' : 'btn-secondary'}`,
-                                disabled: !canEdit,
-                                onClick: () => markDose(med.id, time, 'missed')
-                            }, ['Missed'])
-                        ])
-                    ]);
-                })
-            );
-
-            card.appendChild(header);
-            card.appendChild(timesGrid);
-            return card;
-        }
-
         function createRemarkModal() {
             const modal = createElement('div', { className: 'modal' });
             const content = createElement('div', { className: 'modal-content' });
@@ -1504,49 +2301,320 @@
             return modal;
         }
 
-        // Add copy day and copy week functions
-        function copyDay(fromDate, toDate) {
-            const fromDoses = AppState.doses.filter(d => d.date === fromDate);
-            fromDoses.forEach(dose => {
-                const newKey = `${toDate}-${dose.medicationId}-${dose.time}`;
-                const newDose = {
-                    ...dose,
-                    key: newKey,
-                    date: toDate,
-                    timestamp: new Date().toISOString(),
-                    editedBy: 'Copy Operation'
-                };
-                
-                const existingIndex = AppState.doses.findIndex(d => d.key === newKey);
-                if (existingIndex >= 0) {
-                    AppState.doses[existingIndex] = newDose;
-                } else {
-                    AppState.doses.push(newDose);
+        function createMessagesModal() {
+            const modal = createElement('div', { className: 'modal' });
+            const content = createElement('div', { className: 'modal-content' });
+
+            const header = createElement('div', { className: 'flex items-center justify-between mb-4' }, [
+                createElement('h3', { className: 'text-lg font-bold' }, ['Messages from Doctor']),
+                createElement('button', {
+                    className: 'btn btn-secondary btn-sm',
+                    onClick: () => {
+                        AppState.showMessagesModal = false;
+                        render();
+                    }
+                }, [createIcon('x', 16)])
+            ]);
+
+            const messagesList = createElement('div', { className: 'space-y-3 max-h-96 overflow-y-auto' }, 
+                AppState.messages.length === 0 ? [
+                    createElement('div', { className: 'text-center text-gray-500 py-8' }, [
+                        createIcon('mail', 48),
+                        createElement('p', { className: 'mt-2' }, ['No messages yet'])
+                    ])
+                ] : AppState.messages.map(message =>
+                    createElement('div', { 
+                        className: `p-3 rounded-lg border ${message.read ? 'bg-gray-50 border-gray-200' : 'bg-blue-50 border-blue-200'}`
+                    }, [
+                        createElement('div', { className: 'flex items-center justify-between mb-2' }, [
+                            createElement('span', { className: 'font-medium text-gray-800' }, [
+                                `Dr. ${message.doctorName}`
+                            ]),
+                            createElement('span', { className: 'text-xs text-gray-500' }, [
+                                new Date(message.timestamp).toLocaleDateString()
+                            ])
+                        ]),
+                        createElement('div', { className: 'text-gray-700' }, [message.text])
+                    ])
+                )
+            );
+
+            content.appendChild(header);
+            content.appendChild(messagesList);
+            modal.appendChild(content);
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    AppState.showMessagesModal = false;
+                    render();
                 }
             });
-            
-            saveUserData();
-            render();
-            alert('Day copied successfully!');
+
+            return modal;
         }
 
-        function copyWeek(fromDate) {
-            const startDate = new Date(fromDate);
-            const dayOfWeek = startDate.getDay();
-            const mondayOfWeek = new Date(startDate);
-            mondayOfWeek.setDate(startDate.getDate() - dayOfWeek + 1);
+        function createSendMessageModal() {
+            const modal = createElement('div', { className: 'modal' });
+            const content = createElement('div', { className: 'modal-content' });
+
+            const header = createElement('h3', { className: 'text-lg font-bold mb-4' }, ['Send Message to Patient']);
+
+            const form = createElement('form', {
+                onSubmit: (e) => {
+                    e.preventDefault();
+                    if (!AppState.currentMessage.text.trim()) {
+                        alert('Please enter a message');
+                        return;
+                    }
+                    if (!AppState.currentMessage.patientId) {
+                        alert('No patient selected');
+                        return;
+                    }
+                    
+                    sendMessage(AppState.currentMessage.patientId, AppState.currentMessage.text);
+                }
+            }, [
+                createElement('div', { className: 'mb-4' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Patient']),
+                    createElement('select', {
+                        className: 'input',
+                        value: AppState.currentMessage.patientId || '',
+                        onChange: (e) => {
+                            AppState.currentMessage.patientId = parseInt(e.target.value);
+                        }
+                    }, [
+                        createElement('option', { value: '' }, ['Select Patient']),
+                        ...AppState.patients.filter(p => p.assignedDoctor === AppState.currentUser.id).map(patient =>
+                            createElement('option', { value: patient.id }, [patient.name])
+                        ),
+                        // Also include patients from uploaded files
+                        ...AppState.patientFiles.filter(f => f.uploadedBy === AppState.currentUser.id).map(file => {
+                            const patientId = AppState.patients.find(p => p.name === file.name)?.id || file.id;
+                            return createElement('option', { value: patientId }, [file.name + ' (Uploaded)']);
+                        })
+                    ])
+                ]),
+                createElement('div', { className: 'mb-4' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Message']),
+                    createElement('textarea', {
+                        className: 'input',
+                        rows: '4',
+                        placeholder: 'Enter your message to the patient...',
+                        value: AppState.currentMessage.text,
+                        onInput: (e) => {
+                            AppState.currentMessage.text = e.target.value;
+                        }
+                    })
+                ]),
+                createElement('div', { className: 'flex flex-col md:flex-row gap-2' }, [
+                    createElement('button', {
+                        type: 'submit',
+                        className: 'btn btn-primary w-full md:w-auto'
+                    }, [createIcon('send', 16), 'Send Message']),
+                    createElement('button', {
+                        type: 'button',
+                        className: 'btn btn-secondary w-full md:w-auto',
+                        onClick: () => {
+                            AppState.showSendMessageModal = false;
+                            AppState.currentMessage = { text: '', patientId: null };
+                            render();
+                        }
+                    }, ['Cancel'])
+                ])
+            ]);
+
+            content.appendChild(header);
+            content.appendChild(form);
+            modal.appendChild(content);
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    AppState.showSendMessageModal = false;
+                    render();
+                }
+            });
+
+            return modal;
+        }
+
+        function createDoseEffectModal() {
+            const modal = createElement('div', { className: 'modal' });
+            const content = createElement('div', { className: 'modal-content' });
+
+            const selectedMed = AppState.medications.find(m => m.id === AppState.currentDoseEffect.medicationId);
+
+            const header = createElement('h3', { className: 'text-lg font-bold mb-4' }, [
+                `Add Effect - ${selectedMed?.name} at ${AppState.currentDoseEffect.time}`
+            ]);
+
+            const form = createElement('form', {
+                onSubmit: (e) => {
+                    e.preventDefault();
+                    if (!AppState.currentDoseEffect.effect.trim()) {
+                        alert('Please describe the effect');
+                        return;
+                    }
+                    
+                    addDoseEffect(
+                        AppState.currentDoseEffect.medicationId,
+                        AppState.currentDoseEffect.time,
+                        AppState.currentDoseEffect.date,
+                        AppState.currentDoseEffect.effect,
+                        AppState.currentDoseEffect.severity
+                    );
+                }
+            }, [
+                createElement('div', { className: 'mb-4' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Severity']),
+                    createElement('select', {
+                        className: 'input',
+                        value: AppState.currentDoseEffect.severity,
+                        onChange: (e) => {
+                            AppState.currentDoseEffect.severity = e.target.value;
+                        }
+                    }, [
+                        createElement('option', { value: 'mild' }, ['Mild']),
+                        createElement('option', { value: 'moderate' }, ['Moderate']),
+                        createElement('option', { value: 'severe' }, ['Severe']),
+                        createElement('option', { value: 'positive' }, ['Positive Effect'])
+                    ])
+                ]),
+                createElement('div', { className: 'mb-4' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Effect Description']),
+                    createElement('textarea', {
+                        className: 'input',
+                        rows: '3',
+                        placeholder: 'Describe how you felt after taking this medicine...',
+                        value: AppState.currentDoseEffect.effect,
+                        onInput: (e) => {
+                            AppState.currentDoseEffect.effect = e.target.value;
+                        }
+                    })
+                ]),
+                createElement('div', { className: 'flex flex-col md:flex-row gap-2' }, [
+                    createElement('button', {
+                        type: 'submit',
+                        className: 'btn btn-primary w-full md:w-auto'
+                    }, [createIcon('plus', 16), 'Add Effect']),
+                    createElement('button', {
+                        type: 'button',
+                        className: 'btn btn-secondary w-full md:w-auto',
+                        onClick: () => {
+                            AppState.showDoseEffectModal = false;
+                            AppState.currentDoseEffect = { medicationId: null, time: '', date: '', effect: '', severity: 'mild' };
+                            render();
+                        }
+                    }, ['Cancel'])
+                ])
+            ]);
+
+            content.appendChild(header);
+            content.appendChild(form);
+            modal.appendChild(content);
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    AppState.showDoseEffectModal = false;
+                    render();
+                }
+            });
+
+            return modal;
+        }
+
+        function createPatientAssignmentModal() {
+            const assignedPatients = getAssignedPatients();
+            const unassignedPatients = getUnassignedPatients();
             
-            for (let i = 0; i < 7; i++) {
-                const sourceDate = new Date(mondayOfWeek);
-                sourceDate.setDate(mondayOfWeek.getDate() + i);
-                
-                const targetDate = new Date(sourceDate);
-                targetDate.setDate(sourceDate.getDate() + 7);
-                
-                copyDay(sourceDate.toISOString().split('T')[0], targetDate.toISOString().split('T')[0]);
-            }
-            
-            alert('Week copied to next week successfully!');
+            const modal = createElement('div', { className: 'modal' });
+            const content = createElement('div', { className: 'modal-content' });
+
+            const header = createElement('div', { className: 'flex items-center justify-between mb-4' }, [
+                createElement('h3', { className: 'text-lg font-bold' }, ['Manage Patient Assignments']),
+                createElement('button', {
+                    className: 'btn btn-secondary btn-sm',
+                    onClick: () => {
+                        AppState.showPatientAssignModal = false;
+                        render();
+                    }
+                }, [createIcon('x', 16)])
+            ]);
+
+            const availableSection = createElement('div', { className: 'mb-6' }, [
+                createElement('h4', { className: 'font-medium text-gray-800 mb-3' }, [
+                    `Available Patients (${unassignedPatients.length})`
+                ]),
+                unassignedPatients.length === 0 ?
+                    createElement('div', { className: 'text-center py-4 text-gray-500' }, [
+                        createIcon('user-check', 24),
+                        createElement('p', { className: 'mt-2' }, ['All patients are currently assigned'])
+                    ]) :
+                    createElement('div', { className: 'space-y-2 max-h-60 overflow-y-auto' }, 
+                        unassignedPatients.map(patient =>
+                            createElement('div', { className: 'flex items-center justify-between p-3 bg-gray-50 rounded border' }, [
+                                createElement('div', {}, [
+                                    createElement('div', { className: 'font-medium' }, [patient.name]),
+                                    createElement('div', { className: 'text-sm text-gray-600' }, [patient.email])
+                                ]),
+                                createElement('button', {
+                                    className: 'btn btn-primary btn-sm',
+                                    onClick: () => {
+                                        if (assignPatientToDoctor(patient.id, AppState.currentUser.id)) {
+                                            alert(`${patient.name} has been assigned to your care.`);
+                                        }
+                                    }
+                                }, [createIcon('user-plus', 14), 'Assign'])
+                            ])
+                        )
+                    )
+            ]);
+
+            const currentSection = createElement('div', {}, [
+                createElement('h4', { className: 'font-medium text-gray-800 mb-3' }, [
+                    `My Current Patients (${assignedPatients.length})`
+                ]),
+                assignedPatients.length === 0 ?
+                    createElement('div', { className: 'text-center py-4 text-gray-500' }, [
+                        createIcon('users', 24),
+                        createElement('p', { className: 'mt-2' }, ['No patients assigned yet'])
+                    ]) :
+                    createElement('div', { className: 'space-y-2 max-h-60 overflow-y-auto' }, 
+                        assignedPatients.map(patient =>
+                            createElement('div', { className: 'flex items-center justify-between p-3 bg-blue-50 rounded border border-blue-200' }, [
+                                createElement('div', {}, [
+                                    createElement('div', { className: 'font-medium' }, [patient.name]),
+                                    createElement('div', { className: 'text-sm text-gray-600' }, [patient.email])
+                                ]),
+                                createElement('button', {
+                                    className: 'btn btn-danger btn-sm',
+                                    onClick: () => {
+                                        if (confirm(`Unassign ${patient.name} from your care?`)) {
+                                            unassignPatientFromDoctor(patient.id);
+                                        }
+                                    }
+                                }, [createIcon('user-minus', 14), 'Unassign'])
+                            ])
+                        )
+                    )
+            ]);
+
+            content.appendChild(header);
+            content.appendChild(availableSection);
+            content.appendChild(currentSection);
+            modal.appendChild(content);
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    AppState.showPatientAssignModal = false;
+                    render();
+                }
+            });
+
+            return modal;
         }
 
         // Main Render Function
