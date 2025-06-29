@@ -16,24 +16,26 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #f9fafb;
             min-height: 100vh;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         .card {
             background: white;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
         }
 
         .btn {
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1rem;
             border-radius: 0.5rem;
             border: none;
             cursor: pointer;
@@ -42,26 +44,43 @@
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
+            min-height: 44px; /* Touch target size */
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            min-height: 36px;
+            font-size: 0.75rem;
         }
 
         .btn-primary { background: #3b82f6; color: white; }
-        .btn-primary:hover { background: #2563eb; }
+        .btn-primary:hover:not(:disabled) { background: #2563eb; }
         .btn-secondary { background: #6b7280; color: white; }
-        .btn-secondary:hover { background: #4b5563; }
+        .btn-secondary:hover:not(:disabled) { background: #4b5563; }
         .btn-success { background: #10b981; color: white; }
-        .btn-success:hover { background: #059669; }
+        .btn-success:hover:not(:disabled) { background: #059669; }
         .btn-danger { background: #ef4444; color: white; }
-        .btn-danger:hover { background: #dc2626; }
+        .btn-danger:hover:not(:disabled) { background: #dc2626; }
         .btn-warning { background: #f59e0b; color: white; }
-        .btn-warning:hover { background: #d97706; }
+        .btn-warning:hover:not(:disabled) { background: #d97706; }
 
         .input {
             width: 100%;
-            padding: 0.5rem 0.75rem;
+            padding: 0.75rem;
             border: 1px solid #d1d5db;
             border-radius: 0.5rem;
-            font-size: 0.875rem;
+            font-size: 1rem;
+            min-height: 44px;
+            background: white;
         }
 
         .input:focus {
@@ -75,6 +94,7 @@
             gap: 1rem;
         }
 
+        .grid-1 { grid-template-columns: 1fr; }
         .grid-2 { grid-template-columns: repeat(2, 1fr); }
         .grid-3 { grid-template-columns: repeat(3, 1fr); }
         .grid-4 { grid-template-columns: repeat(4, 1fr); }
@@ -83,41 +103,88 @@
             display: flex;
         }
 
+        .flex-col { flex-direction: column; }
+        .flex-wrap { flex-wrap: wrap; }
         .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
         .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .gap-1 { gap: 0.25rem; }
         .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
         .gap-4 { gap: 1rem; }
 
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+
         .hidden { display: none; }
+        .w-full { width: 100%; }
+        .flex-1 { flex: 1; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        .min-w-0 { min-width: 0; }
+        .break-words { word-wrap: break-word; overflow-wrap: break-word; }
 
         .text-center { text-align: center; }
+        .text-left { text-align: left; }
         .text-sm { font-size: 0.875rem; }
         .text-xs { font-size: 0.75rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
 
         .font-bold { font-weight: 700; }
         .font-medium { font-weight: 500; }
 
+        .text-gray-400 { color: #9ca3af; }
+        .text-gray-500 { color: #6b7280; }
         .text-gray-600 { color: #4b5563; }
+        .text-gray-700 { color: #374151; }
         .text-gray-800 { color: #1f2937; }
+        .text-blue-600 { color: #2563eb; }
+        .text-green-600 { color: #059669; }
+        .text-red-600 { color: #dc2626; }
+        .text-yellow-600 { color: #d97706; }
 
+        .mb-1 { margin-bottom: 0.25rem; }
         .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
         .mb-4 { margin-bottom: 1rem; }
         .mb-6 { margin-bottom: 1.5rem; }
-
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
         .mt-4 { margin-top: 1rem; }
+        .ml-2 { margin-left: 0.5rem; }
 
+        .p-1 { padding: 0.25rem; }
+        .p-2 { padding: 0.5rem; }
         .p-3 { padding: 0.75rem; }
         .p-4 { padding: 1rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
 
+        .bg-white { background: white; }
+        .bg-gray-50 { background: #f9fafb; }
+        .bg-gray-100 { background: #f3f4f6; }
         .bg-green-50 { background: #f0fdf4; }
         .bg-red-50 { background: #fef2f2; }
         .bg-yellow-50 { background: #fffbeb; }
         .bg-blue-50 { background: #eff6ff; }
-        .bg-gray-50 { background: #f9fafb; }
 
-        .border-green-500 { border: 2px solid #10b981; }
-        .border-red-500 { border: 2px solid #ef4444; }
-        .border-gray-300 { border: 2px solid #d1d5db; }
+        .border { border: 1px solid #d1d5db; }
+        .border-2 { border: 2px solid #d1d5db; }
+        .border-green-500 { border-color: #10b981; }
+        .border-red-500 { border-color: #ef4444; }
+        .border-gray-300 { border-color: #d1d5db; }
+        .border-yellow-200 { border-color: #fde047; }
+
+        .rounded { border-radius: 0.25rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+
+        .shadow { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+        .shadow-lg { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
 
         .login-container {
             min-height: 100vh;
@@ -125,12 +192,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         .login-card {
             background: white;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             padding: 2rem;
             width: 100%;
@@ -145,27 +212,30 @@
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             z-index: 1000;
+            padding: 1rem;
+            overflow-y: auto;
         }
 
         .modal-content {
             background: white;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             padding: 1.5rem;
-            width: 90%;
-            max-width: 400px;
-            max-height: 80vh;
-            overflow-y: auto;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
         }
 
         .dose-card {
-            padding: 0.75rem;
-            border-radius: 0.5rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
             border: 2px solid #d1d5db;
             background: #f9fafb;
             transition: all 0.2s;
+            min-height: 100px;
         }
 
         .dose-taken {
@@ -179,9 +249,13 @@
         }
 
         .stats-card {
-            padding: 0.75rem;
-            border-radius: 0.5rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
             text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .stats-taken { background: #dcfce7; color: #166534; }
@@ -192,18 +266,26 @@
         .toggle-btn {
             display: flex;
             border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             overflow: hidden;
+            background: white;
         }
 
         .toggle-btn button {
             flex: 1;
-            padding: 0.75rem 1rem;
+            padding: 1rem;
             border: none;
-            background: #f9fafb;
+            background: transparent;
             color: #374151;
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 50px;
         }
 
         .toggle-btn button.active {
@@ -213,13 +295,13 @@
 
         .color-picker {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
 
         .color-option {
-            width: 2rem;
-            height: 2rem;
+            width: 2.5rem;
+            height: 2.5rem;
             border-radius: 50%;
             border: 2px solid #d1d5db;
             cursor: pointer;
@@ -231,13 +313,198 @@
             transform: scale(1.1);
         }
 
-        @media (max-width: 768px) {
+        .header-mobile {
+            padding: 1rem;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+        }
+
+        .search-input {
+            padding-left: 3rem !important;
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .card {
+                padding: 1rem;
+                margin-bottom: 0.75rem;
+                border-radius: 0.75rem;
+            }
+
+            .login-card {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+
             .grid-2, .grid-3, .grid-4 {
                 grid-template-columns: 1fr;
             }
-            
+
+            .text-3xl {
+                font-size: 1.5rem;
+            }
+
+            .text-2xl {
+                font-size: 1.25rem;
+            }
+
+            .flex-wrap-mobile {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dose-card {
+                padding: 0.75rem;
+                min-height: auto;
+            }
+
+            .stats-card {
+                padding: 0.75rem;
+                min-height: 60px;
+            }
+
+            .modal {
+                padding: 0.5rem;
+                align-items: flex-end;
+            }
+
+            .modal-content {
+                margin: 0;
+                border-radius: 1rem 1rem 0 0;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .grid-dose-mobile {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+        }
+
+        /* Tablet Design */
+        @media (min-width: 641px) and (max-width: 1024px) {
             .container {
                 padding: 1rem;
+            }
+
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Desktop Design */
+        @media (min-width: 1025px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .header-mobile {
+                display: none;
+            }
+
+            .btn {
+                width: auto;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+        }
+
+        /* Touch improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:hover {
+                transform: none;
+            }
+            
+            .btn:active {
+                transform: scale(0.95);
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .card {
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #111827;
+                color: #f9fafb;
+            }
+            
+            .card {
+                background: #1f2937;
+                border: 1px solid #374151;
+            }
+            
+            .input {
+                background: #374151;
+                border-color: #4b5563;
+                color: #f9fafb;
             }
         }
     </style>
@@ -330,11 +597,14 @@
             return element;
         }
 
-        function createIcon(name, size = 16) {
+        function createIcon(name, size = 16, className = '') {
             const icon = document.createElement('i');
             icon.setAttribute('data-lucide', name);
             icon.style.width = size + 'px';
             icon.style.height = size + 'px';
+            if (className) {
+                icon.className = className;
+            }
             return icon;
         }
 
@@ -696,49 +966,53 @@
             // Main Card
             const mainCard = createElement('div', { className: 'card' });
             
-            // Header
-            const header = createElement('div', { className: 'flex items-center justify-between mb-6' }, [
-                createElement('div', {}, [
-                    createElement('h1', { className: 'text-3xl font-bold text-gray-800 flex items-center gap-2' }, [
-                        createIcon('pill', 32),
-                        `${AppState.currentPatient ? AppState.currentPatient.name + "'s" : AppState.currentUser.name + "'s"} Medicine Tracker`
+            // Header - Responsive Layout
+            const headerContent = createElement('div', { className: 'flex flex-col gap-4' }, [
+                createElement('div', { className: 'flex items-start justify-between flex-wrap gap-4' }, [
+                    createElement('div', { className: 'flex-1 min-w-0' }, [
+                        createElement('h1', { className: 'text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-2 flex-wrap' }, [
+                            createIcon('pill', 32),
+                            createElement('span', { className: 'break-words' }, [
+                                `${AppState.currentPatient ? AppState.currentPatient.name + "'s" : AppState.currentUser.name + "'s"} Medicine Tracker`
+                            ])
+                        ]),
+                        createElement('p', { className: 'text-sm text-gray-600 mt-1' }, [
+                            AppState.currentUser.role === 'doctor' ? 'Doctor View - Monitoring Patient' : `Patient: ${AppState.currentUser.email}`
+                        ])
                     ]),
-                    createElement('p', { className: 'text-sm text-gray-600 mt-1' }, [
-                        AppState.currentUser.role === 'doctor' ? 'Doctor View - Monitoring Patient' : `Patient: ${AppState.currentUser.email}`
+                    createElement('div', { className: 'action-buttons' }, [
+                        createElement('button', {
+                            className: 'btn btn-danger btn-sm',
+                            onClick: handleLogout
+                        }, [createIcon('log-out', 16), 'Logout']),
+                        createElement('button', {
+                            className: 'btn btn-success btn-sm',
+                            onClick: exportData
+                        }, [createIcon('download', 16), 'Export']),
+                        createElement('input', {
+                            type: 'file',
+                            accept: '.json',
+                            style: { display: 'none' },
+                            onChange: importData,
+                            id: 'import-file'
+                        }),
+                        createElement('button', {
+                            className: 'btn btn-warning btn-sm',
+                            onClick: () => document.getElementById('import-file').click()
+                        }, [createIcon('upload', 16), 'Import']),
+                        createElement('button', {
+                            className: 'btn btn-primary',
+                            onClick: () => {
+                                AppState.showAddForm = true;
+                                render();
+                            }
+                        }, [createIcon('plus', 16), 'Add Medicine'])
                     ])
-                ]),
-                createElement('div', { className: 'flex gap-2' }, [
-                    createElement('button', {
-                        className: 'btn btn-danger',
-                        onClick: handleLogout
-                    }, [createIcon('log-out', 16), 'Logout']),
-                    createElement('button', {
-                        className: 'btn btn-success',
-                        onClick: exportData
-                    }, [createIcon('download', 16), 'Export']),
-                    createElement('input', {
-                        type: 'file',
-                        accept: '.json',
-                        style: { display: 'none' },
-                        onChange: importData,
-                        id: 'import-file'
-                    }),
-                    createElement('button', {
-                        className: 'btn btn-warning',
-                        onClick: () => document.getElementById('import-file').click()
-                    }, [createIcon('upload', 16), 'Import']),
-                    createElement('button', {
-                        className: 'btn btn-primary',
-                        onClick: () => {
-                            AppState.showAddForm = true;
-                            render();
-                        }
-                    }, [createIcon('plus', 16), 'Add Medicine'])
                 ])
             ]);
 
-            // Date and Stats
-            const dateStatsSection = createElement('div', { className: 'grid grid-2 gap-4 mb-6' }, [
+            // Date and Stats - Mobile Optimized
+            const dateStatsSection = createElement('div', { className: 'grid grid-1 md:grid-2 gap-4 mb-6' }, [
                 createElement('div', {}, [
                     createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Selected Date']),
                     createElement('input', {
@@ -751,61 +1025,106 @@
                         }
                     })
                 ]),
-                createElement('div', { className: 'grid grid-4 gap-2' }, [
+                createElement('div', { className: 'grid grid-2 md:grid-4 gap-2' }, [
                     createElement('div', { className: 'stats-card stats-taken' }, [
-                        createElement('div', { className: 'text-2xl font-bold' }, [getTodayStats().taken.toString()]),
+                        createElement('div', { className: 'text-xl md:text-2xl font-bold' }, [getTodayStats().taken.toString()]),
                         createElement('div', { className: 'text-xs' }, ['Taken'])
                     ]),
                     createElement('div', { className: 'stats-card stats-missed' }, [
-                        createElement('div', { className: 'text-2xl font-bold' }, [getTodayStats().missed.toString()]),
+                        createElement('div', { className: 'text-xl md:text-2xl font-bold' }, [getTodayStats().missed.toString()]),
                         createElement('div', { className: 'text-xs' }, ['Missed'])
                     ]),
                     createElement('div', { className: 'stats-card stats-pending' }, [
-                        createElement('div', { className: 'text-2xl font-bold' }, [getTodayStats().pending.toString()]),
+                        createElement('div', { className: 'text-xl md:text-2xl font-bold' }, [getTodayStats().pending.toString()]),
                         createElement('div', { className: 'text-xs' }, ['Pending'])
                     ]),
                     createElement('div', { className: 'stats-card stats-total' }, [
-                        createElement('div', { className: 'text-2xl font-bold' }, [getTodayStats().total.toString()]),
+                        createElement('div', { className: 'text-xl md:text-2xl font-bold' }, [getTodayStats().total.toString()]),
                         createElement('div', { className: 'text-xs' }, ['Total'])
                     ])
                 ])
             ]);
 
-            // Search
-            const searchSection = createElement('div', { className: 'relative mb-6' }, [
+            // Quick Actions - Mobile Friendly
+            const quickActions = createElement('div', { className: 'flex flex-wrap gap-2 mb-4' }, [
+                createElement('button', {
+                    className: 'btn btn-warning btn-sm',
+                    onClick: () => {
+                        AppState.showRemarkModal = true;
+                        render();
+                    }
+                }, [createIcon('message-square', 14), 'Add Remark']),
+                createElement('button', {
+                    className: 'btn btn-secondary btn-sm',
+                    onClick: () => {
+                        const fromDate = prompt('Copy FROM date (YYYY-MM-DD):');
+                        const toDate = prompt('Copy TO date (YYYY-MM-DD):');
+                        if (fromDate && toDate) {
+                            copyDay(fromDate, toDate);
+                        }
+                    }
+                }, [createIcon('copy', 14), 'Copy Day']),
+                createElement('button', {
+                    className: 'btn btn-secondary btn-sm',
+                    onClick: () => copyWeek(AppState.selectedDate)
+                }, [createIcon('calendar', 14), 'Copy Week'])
+            ]);
+
+            // Search - Mobile Optimized
+            const searchSection = createElement('div', { className: 'search-container' }, [
                 createElement('input', {
                     type: 'text',
-                    className: 'input',
+                    className: 'input search-input',
                     placeholder: 'Search medications...',
                     value: AppState.searchTerm,
                     onInput: (e) => {
                         AppState.searchTerm = e.target.value;
                         render();
-                    },
-                    style: { paddingLeft: '2.5rem' }
+                    }
                 }),
                 createElement('i', {
                     'data-lucide': 'search',
-                    style: {
-                        position: 'absolute',
-                        left: '0.75rem',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        color: '#9ca3af',
-                        width: '16px',
-                        height: '16px'
-                    }
+                    className: 'search-icon'
                 })
             ]);
 
-            mainCard.appendChild(header);
+            mainCard.appendChild(headerContent);
             mainCard.appendChild(dateStatsSection);
+            mainCard.appendChild(quickActions);
             mainCard.appendChild(searchSection);
             container.appendChild(mainCard);
+
+            // Date Remarks
+            const dateRemarks = AppState.remarks.filter(r => r.date === AppState.selectedDate);
+            if (dateRemarks.length > 0) {
+                const remarksCard = createElement('div', { className: 'card' }, [
+                    createElement('h4', { className: 'font-medium text-yellow-800 mb-3 flex items-center gap-2' }, [
+                        createIcon('message-square', 16),
+                        `Remarks for ${AppState.selectedDate}:`
+                    ]),
+                    createElement('div', { className: 'space-y-2' }, 
+                        dateRemarks.map(remark =>
+                            createElement('div', { className: 'p-3 bg-yellow-50 border border-yellow-200 rounded-lg' }, [
+                                createElement('div', { className: 'text-sm text-yellow-700' }, [
+                                    createElement('span', { className: 'font-medium' }, [`[${remark.author}] `]),
+                                    remark.text,
+                                    createElement('span', { className: 'text-xs text-yellow-600 ml-2' }, [`(${remark.type})`])
+                                ])
+                            ])
+                        )
+                    )
+                ]);
+                container.appendChild(remarksCard);
+            }
 
             // Add Form Modal
             if (AppState.showAddForm) {
                 container.appendChild(createAddMedicineForm());
+            }
+
+            // Remark Modal
+            if (AppState.showRemarkModal) {
+                container.appendChild(createRemarkModal());
             }
 
             // Medications List
@@ -814,14 +1133,17 @@
             );
 
             if (filteredMedications.length === 0) {
-                const emptyState = createElement('div', { className: 'card text-center' }, [
+                const emptyState = createElement('div', { className: 'card text-center py-8' }, [
                     createIcon('pill', 48),
                     createElement('h3', { className: 'text-lg font-medium text-gray-600 mb-2 mt-4' }, [
                         AppState.medications.length === 0 ? 'No medications added yet' : 'No medications found'
                     ]),
-                    createElement('p', { className: 'text-gray-500' }, [
+                    createElement('p', { className: 'text-gray-500 mb-4' }, [
                         AppState.medications.length === 0 ? 'Add your first medicine to get started' : 'Try adjusting your search'
-                    ])
+                    ]),
+                    AppState.medications.length === 0 ? createElement('div', { className: 'text-sm text-gray-400' }, [
+                        createElement('p', {}, ['💡 Welcome! Your medication data is secure and private.'])
+                    ]) : null
                 ]);
                 container.appendChild(emptyState);
             } else {
@@ -851,7 +1173,7 @@
                     addMedication(AppState.newMed);
                 }
             }, [
-                createElement('div', { className: 'grid grid-2 gap-4 mb-4' }, [
+                createElement('div', { className: 'grid grid-1 md:grid-2 gap-4 mb-4' }, [
                     createElement('div', {}, [
                         createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Medicine Name *']),
                         createElement('input', {
@@ -895,47 +1217,75 @@
                 ]),
                 createElement('div', { className: 'mb-4' }, [
                     createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Times']),
-                    ...AppState.newMed.times.map((time, index) =>
-                        createElement('div', { className: 'flex items-center gap-2 mb-2' }, [
-                            createElement('input', {
-                                type: 'time',
-                                className: 'input',
-                                value: time,
-                                onInput: (e) => {
-                                    AppState.newMed.times[index] = e.target.value;
-                                }
-                            }),
-                            AppState.newMed.times.length > 1 ? createElement('button', {
-                                type: 'button',
-                                className: 'btn btn-danger',
-                                onClick: () => {
-                                    AppState.newMed.times.splice(index, 1);
-                                    render();
-                                }
-                            }, [createIcon('x-circle', 16)]) : null
-                        ])
-                    )
-                ]),
-                createElement('div', { className: 'mb-4' }, [
-                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Notes']),
-                    createElement('input', {
-                        type: 'text',
-                        className: 'input',
-                        placeholder: 'Take with food, etc.',
-                        value: AppState.newMed.notes,
-                        onInput: (e) => {
-                            AppState.newMed.notes = e.target.value;
+                    createElement('div', { className: 'space-y-2' }, 
+                        AppState.newMed.times.map((time, index) =>
+                            createElement('div', { className: 'flex items-center gap-2' }, [
+                                createElement('input', {
+                                    type: 'time',
+                                    className: 'input flex-1',
+                                    value: time,
+                                    onInput: (e) => {
+                                        AppState.newMed.times[index] = e.target.value;
+                                    }
+                                }),
+                                AppState.newMed.times.length > 1 ? createElement('button', {
+                                    type: 'button',
+                                    className: 'btn btn-danger btn-sm',
+                                    onClick: () => {
+                                        AppState.newMed.times.splice(index, 1);
+                                        render();
+                                    }
+                                }, [createIcon('x-circle', 16)]) : null
+                            ])
+                        )
+                    ),
+                    AppState.newMed.frequency === 'custom' ? createElement('button', {
+                        type: 'button',
+                        className: 'btn btn-secondary btn-sm mt-2',
+                        onClick: () => {
+                            AppState.newMed.times.push('09:00');
+                            render();
                         }
-                    })
+                    }, [createIcon('plus', 16), 'Add Time']) : null
                 ]),
-                createElement('div', { className: 'flex gap-2' }, [
+                createElement('div', { className: 'grid grid-1 md:grid-2 gap-4 mb-4' }, [
+                    createElement('div', {}, [
+                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Color']),
+                        createElement('div', { className: 'color-picker' }, 
+                            colorOptions.map(color =>
+                                createElement('button', {
+                                    type: 'button',
+                                    className: `color-option ${AppState.newMed.color === color ? 'selected' : ''}`,
+                                    style: { backgroundColor: color },
+                                    onClick: () => {
+                                        AppState.newMed.color = color;
+                                        render();
+                                    }
+                                })
+                            )
+                        )
+                    ]),
+                    createElement('div', {}, [
+                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Notes']),
+                        createElement('input', {
+                            type: 'text',
+                            className: 'input',
+                            placeholder: 'Take with food, etc.',
+                            value: AppState.newMed.notes,
+                            onInput: (e) => {
+                                AppState.newMed.notes = e.target.value;
+                            }
+                        })
+                    ])
+                ]),
+                createElement('div', { className: 'flex flex-col md:flex-row gap-2' }, [
                     createElement('button', {
                         type: 'submit',
-                        className: 'btn btn-success'
+                        className: 'btn btn-success w-full md:w-auto'
                     }, [AppState.editingMed ? 'Update' : 'Save', ' Medicine']),
                     createElement('button', {
                         type: 'button',
-                        className: 'btn btn-secondary',
+                        className: 'btn btn-secondary w-full md:w-auto',
                         onClick: () => {
                             AppState.showAddForm = false;
                             AppState.editingMed = null;
@@ -971,27 +1321,23 @@
         function createMedicationCard(med) {
             const card = createElement('div', { className: 'card' });
 
-            const header = createElement('div', { className: 'flex items-center justify-between mb-4' }, [
-                createElement('div', { className: 'flex items-center gap-3' }, [
+            const header = createElement('div', { className: 'flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4' }, [
+                createElement('div', { className: 'flex items-start gap-3 flex-1 min-w-0' }, [
                     createElement('div', {
-                        style: {
-                            width: '16px',
-                            height: '16px',
-                            borderRadius: '50%',
-                            backgroundColor: med.color
-                        }
+                        className: 'w-4 h-4 rounded-full flex-shrink-0 mt-1',
+                        style: { backgroundColor: med.color }
                     }),
-                    createElement('div', {}, [
-                        createElement('h3', { className: 'text-lg font-bold text-gray-800' }, [med.name]),
-                        createElement('p', { className: 'text-gray-600' }, [
+                    createElement('div', { className: 'flex-1 min-w-0' }, [
+                        createElement('h3', { className: 'text-lg font-bold text-gray-800 break-words' }, [med.name]),
+                        createElement('p', { className: 'text-gray-600 text-sm' }, [
                             `${med.dosage} • ${frequencyOptions[med.frequency].label}`
                         ]),
-                        med.notes ? createElement('p', { className: 'text-sm text-gray-500' }, [med.notes]) : null
+                        med.notes ? createElement('p', { className: 'text-sm text-gray-500 mt-1 break-words' }, [med.notes]) : null
                     ])
                 ]),
-                createElement('div', { className: 'flex gap-2' }, [
+                createElement('div', { className: 'flex gap-2 flex-shrink-0' }, [
                     createElement('button', {
-                        className: 'btn btn-primary',
+                        className: 'btn btn-primary btn-sm',
                         onClick: () => {
                             AppState.editingMed = med;
                             AppState.newMed = { ...med };
@@ -1000,7 +1346,7 @@
                         }
                     }, [createIcon('edit', 16)]),
                     createElement('button', {
-                        className: 'btn btn-danger',
+                        className: 'btn btn-danger btn-sm',
                         onClick: () => {
                             if (confirm('Are you sure you want to delete this medication?')) {
                                 deleteMedication(med.id);
@@ -1010,7 +1356,7 @@
                 ])
             ]);
 
-            const timesGrid = createElement('div', { className: 'grid grid-3 gap-3' }, 
+            const timesGrid = createElement('div', { className: 'grid grid-1 md:grid-2 lg:grid-3 gap-3' }, 
                 med.times.map(time => {
                     const status = getDoseStatus(med.id, time);
                     const isHistorical = AppState.selectedDate < new Date().toISOString().split('T')[0];
@@ -1019,22 +1365,31 @@
                     return createElement('div', {
                         className: `dose-card ${status === 'taken' ? 'dose-taken' : status === 'missed' ? 'dose-missed' : ''}`
                     }, [
-                        createElement('div', { className: 'flex items-center justify-between mb-2' }, [
+                        createElement('div', { className: 'flex items-center justify-between mb-3' }, [
                             createElement('div', { className: 'flex items-center gap-2' }, [
                                 createIcon('clock', 16),
                                 createElement('span', { className: 'font-medium' }, [time])
                             ]),
-                            status === 'taken' ? createIcon('check-circle', 16) : 
-                            status === 'missed' ? createIcon('x-circle', 16) : null
+                            createElement('div', { className: 'flex gap-1' }, [
+                                status === 'taken' ? createIcon('check-circle', 16, 'text-green-600') : null,
+                                status === 'missed' ? createIcon('x-circle', 16, 'text-red-600') : null,
+                                createElement('button', {
+                                    className: 'p-1 text-gray-400 hover:text-gray-600 transition-colors',
+                                    onClick: () => {
+                                        // Show dose history
+                                        alert(`Dose history for ${med.name} at ${time} on ${AppState.selectedDate}`);
+                                    }
+                                }, [createIcon('rotate-ccw', 12)])
+                            ])
                         ]),
-                        createElement('div', { className: 'flex gap-1' }, [
+                        createElement('div', { className: 'grid grid-2 gap-1' }, [
                             createElement('button', {
-                                className: `btn ${status === 'taken' ? 'btn-success' : 'btn-secondary'} text-xs flex-1`,
+                                className: `btn btn-sm ${status === 'taken' ? 'btn-success' : 'btn-secondary'}`,
                                 disabled: !canEdit,
                                 onClick: () => markDose(med.id, time, 'taken')
                             }, ['Taken']),
                             createElement('button', {
-                                className: `btn ${status === 'missed' ? 'btn-danger' : 'btn-secondary'} text-xs flex-1`,
+                                className: `btn btn-sm ${status === 'missed' ? 'btn-danger' : 'btn-secondary'}`,
                                 disabled: !canEdit,
                                 onClick: () => markDose(med.id, time, 'missed')
                             }, ['Missed'])
@@ -1046,6 +1401,152 @@
             card.appendChild(header);
             card.appendChild(timesGrid);
             return card;
+        }
+
+        function createRemarkModal() {
+            const modal = createElement('div', { className: 'modal' });
+            const content = createElement('div', { className: 'modal-content' });
+
+            const header = createElement('h3', { className: 'text-lg font-bold mb-4' }, ['Add Remark']);
+
+            const form = createElement('form', {
+                onSubmit: (e) => {
+                    e.preventDefault();
+                    if (!AppState.currentRemark.text.trim()) {
+                        alert('Please enter a remark');
+                        return;
+                    }
+                    
+                    const remark = {
+                        id: Date.now(),
+                        date: AppState.currentRemark.date || AppState.selectedDate,
+                        text: AppState.currentRemark.text,
+                        type: AppState.currentRemark.type,
+                        timestamp: new Date().toISOString(),
+                        author: AppState.currentUser?.role === 'doctor' ? `Dr. ${AppState.currentUser.name}` : AppState.currentUser?.name,
+                        patientId: AppState.currentUser?.role === 'patient' ? AppState.currentUser.id : AppState.currentPatient?.id
+                    };
+                    
+                    AppState.remarks.push(remark);
+                    AppState.currentRemark = { date: '', text: '', type: 'note' };
+                    AppState.showRemarkModal = false;
+                    saveUserData();
+                    render();
+                }
+            }, [
+                createElement('div', { className: 'mb-4' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Date']),
+                    createElement('input', {
+                        type: 'date',
+                        className: 'input',
+                        value: AppState.currentRemark.date || AppState.selectedDate,
+                        onInput: (e) => {
+                            AppState.currentRemark.date = e.target.value;
+                        }
+                    })
+                ]),
+                createElement('div', { className: 'mb-4' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Type']),
+                    createElement('select', {
+                        className: 'input',
+                        value: AppState.currentRemark.type,
+                        onChange: (e) => {
+                            AppState.currentRemark.type = e.target.value;
+                        }
+                    }, [
+                        createElement('option', { value: 'note' }, ['Note']),
+                        createElement('option', { value: 'concern' }, ['Concern']),
+                        createElement('option', { value: 'side-effect' }, ['Side Effect']),
+                        createElement('option', { value: 'improvement' }, ['Improvement'])
+                    ])
+                ]),
+                createElement('div', { className: 'mb-4' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Remark']),
+                    createElement('textarea', {
+                        className: 'input',
+                        rows: '3',
+                        placeholder: 'Enter your remark...',
+                        value: AppState.currentRemark.text,
+                        onInput: (e) => {
+                            AppState.currentRemark.text = e.target.value;
+                        }
+                    })
+                ]),
+                createElement('div', { className: 'flex flex-col md:flex-row gap-2' }, [
+                    createElement('button', {
+                        type: 'submit',
+                        className: 'btn btn-primary w-full md:w-auto'
+                    }, ['Add Remark']),
+                    createElement('button', {
+                        type: 'button',
+                        className: 'btn btn-secondary w-full md:w-auto',
+                        onClick: () => {
+                            AppState.showRemarkModal = false;
+                            AppState.currentRemark = { date: '', text: '', type: 'note' };
+                            render();
+                        }
+                    }, ['Cancel'])
+                ])
+            ]);
+
+            content.appendChild(header);
+            content.appendChild(form);
+            modal.appendChild(content);
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    AppState.showRemarkModal = false;
+                    render();
+                }
+            });
+
+            return modal;
+        }
+
+        // Add copy day and copy week functions
+        function copyDay(fromDate, toDate) {
+            const fromDoses = AppState.doses.filter(d => d.date === fromDate);
+            fromDoses.forEach(dose => {
+                const newKey = `${toDate}-${dose.medicationId}-${dose.time}`;
+                const newDose = {
+                    ...dose,
+                    key: newKey,
+                    date: toDate,
+                    timestamp: new Date().toISOString(),
+                    editedBy: 'Copy Operation'
+                };
+                
+                const existingIndex = AppState.doses.findIndex(d => d.key === newKey);
+                if (existingIndex >= 0) {
+                    AppState.doses[existingIndex] = newDose;
+                } else {
+                    AppState.doses.push(newDose);
+                }
+            });
+            
+            saveUserData();
+            render();
+            alert('Day copied successfully!');
+        }
+
+        function copyWeek(fromDate) {
+            const startDate = new Date(fromDate);
+            const dayOfWeek = startDate.getDay();
+            const mondayOfWeek = new Date(startDate);
+            mondayOfWeek.setDate(startDate.getDate() - dayOfWeek + 1);
+            
+            for (let i = 0; i < 7; i++) {
+                const sourceDate = new Date(mondayOfWeek);
+                sourceDate.setDate(mondayOfWeek.getDate() + i);
+                
+                const targetDate = new Date(sourceDate);
+                targetDate.setDate(sourceDate.getDate() + 7);
+                
+                copyDay(sourceDate.toISOString().split('T')[0], targetDate.toISOString().split('T')[0]);
+            }
+            
+            alert('Week copied to next week successfully!');
         }
 
         // Main Render Function
