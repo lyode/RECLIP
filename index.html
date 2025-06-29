@@ -2,117 +2,197 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Beat-Sync Clip Maker Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
+    <title>Beat-Sync Clip Maker</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        html, body {
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
             color: white;
-            overflow-x: hidden;
+            position: fixed;
+            width: 100%;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
+        .app-container {
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            padding: 15px 20px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .header h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 5px;
         }
 
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            line-height: 1.2;
         }
 
-        .tabs {
+        .workflow-steps {
             display: flex;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 5px;
+            padding: 15px 10px;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .tab {
-            flex: 1;
-            padding: 12px 20px;
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 8px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            min-width: 85px;
             text-align: center;
             cursor: pointer;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            flex-shrink: 0;
         }
 
-        .tab.active {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        .step.active {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.3);
+            transform: scale(1.05);
+        }
+
+        .step.completed {
+            border-color: #00b894;
+            background: rgba(0, 184, 148, 0.3);
+        }
+
+        .step-number {
+            background: #4ecdc4;
             color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
         }
 
-        .tab-content {
+        .step.completed .step-number {
+            background: #00b894;
+        }
+
+        .step-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .step-desc {
+            font-size: 0.65rem;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 15px;
+        }
+
+        .step-content {
             display: none;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .tab-content.active {
+        .step-content.active {
             display: block;
         }
 
-        .music-browser {
-            margin-bottom: 30px;
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .selection-instructions {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4ecdc4;
+            font-size: 0.85rem;
+            line-height: 1.4;
         }
 
         .search-container {
             display: flex;
+            flex-direction: column;
             gap: 10px;
             margin-bottom: 20px;
         }
 
         .search-input {
-            flex: 1;
-            padding: 12px 15px;
-            border-radius: 10px;
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 12px;
             border: none;
             background: rgba(255, 255, 255, 0.2);
             color: white;
             font-size: 1rem;
+            outline: none;
         }
 
         .search-input::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
 
+        .search-row {
+            display: flex;
+            gap: 10px;
+        }
+
         .genre-filter {
-            padding: 12px 15px;
-            border-radius: 10px;
+            flex: 1;
+            padding: 14px 15px;
+            border-radius: 12px;
             border: none;
             background: rgba(255, 255, 255, 0.2);
             color: white;
-            min-width: 150px;
+            font-size: 0.9rem;
+            outline: none;
         }
 
         .genre-filter option {
@@ -121,114 +201,189 @@
         }
 
         .search-btn {
-            padding: 12px 20px;
+            padding: 14px 20px;
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             color: white;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.9rem;
+            min-width: 80px;
         }
 
         .music-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
             max-height: 400px;
             overflow-y: auto;
-            padding: 10px;
+            -webkit-overflow-scrolling: touch;
+            padding: 5px;
         }
 
         .music-card {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 15px;
-            padding: 15px;
+            padding: 18px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 3px solid transparent;
+            position: relative;
         }
 
-        .music-card:hover {
-            transform: translateY(-5px);
-            border-color: #4ecdc4;
-            background: rgba(78, 205, 196, 0.2);
+        .music-card:active {
+            transform: scale(0.98);
         }
 
         .music-card.selected {
             border-color: #ff6b6b;
-            background: rgba(255, 107, 107, 0.2);
+            background: rgba(255, 107, 107, 0.25);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .music-card.playing {
+            border-color: #f9ca24;
+            background: rgba(249, 202, 36, 0.25);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(249, 202, 36, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(249, 202, 36, 0.6); }
         }
 
         .music-info h4 {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
         .music-info p {
             color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            line-height: 1.3;
         }
 
         .music-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .play-btn {
             background: #4ecdc4;
             border: none;
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             color: white;
-            font-size: 14px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn.playing {
+            background: #f9ca24;
+            animation: playingPulse 1s infinite;
+        }
+
+        @keyframes playingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .waveform {
             flex: 1;
-            height: 30px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            border-radius: 20px;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
         }
 
         .waveform-progress {
-            height: 100%;
+            height: 70%;
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
             border-radius: 15px;
             width: 0%;
             transition: width 0.1s ease;
         }
 
+        .waveform-time {
+            position: absolute;
+            right: 12px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            z-index: 2;
+            font-weight: 500;
+        }
+
+        .select-btn {
+            background: linear-gradient(45deg, #00b894, #55a3ff);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            min-height: 44px;
+        }
+
+        .select-btn:active {
+            transform: scale(0.95);
+        }
+
+        .select-btn.selected {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        }
+
         .upload-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
             margin-bottom: 20px;
         }
 
         .upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border: 3px dashed rgba(255, 255, 255, 0.5);
             border-radius: 15px;
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .upload-area:hover {
-            border-color: #4ecdc4;
-            background: rgba(78, 205, 196, 0.1);
-            transform: translateY(-5px);
+        .upload-area:active {
+            transform: scale(0.98);
+        }
+
+        .upload-area.has-files {
+            border-color: #00b894;
+            background: rgba(0, 184, 148, 0.15);
         }
 
         .upload-area input {
@@ -240,14 +395,26 @@
         }
 
         .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.5rem;
+            margin-bottom: 12px;
             opacity: 0.8;
         }
 
+        .upload-area h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-area p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            line-height: 1.3;
+        }
+
         .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -255,26 +422,50 @@
         .control-group {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .control-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
+            margin-bottom: 10px;
+            font-weight: 600;
             font-size: 0.9rem;
         }
 
         .control-group select,
         .control-group input {
             width: 100%;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 10px;
             border: none;
             background: rgba(255, 255, 255, 0.2);
             color: white;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .control-group input[type="range"] {
+            padding: 0;
+            height: 44px;
+            -webkit-appearance: none;
+            background: transparent;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-track {
+            background: rgba(255, 255, 255, 0.3);
+            height: 6px;
+            border-radius: 3px;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #4ecdc4;
+            cursor: pointer;
+            margin-top: -9px;
         }
 
         .control-group select option {
@@ -282,25 +473,48 @@
             color: white;
         }
 
-        .generate-btn {
+        .next-step-btn {
             width: 100%;
             padding: 18px;
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
             border: none;
             border-radius: 12px;
             color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
+            margin-top: 20px;
+            min-height: 56px;
         }
 
-        .generate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        .next-step-btn:active {
+            transform: scale(0.98);
+        }
+
+        .next-step-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, #00b894, #55a3ff);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            min-height: 60px;
+        }
+
+        .generate-btn:active {
+            transform: scale(0.98);
         }
 
         .generate-btn:disabled {
@@ -309,26 +523,36 @@
             transform: none;
         }
 
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-row .next-step-btn {
+            margin-top: 0;
+        }
+
         .preview-section {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
         }
 
         .preview-container {
             position: relative;
             width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
             aspect-ratio: 16/9;
             background: #000;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 15px;
         }
 
         .preview-content {
@@ -338,13 +562,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
         }
 
         .preview-media {
             max-width: 100%;
             max-height: 100%;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .effect-overlay {
@@ -359,43 +586,44 @@
 
         .audio-visualizer {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            height: 80px;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            height: 60px;
             display: flex;
             align-items: end;
-            gap: 3px;
+            gap: 2px;
             z-index: 15;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 8px;
         }
 
         .audio-bar {
             flex: 1;
             background: linear-gradient(to top, #ff6b6b, #4ecdc4, #45b7d1);
-            border-radius: 2px;
+            border-radius: 1px;
             transition: height 0.05s ease;
             opacity: 0.9;
-            min-height: 3px;
+            min-height: 2px;
         }
 
         .status {
             text-align: center;
-            margin-top: 20px;
-            padding: 15px;
+            padding: 12px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
-            font-weight: 600;
+            font-weight: 500;
+            font-size: 0.85rem;
+            line-height: 1.3;
         }
 
         .beat-indicator {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 25px;
-            height: 25px;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
             background: #ff6b6b;
             border-radius: 50%;
             z-index: 15;
@@ -404,148 +632,54 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
         }
 
         .beat-active {
             opacity: 1;
             animation: beatPulse 0.3s ease;
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
         }
 
         @keyframes beatPulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.8); }
+            50% { transform: scale(1.5); }
             100% { transform: scale(1); }
-        }
-
-        .effect-flash {
-            animation: flashEffect 0.4s ease;
-        }
-
-        @keyframes flashEffect {
-            0% { filter: brightness(1) contrast(1) saturate(1); }
-            50% { filter: brightness(1.8) contrast(1.4) saturate(1.6) hue-rotate(30deg); }
-            100% { filter: brightness(1) contrast(1) saturate(1); }
-        }
-
-        .effect-zoom {
-            animation: zoomEffect 0.6s ease;
-        }
-
-        @keyframes zoomEffect {
-            0% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.15) rotate(2deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
-
-        .effect-shake {
-            animation: shakeEffect 0.4s ease;
-        }
-
-        @keyframes shakeEffect {
-            0%, 100% { transform: translateX(0) translateY(0); }
-            25% { transform: translateX(-8px) translateY(4px); }
-            75% { transform: translateX(8px) translateY(-4px); }
-        }
-
-        .effect-glitch {
-            animation: glitchEffect 0.3s ease;
-        }
-
-        @keyframes glitchEffect {
-            0% { transform: translateX(0); filter: hue-rotate(0deg); }
-            20% { transform: translateX(-5px); filter: hue-rotate(90deg); }
-            40% { transform: translateX(5px); filter: hue-rotate(180deg); }
-            60% { transform: translateX(-3px); filter: hue-rotate(270deg); }
-            80% { transform: translateX(3px); filter: hue-rotate(360deg); }
-            100% { transform: translateX(0); filter: hue-rotate(0deg); }
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .particle {
-            position: absolute;
-            pointer-events: none;
-            border-radius: 50%;
-            z-index: 20;
-        }
-
-        .frequency-display {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-family: monospace;
-            z-index: 15;
-        }
-
-        .export-controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .export-btn {
-            padding: 12px 20px;
-            background: linear-gradient(45deg, #45b7d1, #96ceb4);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .export-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         .file-list {
             margin-top: 15px;
             max-height: 200px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .file-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            margin-bottom: 5px;
-            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 0.85rem;
         }
 
         .remove-btn {
             background: #ff6b6b;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             color: white;
-            padding: 5px 10px;
+            padding: 8px 12px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            min-height: 36px;
+        }
+
+        .remove-btn:active {
+            transform: scale(0.95);
         }
 
         .loading-spinner {
@@ -561,172 +695,341 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .effect-flash { animation: flashEffect 0.4s ease; }
+        @keyframes flashEffect {
+            0% { filter: brightness(1) contrast(1) saturate(1); }
+            50% { filter: brightness(1.8) contrast(1.4) saturate(1.6) hue-rotate(30deg); }
+            100% { filter: brightness(1) contrast(1) saturate(1); }
+        }
+
+        .effect-zoom { animation: zoomEffect 0.6s ease; }
+        @keyframes zoomEffect {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .effect-shake { animation: shakeEffect 0.4s ease; }
+        @keyframes shakeEffect {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-8px) translateY(4px); }
+            75% { transform: translateX(8px) translateY(-4px); }
+        }
+
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 20;
+        }
+
+        /* iOS specific optimizations */
+        @supports (-webkit-touch-callout: none) {
+            .app-container {
+                height: -webkit-fill-available;
+            }
+        }
+
+        /* Landscape mode adjustments */
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+            .header {
+                padding: 10px 20px 5px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+                margin-bottom: 3px;
+            }
+            
+            .header p {
+                font-size: 0.75rem;
+            }
+            
+            .workflow-steps {
+                padding: 10px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .preview-container {
+                aspect-ratio: 2/1;
+            }
+        }
+
+        /* Dark mode media query */
+        @media (prefers-color-scheme: dark) {
+            .control-group input,
+            .control-group select,
+            .search-input,
+            .genre-filter {
+                background: rgba(255, 255, 255, 0.15);
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Touch feedback for better UX */
+        .music-card:active,
+        .upload-area:active,
+        .step:active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Ensure minimum touch target size */
+        button, .play-btn, .select-btn, .remove-btn {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        /* Hide scrollbar on iOS */
+        .music-grid::-webkit-scrollbar,
+        .main-content::-webkit-scrollbar,
+        .file-list::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <div class="header">
-            <h1>🎵 Auto Beat-Sync Clip Maker Pro</h1>
-            <p>AI-Powered Music Synchronization • Professional Visual Effects • Free Music Library</p>
+            <h1>🎵 Beat-Sync Maker</h1>
+            <p>AI-Powered Music Synchronization</p>
         </div>
 
-        <div class="tabs">
-            <div class="tab active" onclick="switchTab('music')">🎵 Music Library</div>
-            <div class="tab" onclick="switchTab('upload')">📁 Upload Content</div>
-            <div class="tab" onclick="switchTab('effects')">⚡ Effects & Settings</div>
+        <!-- Workflow Steps -->
+        <div class="workflow-steps">
+            <div class="step active" id="step1" onclick="goToStep(1)">
+                <div class="step-number">1</div>
+                <div class="step-title">Music</div>
+                <div class="step-desc">Choose</div>
+            </div>
+            <div class="step" id="step2" onclick="goToStep(2)">
+                <div class="step-number">2</div>
+                <div class="step-title">Visuals</div>
+                <div class="step-desc">Upload</div>
+            </div>
+            <div class="step" id="step3" onclick="goToStep(3)">
+                <div class="step-number">3</div>
+                <div class="step-title">Effects</div>
+                <div class="step-desc">Customize</div>
+            </div>
+            <div class="step" id="step4" onclick="goToStep(4)">
+                <div class="step-number">4</div>
+                <div class="step-title">Generate</div>
+                <div class="step-desc">Create</div>
+            </div>
         </div>
 
-        <!-- Music Library Tab -->
-        <div class="tab-content active" id="music-tab">
-            <h3 style="margin-bottom: 20px;">🎧 Free Dance Music Library</h3>
-            <div class="music-browser">
-                <div class="search-container">
-                    <input type="text" class="search-input" id="musicSearch" placeholder="Search for dance, electronic, EDM, house, techno..." />
-                    <select class="genre-filter" id="genreFilter">
-                        <option value="">All Genres</option>
-                        <option value="electronic">Electronic</option>
-                        <option value="dance">Dance</option>
-                        <option value="edm">EDM</option>
-                        <option value="house">House</option>
-                        <option value="techno">Techno</option>
-                        <option value="dubstep">Dubstep</option>
-                        <option value="trap">Trap</option>
-                        <option value="ambient">Ambient</option>
-                    </select>
-                    <button class="search-btn" onclick="searchMusic()">🔍 Search</button>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Step 1: Choose Music -->
+            <div class="step-content active" id="content1">
+                <h3 class="section-title">🎵 Choose Your Music</h3>
+                
+                <div class="selection-instructions">
+                    <strong>🎯 How to Select:</strong><br>
+                    • Tap ▶ to preview tracks<br>
+                    • Tap "Select Track" to choose<br>
+                    • Or upload your own music below
                 </div>
+
+                <div class="search-container">
+                    <input type="text" class="search-input" id="musicSearch" placeholder="Search dance, EDM, house..." />
+                    <div class="search-row">
+                        <select class="genre-filter" id="genreFilter">
+                            <option value="">All Genres</option>
+                            <option value="electronic">Electronic</option>
+                            <option value="dance">Dance</option>
+                            <option value="edm">EDM</option>
+                            <option value="house">House</option>
+                            <option value="techno">Techno</option>
+                            <option value="dubstep">Dubstep</option>
+                            <option value="trap">Trap</option>
+                        </select>
+                        <button class="search-btn" onclick="searchMusic()">🔍</button>
+                    </div>
+                </div>
+
                 <div class="music-grid" id="musicGrid">
                     <!-- Music cards will be populated here -->
                 </div>
-            </div>
-        </div>
 
-        <!-- Upload Content Tab -->
-        <div class="tab-content" id="upload-tab">
-            <h3 style="margin-bottom: 20px;">📁 Upload Your Content</h3>
-            <div class="upload-section">
-                <div class="upload-area" onclick="document.getElementById('audioFile').click()">
-                    <input type="file" id="audioFile" accept="audio/*,video/*" multiple>
-                    <div class="upload-icon">🎵</div>
-                    <h4>Custom Audio/Music</h4>
-                    <p>Upload your own tracks (.mp3, .wav, .mp4, .m4a)</p>
+                <div style="text-align: center; margin: 20px 0; font-weight: 600; opacity: 0.8;">
+                    -- OR --
                 </div>
+
+                <div class="upload-section">
+                    <div class="upload-area" id="audioUploadArea" onclick="document.getElementById('audioFile').click()">
+                        <input type="file" id="audioFile" accept="audio/*,video/*">
+                        <div class="upload-icon">🎵</div>
+                        <h4>Upload Your Music</h4>
+                        <p>Tap to upload (.mp3, .wav, .m4a)</p>
+                    </div>
+                </div>
+
+                <button class="next-step-btn" id="nextStep1" onclick="nextStep()" disabled>
+                    ➡️ Next: Add Visuals
+                </button>
+            </div>
+
+            <!-- Step 2: Add Visuals -->
+            <div class="step-content" id="content2">
+                <h3 class="section-title">🎬 Add Visual Content</h3>
                 
-                <div class="upload-area" onclick="document.getElementById('mediaFile').click()">
-                    <input type="file" id="mediaFile" accept="image/*,video/*" multiple>
-                    <div class="upload-icon">🎬</div>
-                    <h4>Images/Videos</h4>
-                    <p>Upload your visuals (.jpg, .png, .mp4, .mov, .gif)</p>
+                <div class="selection-instructions">
+                    <strong>📁 Upload Tips:</strong><br>
+                    • Add 3-10 files for best variety<br>
+                    • AI switches content on beat drops<br>
+                    • Images and videos both supported
+                </div>
+
+                <div class="upload-section">
+                    <div class="upload-area" id="mediaUploadArea" onclick="document.getElementById('mediaFile').click()">
+                        <input type="file" id="mediaFile" accept="image/*,video/*" multiple>
+                        <div class="upload-icon">🎬</div>
+                        <h4>Upload Images & Videos</h4>
+                        <p>Tap to select multiple files</p>
+                    </div>
+                </div>
+
+                <div class="file-list" id="uploadedFiles"></div>
+
+                <div class="button-row">
+                    <button class="next-step-btn" style="flex: 1; background: linear-gradient(45deg, #95a5a6, #7f8c8d);" onclick="prevStep()">
+                        ⬅️ Back
+                    </button>
+                    <button class="next-step-btn" style="flex: 1;" id="nextStep2" onclick="nextStep()">
+                        ➡️ Next
+                    </button>
                 </div>
             </div>
 
-            <div class="file-list" id="uploadedFiles"></div>
-        </div>
-
-        <!-- Effects & Settings Tab -->
-        <div class="tab-content" id="effects-tab">
-            <h3 style="margin-bottom: 20px;">⚡ Effects & Settings</h3>
-            <div class="controls-grid">
-                <div class="control-group">
-                    <label>🎭 Effect Style</label>
-                    <select id="effectStyle">
-                        <option value="auto">🤖 Auto-Detect</option>
-                        <option value="electronic">⚡ Electronic/EDM</option>
-                        <option value="hip-hop">🎤 Hip-Hop/Rap</option>
-                        <option value="rock">🎸 Rock/Metal</option>
-                        <option value="pop">💫 Pop/Dance</option>
-                        <option value="chill">🌊 Chill/Ambient</option>
-                        <option value="trap">🔥 Trap/Bass</option>
-                        <option value="house">🏠 House/Techno</option>
-                    </select>
-                </div>
+            <!-- Step 3: Set Effects -->
+            <div class="step-content" id="content3">
+                <h3 class="section-title">⚡ Customize Effects</h3>
                 
-                <div class="control-group">
-                    <label>⚡ Effect Intensity: <span id="intensityValue">7</span></label>
-                    <input type="range" id="intensity" min="1" max="10" value="7" oninput="updateSliderValue('intensity', 'intensityValue')">
+                <div class="selection-instructions">
+                    <strong>🎛️ Effect Settings:</strong><br>
+                    • Auto-Detect chooses best effects<br>
+                    • Higher intensity = more dramatic<br>
+                    • Adjust for your music style
                 </div>
+
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label>🎭 Effect Style</label>
+                        <select id="effectStyle">
+                            <option value="auto">🤖 Auto-Detect</option>
+                            <option value="electronic">⚡ Electronic/EDM</option>
+                            <option value="hip-hop">🎤 Hip-Hop/Rap</option>
+                            <option value="pop">💫 Pop/Dance</option>
+                            <option value="chill">🌊 Chill/Ambient</option>
+                            <option value="trap">🔥 Trap/Bass</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>⚡ Effect Intensity: <span id="intensityValue">7</span></label>
+                        <input type="range" id="intensity" min="1" max="10" value="7" oninput="updateSliderValue('intensity', 'intensityValue')">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>⏱️ Clip Duration (seconds)</label>
+                        <input type="number" id="duration" min="5" max="60" value="15">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>🎯 Beat Sensitivity: <span id="sensitivityValue">6</span></label>
+                        <input type="range" id="sensitivity" min="1" max="10" value="6" oninput="updateSliderValue('sensitivity', 'sensitivityValue')">
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button class="next-step-btn" style="flex: 1; background: linear-gradient(45deg, #95a5a6, #7f8c8d);" onclick="prevStep()">
+                        ⬅️ Back
+                    </button>
+                    <button class="next-step-btn" style="flex: 1;" id="nextStep3" onclick="nextStep()">
+                        ➡️ Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Generate -->
+            <div class="step-content" id="content4">
+                <h3 class="section-title">🚀 Generate Clip</h3>
                 
-                <div class="control-group">
-                    <label>⏱️ Clip Duration (seconds)</label>
-                    <input type="number" id="duration" min="5" max="120" value="15">
-                </div>
-                
-                <div class="control-group">
-                    <label>🎯 Beat Sensitivity: <span id="sensitivityValue">6</span></label>
-                    <input type="range" id="sensitivity" min="1" max="10" value="6" oninput="updateSliderValue('sensitivity', 'sensitivityValue')">
+                <div class="selection-instructions">
+                    <strong>✨ Ready to Create:</strong><br>
+                    • AI analyzes your music's rhythm<br>
+                    • Effects sync automatically to beats<br>
+                    • Content switches on beat drops
                 </div>
 
-                <div class="control-group">
-                    <label>🌈 Color Theme</label>
-                    <select id="colorTheme">
-                        <option value="neon">🌈 Neon Rainbow</option>
-                        <option value="fire">🔥 Fire & Ice</option>
-                        <option value="ocean">🌊 Ocean Waves</option>
-                        <option value="sunset">🌅 Sunset Vibes</option>
-                        <option value="cyber">🤖 Cyberpunk</option>
-                    </select>
-                </div>
+                <button class="generate-btn" id="generateBtn" onclick="generateClip()">
+                    🎬 Generate Beat-Synced Clip
+                </button>
 
-                <div class="control-group">
-                    <label>💥 Particle Effects</label>
-                    <select id="particleMode">
-                        <option value="dynamic">🎆 Dynamic</option>
-                        <option value="minimal">✨ Minimal</option>
-                        <option value="intense">💥 Intense</option>
-                        <option value="off">❌ Off</option>
-                    </select>
-                </div>
+                <button class="next-step-btn" style="background: linear-gradient(45deg, #95a5a6, #7f8c8d); margin-top: 15px;" onclick="prevStep()">
+                    ⬅️ Back to Effects
+                </button>
             </div>
 
-            <button class="generate-btn" id="generateBtn" onclick="generateClip()">
-                🚀 Generate Auto-Synced Clip
-            </button>
-        </div>
-
-        <!-- Preview Section -->
-        <div class="preview-section">
-            <h3 style="margin-bottom: 20px;">👀 Live Preview</h3>
-            <div class="preview-container">
-                <div class="preview-content" id="previewContent">
-                    <p style="opacity: 0.7; text-align: center;">🎵 Your AI-generated clip will appear here...<br>Upload content and click Generate!</p>
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <h3 style="margin-bottom: 15px; font-size: 1.2rem;">👀 Live Preview</h3>
+                <div class="preview-container">
+                    <div class="preview-content" id="previewContent">
+                        🎵 Your beat-synced clip will appear here...<br><br>Complete steps above to start!
+                    </div>
+                    <div class="effect-overlay" id="effectOverlay"></div>
+                    <div class="beat-indicator" id="beatIndicator">♪</div>
+                    <div class="audio-visualizer" id="audioVisualizer"></div>
                 </div>
-                <div class="effect-overlay" id="effectOverlay"></div>
-                <div class="beat-indicator" id="beatIndicator">♪</div>
-                <div class="frequency-display" id="frequencyDisplay">
-                    <div>🎵 Frequency Analysis</div>
-                    <div>Bass: <span id="bassLevel">0</span>%</div>
-                    <div>Mid: <span id="midLevel">0</span>%</div>
-                    <div>High: <span id="highLevel">0</span>%</div>
-                    <div>BPM: <span id="bpmDisplay">0</span></div>
+                <div class="status" id="status">🎵 Welcome! Follow the steps to create your masterpiece!</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="audio-visualizer" id="audioVisualizer"></div>
-            </div>
-            <div class="status" id="status">🎵 Ready to create your beat-synced masterpiece!</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-
-            <div class="export-controls">
-                <button class="export-btn" onclick="exportClip('mp4')">📱 Export MP4</button>
-                <button class="export-btn" onclick="exportClip('gif')">🎞️ Export GIF</button>
-                <button class="export-btn" onclick="shareClip()">📤 Share Clip</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Global variables
-        let audioContext, analyser, dataArray, audioSource;
+        // Global state
+        let currentStep = 1;
+        let selectedMusic = null;
         let currentAudio = null;
         let currentMedia = [];
-        let selectedMusic = null;
+        let currentPreviewAudio = null;
         let isPlaying = false;
-        let beatDetector = null;
-        let effectsEngine = null;
-        let animationId = null;
-        let clipRecorder = null;
+        let audioContext, analyser, audioSource, beatDetector, effectsEngine;
 
-        // Free music database (sample - in real app, connect to APIs)
+        // Sample music database
         const freeMusicDatabase = [
             {
                 id: 1,
@@ -735,48 +1038,48 @@
                 genre: "electronic",
                 bpm: 128,
                 duration: "3:45",
-                url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav", // Sample URL
-                tags: ["edm", "electronic", "dance", "synth"]
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav",
+                tags: ["edm", "electronic", "dance"]
             },
             {
                 id: 2,
-                title: "Bass Drop Revolution",
+                title: "Bass Revolution",
                 artist: "EDM Master",
                 genre: "dubstep",
                 bpm: 140,
                 duration: "4:12",
-                url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
-                tags: ["dubstep", "bass", "electronic", "drop"]
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav",
+                tags: ["dubstep", "bass", "electronic"]
             },
             {
                 id: 3,
-                title: "House Party Vibes",
-                artist: "Deep House Collective",
+                title: "House Vibes",
+                artist: "Deep House",
                 genre: "house",
                 bpm: 124,
                 duration: "5:30",
-                url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
-                tags: ["house", "dance", "party", "groove"]
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/ImperialMarch60.wav",
+                tags: ["house", "dance", "party"]
             },
             {
                 id: 4,
-                title: "Techno Underground",
+                title: "Techno Beat",
                 artist: "Cyber Beats",
                 genre: "techno",
                 bpm: 132,
                 duration: "6:15",
-                url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
-                tags: ["techno", "underground", "dark", "industrial"]
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav",
+                tags: ["techno", "underground"]
             },
             {
                 id: 5,
                 title: "Trap Energy",
-                artist: "Urban Soundscape",
+                artist: "Urban Sound",
                 genre: "trap",
                 bpm: 150,
                 duration: "3:20",
-                url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
-                tags: ["trap", "hip-hop", "urban", "energy"]
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/gettysburg10.wav",
+                tags: ["trap", "hip-hop", "urban"]
             }
         ];
 
@@ -785,7 +1088,25 @@
             initAudioVisualizer();
             loadMusicLibrary();
             setupEventListeners();
-            updateStatus('🎵 Welcome! Browse free music or upload your own content to get started!');
+            updateStepAvailability();
+            
+            // Prevent zoom on double tap
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // Prevent scroll bounce
+            document.addEventListener('touchmove', function(e) {
+                if (e.target.closest('.main-content, .music-grid, .file-list')) {
+                    return;
+                }
+                e.preventDefault();
+            }, { passive: false });
         });
 
         function setupEventListeners() {
@@ -807,20 +1128,68 @@
             };
         }
 
-        // Tab switching
-        function switchTab(tabName) {
-            // Update tab buttons
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName + '-tab').classList.add('active');
+        // Step navigation
+        function goToStep(step) {
+            if (step <= currentStep || isStepCompleted(step - 1)) {
+                showStep(step);
+            }
         }
 
-        // Music library functions
+        function nextStep() {
+            if (currentStep < 4) {
+                markStepCompleted(currentStep);
+                currentStep++;
+                showStep(currentStep);
+                updateStepAvailability();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.getElementById(`content${step}`).classList.add('active');
+            
+            document.querySelectorAll('.step').forEach((stepEl, index) => {
+                stepEl.classList.remove('active');
+                if (index + 1 === step) {
+                    stepEl.classList.add('active');
+                }
+            });
+            
+            currentStep = step;
+            
+            // Scroll to top
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        function markStepCompleted(step) {
+            document.getElementById(`step${step}`).classList.add('completed');
+        }
+
+        function isStepCompleted(step) {
+            return document.getElementById(`step${step}`).classList.contains('completed');
+        }
+
+        function updateStepAvailability() {
+            const hasMusic = selectedMusic || currentAudio;
+            document.getElementById('nextStep1').disabled = !hasMusic;
+            if (hasMusic) {
+                document.getElementById('nextStep1').innerHTML = '➡️ Next: Add Visuals ✓';
+            }
+        }
+
+        // Music functions
         function loadMusicLibrary() {
-            searchMusic(); // Load all initially
+            searchMusic();
         }
 
         function searchMusic() {
@@ -845,7 +1214,7 @@
             grid.innerHTML = '';
 
             if (tracks.length === 0) {
-                grid.innerHTML = '<p style="text-align: center; opacity: 0.7; grid-column: 1 / -1;">No tracks found. Try different search terms!</p>';
+                grid.innerHTML = '<p style="text-align: center; opacity: 0.7; padding: 20px;">No tracks found. Try different search terms!</p>';
                 return;
             }
 
@@ -863,50 +1232,126 @@
             card.innerHTML = `
                 <div class="music-info">
                     <h4>${track.title}</h4>
-                    <p>by ${track.artist} • ${track.genre} • ${track.bpm} BPM</p>
-                    <p>Duration: ${track.duration}</p>
+                    <p>by ${track.artist}</p>
+                    <p>${track.genre.toUpperCase()} • ${track.bpm} BPM • ${track.duration}</p>
                 </div>
                 <div class="music-controls">
-                    <button class="play-btn" onclick="event.stopPropagation(); previewTrack('${track.url}', this)">▶</button>
+                    <button class="play-btn" onclick="event.stopPropagation(); togglePreview('${track.previewUrl}', this, '${track.id}')">▶</button>
                     <div class="waveform">
-                        <div class="waveform-progress"></div>
+                        <div class="waveform-progress" id="progress-${track.id}"></div>
+                        <div class="waveform-time" id="time-${track.id}">0:00</div>
                     </div>
+                    <button class="select-btn" onclick="event.stopPropagation(); selectMusic('${JSON.stringify(track).replace(/'/g, "\\'")}', this.closest('.music-card'))">
+                        Select
+                    </button>
                 </div>
             `;
 
             return card;
         }
 
+        function togglePreview(url, button, trackId) {
+            // Stop any currently playing preview
+            if (currentPreviewAudio && !currentPreviewAudio.paused) {
+                currentPreviewAudio.pause();
+                currentPreviewAudio.currentTime = 0;
+                
+                document.querySelectorAll('.play-btn').forEach(btn => {
+                    btn.innerHTML = '▶';
+                    btn.classList.remove('playing');
+                });
+                
+                document.querySelectorAll('.music-card').forEach(card => {
+                    card.classList.remove('playing');
+                });
+            }
+
+            if (currentPreviewAudio && currentPreviewAudio.src === url && button.innerHTML === '▶') {
+                return;
+            }
+
+            // Play new track
+            currentPreviewAudio = new Audio(url);
+            currentPreviewAudio.volume = 0.7;
+            
+            button.innerHTML = '⏸';
+            button.classList.add('playing');
+            button.closest('.music-card').classList.add('playing');
+            
+            currentPreviewAudio.ontimeupdate = () => {
+                const progress = (currentPreviewAudio.currentTime / currentPreviewAudio.duration) * 100;
+                const progressBar = document.getElementById(`progress-${trackId}`);
+                const timeDisplay = document.getElementById(`time-${trackId}`);
+                
+                if (progressBar) progressBar.style.width = progress + '%';
+                if (timeDisplay) {
+                    const minutes = Math.floor(currentPreviewAudio.currentTime / 60);
+                    const seconds = Math.floor(currentPreviewAudio.currentTime % 60);
+                    timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            };
+            
+            currentPreviewAudio.onended = () => {
+                button.innerHTML = '▶';
+                button.classList.remove('playing');
+                button.closest('.music-card').classList.remove('playing');
+                document.getElementById(`progress-${trackId}`).style.width = '0%';
+                document.getElementById(`time-${trackId}`).textContent = '0:00';
+            };
+            
+            currentPreviewAudio.play().catch(e => {
+                console.warn('Could not play preview:', e);
+                updateStatus('⚠️ Preview not available');
+                button.innerHTML = '▶';
+                button.classList.remove('playing');
+                button.closest('.music-card').classList.remove('playing');
+            });
+        }
+
         function selectMusic(track, cardElement) {
-            // Remove previous selection
-            document.querySelectorAll('.music-card').forEach(card => card.classList.remove('selected'));
+            if (typeof track === 'string') {
+                track = JSON.parse(track);
+            }
             
-            // Select new track
+            if (currentPreviewAudio && !currentPreviewAudio.paused) {
+                currentPreviewAudio.pause();
+                currentPreviewAudio.currentTime = 0;
+            }
+            
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.innerHTML = '▶';
+                btn.classList.remove('playing');
+            });
+            document.querySelectorAll('.music-card').forEach(card => {
+                card.classList.remove('selected', 'playing');
+            });
+            document.querySelectorAll('.select-btn').forEach(btn => {
+                btn.textContent = 'Select';
+                btn.classList.remove('selected');
+            });
+            
             cardElement.classList.add('selected');
+            const selectBtn = cardElement.querySelector('.select-btn');
+            selectBtn.textContent = 'Selected ✓';
+            selectBtn.classList.add('selected');
+            
             selectedMusic = track;
+            currentAudio = null;
             
-            updateStatus(`🎵 Selected: ${track.title} by ${track.artist}`);
+            updateStatus(`🎵 Selected: ${track.title}`);
+            updateStepAvailability();
             
-            // Load the track
             loadSelectedMusic(track);
         }
 
         async function loadSelectedMusic(track) {
             try {
-                currentAudio = await fetch(track.url).then(r => r.blob());
-                updateStatus(`✅ Loaded: ${track.title} - Ready to generate!`);
+                const response = await fetch(track.previewUrl);
+                currentAudio = await response.blob();
+                updateStatus(`✅ Loaded: ${track.title} - Ready!`);
             } catch (error) {
-                updateStatus(`❌ Error loading track: ${track.title}`);
-                console.error('Error loading music:', error);
+                updateStatus(`❌ Error loading: ${track.title}`);
             }
-        }
-
-        function previewTrack(url, button) {
-            // Implementation for track preview
-            button.innerHTML = '⏸';
-            setTimeout(() => {
-                button.innerHTML = '▶';
-            }, 3000);
         }
 
         // File upload handlers
@@ -915,16 +1360,57 @@
             if (files.length > 0) {
                 const file = files[0];
                 currentAudio = file;
-                selectedMusic = null; // Clear library selection
-                updateStatus(`🎵 Custom audio loaded: ${file.name}`);
-                displayUploadedFiles();
+                selectedMusic = null;
+                
+                document.querySelectorAll('.music-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                document.querySelectorAll('.select-btn').forEach(btn => {
+                    btn.textContent = 'Select';
+                    btn.classList.remove('selected');
+                });
+                
+                const uploadArea = document.getElementById('audioUploadArea');
+                uploadArea.classList.add('has-files');
+                uploadArea.innerHTML = `
+                    <div class="upload-icon">✅</div>
+                    <h4>Audio Uploaded</h4>
+                    <p>${file.name}</p>
+                    <button class="remove-btn" onclick="removeCustomAudio()" style="margin-top: 10px;">Remove</button>
+                `;
+                
+                updateStatus(`🎵 Custom audio: ${file.name}`);
+                updateStepAvailability();
             }
+        }
+
+        function removeCustomAudio() {
+            currentAudio = null;
+            selectedMusic = null;
+            
+            const uploadArea = document.getElementById('audioUploadArea');
+            uploadArea.classList.remove('has-files');
+            uploadArea.innerHTML = `
+                <input type="file" id="audioFile" accept="audio/*,video/*">
+                <div class="upload-icon">🎵</div>
+                <h4>Upload Your Music</h4>
+                <p>Tap to upload (.mp3, .wav, .m4a)</p>
+            `;
+            
+            document.getElementById('audioFile').addEventListener('change', handleAudioUpload);
+            
+            updateStatus('🎵 Audio removed');
+            updateStepAvailability();
         }
 
         async function handleMediaUpload(event) {
             const files = Array.from(event.target.files);
             currentMedia = [...currentMedia, ...files];
-            updateStatus(`🎬 ${files.length} media files added (Total: ${currentMedia.length})`);
+            
+            const uploadArea = document.getElementById('mediaUploadArea');
+            uploadArea.classList.add('has-files');
+            
+            updateStatus(`🎬 ${files.length} files added (Total: ${currentMedia.length})`);
             displayUploadedFiles();
         }
 
@@ -932,53 +1418,49 @@
             const container = document.getElementById('uploadedFiles');
             container.innerHTML = '';
 
-            if (currentAudio) {
-                const item = document.createElement('div');
-                item.className = 'file-item';
-                item.innerHTML = `
-                    <span>🎵 ${currentAudio.name || 'Selected Track'}</span>
-                    <button class="remove-btn" onclick="removeAudio()">Remove</button>
-                `;
-                container.appendChild(item);
-            }
+            if (currentMedia.length === 0) return;
+
+            const header = document.createElement('h4');
+            header.textContent = `📁 Files (${currentMedia.length})`;
+            header.style.marginBottom = '10px';
+            header.style.fontSize = '1rem';
+            container.appendChild(header);
 
             currentMedia.forEach((file, index) => {
                 const item = document.createElement('div');
                 item.className = 'file-item';
                 item.innerHTML = `
-                    <span>${file.type.startsWith('image/') ? '🖼️' : '🎬'} ${file.name}</span>
+                    <span>${file.type.startsWith('image/') ? '🖼️' : '🎬'} ${file.name.length > 25 ? file.name.substring(0, 25) + '...' : file.name}</span>
                     <button class="remove-btn" onclick="removeMedia(${index})">Remove</button>
                 `;
                 container.appendChild(item);
             });
         }
 
-        function removeAudio() {
-            currentAudio = null;
-            selectedMusic = null;
-            displayUploadedFiles();
-            updateStatus('🎵 Audio removed');
-        }
-
         function removeMedia(index) {
             currentMedia.splice(index, 1);
             displayUploadedFiles();
-            updateStatus(`🎬 Media file removed (${currentMedia.length} remaining)`);
+            
+            if (currentMedia.length === 0) {
+                document.getElementById('mediaUploadArea').classList.remove('has-files');
+            }
+            
+            updateStatus(`🎬 File removed (${currentMedia.length} remaining)`);
         }
 
         // Audio visualizer
         function initAudioVisualizer() {
             const visualizer = document.getElementById('audioVisualizer');
-            for (let i = 0; i < 64; i++) {
+            for (let i = 0; i < 32; i++) {
                 const bar = document.createElement('div');
                 bar.className = 'audio-bar';
-                bar.style.height = '5px';
+                bar.style.height = '3px';
                 visualizer.appendChild(bar);
             }
         }
 
         // Beat Detection Engine
-        class AdvancedBeatDetector {
+        class BeatDetector {
             constructor(audioContext, analyser) {
                 this.audioContext = audioContext;
                 this.analyser = analyser;
@@ -986,62 +1468,33 @@
                 this.dataArray = new Uint8Array(this.bufferSize);
                 this.lastBeatTime = 0;
                 this.beatThreshold = 0.4;
-                this.energyHistory = [];
-                this.bpmHistory = [];
-                this.bassRange = [0, 8];
-                this.midRange = [8, 24];
-                this.highRange = [24, 64];
             }
 
             detectBeat() {
                 this.analyser.getByteFrequencyData(this.dataArray);
                 
-                const bassEnergy = this.getFrequencyRangeEnergy(this.bassRange);
-                const midEnergy = this.getFrequencyRangeEnergy(this.midRange);
-                const highEnergy = this.getFrequencyRangeEnergy(this.highRange);
+                const bassEnergy = this.getFrequencyRangeEnergy([0, 8]);
+                const midEnergy = this.getFrequencyRangeEnergy([8, 24]);
+                const highEnergy = this.getFrequencyRangeEnergy([24, 64]);
                 
                 const totalEnergy = bassEnergy + midEnergy + highEnergy;
                 const normalizedEnergy = totalEnergy / 255;
                 
-                // Energy variance detection
-                this.energyHistory.push(normalizedEnergy);
-                if (this.energyHistory.length > 10) {
-                    this.energyHistory.shift();
-                }
-                
-                const avgEnergy = this.energyHistory.reduce((a, b) => a + b, 0) / this.energyHistory.length;
-                const energyVariance = normalizedEnergy - avgEnergy;
-                
                 const now = this.audioContext.currentTime;
                 const timeSinceLastBeat = now - this.lastBeatTime;
                 
-                // Adaptive beat detection
                 let beatDetected = false;
-                if (energyVariance > this.beatThreshold && timeSinceLastBeat > 0.15) {
+                if (normalizedEnergy > this.beatThreshold && timeSinceLastBeat > 0.2) {
                     beatDetected = true;
                     this.lastBeatTime = now;
-                    
-                    // BPM calculation
-                    if (timeSinceLastBeat > 0) {
-                        const currentBPM = 60 / timeSinceLastBeat;
-                        this.bpmHistory.push(currentBPM);
-                        if (this.bpmHistory.length > 8) {
-                            this.bpmHistory.shift();
-                        }
-                    }
                 }
-                
-                const avgBPM = this.bpmHistory.length > 0 ? 
-                    this.bpmHistory.reduce((a, b) => a + b, 0) / this.bpmHistory.length : 0;
                 
                 return {
                     detected: beatDetected,
                     energy: normalizedEnergy,
                     bass: bassEnergy / 255,
                     mid: midEnergy / 255,
-                    high: highEnergy / 255,
-                    variance: energyVariance,
-                    bpm: Math.round(avgBPM)
+                    high: highEnergy / 255
                 };
             }
 
@@ -1054,263 +1507,43 @@
             }
         }
 
-        // Advanced Effects Engine
-        class AdvancedEffectsEngine {
+        // Effects Engine
+        class EffectsEngine {
             constructor() {
                 this.previewContent = document.getElementById('previewContent');
                 this.effectOverlay = document.getElementById('effectOverlay');
                 this.beatIndicator = document.getElementById('beatIndicator');
-                this.currentMedia = null;
                 this.mediaIndex = 0;
-                this.colorTheme = 'neon';
-                this.intensity = 7;
-                this.particleMode = 'dynamic';
-                this.effectStyle = 'auto';
-                this.particles = [];
-                this.lastEffectTime = 0;
-            }
-
-            updateSettings() {
-                this.colorTheme = document.getElementById('colorTheme').value;
-                this.intensity = parseInt(document.getElementById('intensity').value);
-                this.particleMode = document.getElementById('particleMode').value;
-                this.effectStyle = document.getElementById('effectStyle').value;
             }
 
             applyBeatEffect(beatData) {
-                this.updateSettings();
-                
                 if (!beatData.detected) return;
 
-                const now = performance.now();
-                if (now - this.lastEffectTime < 100) return; // Throttle effects
-                this.lastEffectTime = now;
-
-                // Beat indicator with energy visualization
                 this.beatIndicator.classList.add('beat-active');
-                this.beatIndicator.style.backgroundColor = this.getThemeColor('primary');
                 setTimeout(() => {
                     this.beatIndicator.classList.remove('beat-active');
                 }, 300);
 
-                // Apply effects based on frequency analysis
                 if (beatData.bass > 0.7) {
-                    this.applyBassEffect(beatData);
+                    this.previewContent.classList.add('effect-zoom');
+                    setTimeout(() => {
+                        this.previewContent.classList.remove('effect-zoom');
+                    }, 600);
                 } else if (beatData.high > 0.6) {
-                    this.applyHighEffect(beatData);
-                } else if (beatData.mid > 0.5) {
-                    this.applyMidEffect(beatData);
+                    this.previewContent.classList.add('effect-flash');
+                    setTimeout(() => {
+                        this.previewContent.classList.remove('effect-flash');
+                    }, 400);
+                } else {
+                    this.previewContent.classList.add('effect-shake');
+                    setTimeout(() => {
+                        this.previewContent.classList.remove('effect-shake');
+                    }, 400);
                 }
 
-                // Style-specific effects
-                this.applyStyleSpecificEffects(beatData);
-
-                // Particle effects
-                if (this.particleMode !== 'off') {
-                    this.createAdvancedParticles(beatData);
-                }
-
-                // Media switching on strong beats
                 if (beatData.energy > 0.8 && currentMedia.length > 1) {
                     this.switchMedia();
                 }
-
-                // Update frequency display
-                this.updateFrequencyDisplay(beatData);
-            }
-
-            applyBassEffect(beatData) {
-                this.previewContent.classList.add('effect-zoom');
-                this.createShockwave();
-                setTimeout(() => {
-                    this.previewContent.classList.remove('effect-zoom');
-                }, 600);
-            }
-
-            applyHighEffect(beatData) {
-                this.previewContent.classList.add('effect-flash');
-                this.createLightningEffect();
-                setTimeout(() => {
-                    this.previewContent.classList.remove('effect-flash');
-                }, 400);
-            }
-
-            applyMidEffect(beatData) {
-                this.previewContent.classList.add('effect-shake');
-                setTimeout(() => {
-                    this.previewContent.classList.remove('effect-shake');
-                }, 400);
-            }
-
-            applyStyleSpecificEffects(beatData) {
-                switch (this.effectStyle) {
-                    case 'electronic':
-                    case 'edm':
-                        if (beatData.energy > 0.9) {
-                            this.previewContent.classList.add('effect-glitch');
-                            setTimeout(() => {
-                                this.previewContent.classList.remove('effect-glitch');
-                            }, 300);
-                        }
-                        break;
-                    case 'trap':
-                    case 'hip-hop':
-                        if (beatData.bass > 0.8) {
-                            this.createBassDropEffect();
-                        }
-                        break;
-                }
-            }
-
-            createAdvancedParticles(beatData) {
-                const particleCount = this.particleMode === 'intense' ? 8 : 
-                                   this.particleMode === 'minimal' ? 2 : 4;
-
-                for (let i = 0; i < particleCount; i++) {
-                    this.createParticle(beatData);
-                }
-            }
-
-            createParticle(beatData) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = (beatData.energy * 20 + 5) * (this.intensity / 10);
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                
-                const colors = this.getThemeColors();
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.boxShadow = `0 0 ${size}px ${particle.style.background}`;
-                
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                
-                this.effectOverlay.appendChild(particle);
-                
-                // Animate particle
-                particle.animate([
-                    { transform: 'scale(0)', opacity: 1 },
-                    { transform: 'scale(1)', opacity: 0.8 },
-                    { transform: 'scale(0)', opacity: 0 }
-                ], {
-                    duration: 1000 + Math.random() * 500,
-                    easing: 'ease-out'
-                }).onfinish = () => {
-                    if (particle.parentNode) {
-                        particle.parentNode.removeChild(particle);
-                    }
-                };
-            }
-
-            createShockwave() {
-                const shockwave = document.createElement('div');
-                shockwave.style.position = 'absolute';
-                shockwave.style.left = '50%';
-                shockwave.style.top = '50%';
-                shockwave.style.width = '20px';
-                shockwave.style.height = '20px';
-                shockwave.style.border = `3px solid ${this.getThemeColor('primary')}`;
-                shockwave.style.borderRadius = '50%';
-                shockwave.style.transform = 'translate(-50%, -50%)';
-                shockwave.style.pointerEvents = 'none';
-                shockwave.style.zIndex = '25';
-                
-                this.effectOverlay.appendChild(shockwave);
-                
-                shockwave.animate([
-                    { transform: 'translate(-50%, -50%) scale(0)', opacity: 1 },
-                    { transform: 'translate(-50%, -50%) scale(10)', opacity: 0 }
-                ], {
-                    duration: 800,
-                    easing: 'ease-out'
-                }).onfinish = () => {
-                    if (shockwave.parentNode) {
-                        shockwave.parentNode.removeChild(shockwave);
-                    }
-                };
-            }
-
-            createLightningEffect() {
-                const lightning = document.createElement('div');
-                lightning.style.position = 'absolute';
-                lightning.style.top = '0';
-                lightning.style.left = '0';
-                lightning.style.width = '100%';
-                lightning.style.height = '100%';
-                lightning.style.background = `linear-gradient(${Math.random() * 360}deg, transparent, ${this.getThemeColor('secondary')}, transparent)`;
-                lightning.style.pointerEvents = 'none';
-                lightning.style.zIndex = '25';
-                
-                this.effectOverlay.appendChild(lightning);
-                
-                setTimeout(() => {
-                    if (lightning.parentNode) {
-                        lightning.parentNode.removeChild(lightning);
-                    }
-                }, 150);
-            }
-
-            createBassDropEffect() {
-                const container = this.effectOverlay;
-                for (let i = 0; i < 12; i++) {
-                    const ripple = document.createElement('div');
-                    ripple.style.position = 'absolute';
-                    ripple.style.left = '50%';
-                    ripple.style.top = '50%';
-                    ripple.style.width = '10px';
-                    ripple.style.height = '10px';
-                    ripple.style.background = this.getThemeColor('accent');
-                    ripple.style.borderRadius = '50%';
-                    ripple.style.transform = 'translate(-50%, -50%)';
-                    ripple.style.pointerEvents = 'none';
-                    ripple.style.zIndex = '25';
-                    
-                    container.appendChild(ripple);
-                    
-                    const angle = (i / 12) * 2 * Math.PI;
-                    const distance = 300;
-                    
-                    ripple.animate([
-                        { 
-                            transform: 'translate(-50%, -50%) scale(1)',
-                            opacity: 1
-                        },
-                        { 
-                            transform: `translate(calc(-50% + ${Math.cos(angle) * distance}px), calc(-50% + ${Math.sin(angle) * distance}px)) scale(0)`,
-                            opacity: 0
-                        }
-                    ], {
-                        duration: 1000,
-                        easing: 'ease-out',
-                        delay: i * 50
-                    }).onfinish = () => {
-                        if (ripple.parentNode) {
-                            ripple.parentNode.removeChild(ripple);
-                        }
-                    };
-                }
-            }
-
-            getThemeColors() {
-                const themes = {
-                    neon: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7'],
-                    fire: ['#ff6b35', '#f7931e', '#ffd23f', '#ee5a24', '#e17055'],
-                    ocean: ['#0984e3', '#74b9ff', '#00cec9', '#00b894', '#55a3ff'],
-                    sunset: ['#fd79a8', '#fdcb6e', '#e17055', '#a29bfe', '#fd79a8'],
-                    cyber: ['#00ff88', '#ff0088', '#8800ff', '#0088ff', '#ff8800']
-                };
-                return themes[this.colorTheme] || themes.neon;
-            }
-
-            getThemeColor(type) {
-                const colors = this.getThemeColors();
-                const index = {
-                    primary: 0,
-                    secondary: 1,
-                    accent: 2
-                };
-                return colors[index[type]] || colors[0];
             }
 
             switchMedia() {
@@ -1331,88 +1564,63 @@
                     video.className = 'preview-media';
                     video.muted = true;
                     video.loop = true;
-                    video.play();
+                    video.autoplay = true;
+                    video.playsInline = true;
                     this.previewContent.innerHTML = '';
                     this.previewContent.appendChild(video);
                 }
             }
-
-            updateFrequencyDisplay(beatData) {
-                document.getElementById('bassLevel').textContent = Math.round(beatData.bass * 100);
-                document.getElementById('midLevel').textContent = Math.round(beatData.mid * 100);
-                document.getElementById('highLevel').textContent = Math.round(beatData.high * 100);
-                document.getElementById('bpmDisplay').textContent = beatData.bpm || 0;
-            }
         }
 
-        // Main generation function
+        // Generate function
         async function generateClip() {
             if (!currentAudio && !selectedMusic) {
-                updateStatus('❌ Please select music from the library or upload an audio file!');
+                updateStatus('❌ Please select music from Step 1!');
+                goToStep(1);
                 return;
             }
 
             const generateBtn = document.getElementById('generateBtn');
             generateBtn.disabled = true;
-            generateBtn.innerHTML = '<span class="loading-spinner"></span> Generating Magic...';
+            generateBtn.innerHTML = '<span class="loading-spinner"></span> Creating Magic...';
 
             try {
-                // Initialize audio context
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 analyser = audioContext.createAnalyser();
-                analyser.fftSize = 512;
-                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 256;
                 
-                // Create audio element
                 const audioElement = document.createElement('audio');
-                
-                if (selectedMusic) {
-                    audioElement.src = selectedMusic.url;
-                } else {
-                    audioElement.src = URL.createObjectURL(currentAudio);
-                }
-                
+                audioElement.src = URL.createObjectURL(currentAudio);
                 audioElement.crossOrigin = 'anonymous';
-                audioElement.preload = 'auto';
                 
-                // Connect audio nodes
                 audioSource = audioContext.createMediaElementSource(audioElement);
                 audioSource.connect(analyser);
                 analyser.connect(audioContext.destination);
                 
-                // Initialize engines
-                beatDetector = new AdvancedBeatDetector(audioContext, analyser);
-                effectsEngine = new AdvancedEffectsEngine();
+                beatDetector = new BeatDetector(audioContext, analyser);
+                effectsEngine = new EffectsEngine();
                 
-                // Setup initial media
                 if (currentMedia.length > 0) {
                     effectsEngine.switchMedia();
                 } else {
-                    // Create default visual
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 800;
-                    canvas.height = 450;
-                    canvas.className = 'preview-media';
-                    const ctx = canvas.getContext('2d');
-                    
-                    ctx.fillStyle = 'linear-gradient(45deg, #667eea, #764ba2)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = 'white';
-                    ctx.font = '48px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('🎵 Audio Visualizer', canvas.width/2, canvas.height/2);
-                    
+                    const defaultDiv = document.createElement('div');
+                    defaultDiv.style.cssText = `
+                        width: 100%; height: 100%;
+                        background: linear-gradient(45deg, #667eea, #764ba2);
+                        display: flex; align-items: center; justify-content: center;
+                        color: white; font-size: 2rem; text-align: center;
+                        padding: 20px;
+                    `;
+                    defaultDiv.innerHTML = '🎵<br>Visualizer';
                     document.getElementById('previewContent').innerHTML = '';
-                    document.getElementById('previewContent').appendChild(canvas);
+                    document.getElementById('previewContent').appendChild(defaultDiv);
                 }
                 
-                // Start playback
                 await audioElement.play();
                 isPlaying = true;
                 
-                updateStatus('🎵 AI analyzing music... Creating beat-synced magic!');
+                updateStatus('🎵 AI analyzing and syncing...');
                 
-                // Animation loop
                 function animate() {
                     if (!isPlaying) return;
                     
@@ -1421,29 +1629,26 @@
                     updateAudioVisualizer();
                     updateProgress(audioElement);
                     
-                    animationId = requestAnimationFrame(animate);
+                    requestAnimationFrame(animate);
                 }
                 
                 animate();
                 
-                // Auto-stop after duration
                 const duration = parseInt(document.getElementById('duration').value) * 1000;
                 setTimeout(() => {
                     audioElement.pause();
                     isPlaying = false;
-                    if (animationId) {
-                        cancelAnimationFrame(animationId);
-                    }
-                    updateStatus('✅ Beat-synced clip generation completed! 🎉');
+                    updateStatus('✅ Beat-synced clip completed! 🎉');
                     generateBtn.disabled = false;
-                    generateBtn.innerHTML = '🚀 Generate Auto-Synced Clip';
+                    generateBtn.innerHTML = '🎬 Generate Beat-Synced Clip';
+                    markStepCompleted(4);
                 }, duration);
                 
             } catch (error) {
-                console.error('Error generating clip:', error);
-                updateStatus('❌ Error generating clip. Please try different settings.');
+                console.error('Error:', error);
+                updateStatus('❌ Error generating clip. Try again.');
                 generateBtn.disabled = false;
-                generateBtn.innerHTML = '🚀 Generate Auto-Synced Clip';
+                generateBtn.innerHTML = '🎬 Generate Beat-Synced Clip';
             }
         }
 
@@ -1458,17 +1663,8 @@
             
             bars.forEach((bar, index) => {
                 const value = dataArray[index * step];
-                const height = Math.max(3, (value / 255) * 70);
+                const height = Math.max(2, (value / 255) * 50);
                 bar.style.height = height + 'px';
-                
-                // Color based on frequency
-                if (index < bars.length / 3) {
-                    bar.style.background = 'linear-gradient(to top, #ff6b6b, #ff8e8e)'; // Bass
-                } else if (index < bars.length * 2 / 3) {
-                    bar.style.background = 'linear-gradient(to top, #4ecdc4, #7ed7d1)'; // Mid
-                } else {
-                    bar.style.background = 'linear-gradient(to top, #45b7d1, #74c7e0)'; // High
-                }
             });
         }
 
@@ -1488,19 +1684,8 @@
             document.getElementById('status').innerHTML = message;
         }
 
-        // Export functions
-        function exportClip(format) {
-            updateStatus(`🎬 Exporting as ${format.toUpperCase()}... (Feature coming soon!)`);
-            // Implementation for actual export would go here
-        }
-
-        function shareClip() {
-            updateStatus('📤 Share feature coming soon! Save your settings for now.');
-            // Implementation for sharing would go here
-        }
-
-        // Initialize app
-        updateStatus('🎵 Welcome to Auto Beat-Sync Clip Maker Pro! Choose music and start creating!');
+        // Initialize
+        updateStatus('🎵 Welcome! Start with Step 1 to begin!');
     </script>
 </body>
 </html>
