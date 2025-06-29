@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Beat-Sync Clip Maker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .upload-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .upload-area input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .control-group select,
+        .control-group input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .control-group select option {
+            background: #333;
+            color: white;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .preview-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .preview-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-media {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .effect-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .audio-visualizer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 60px;
+            display: flex;
+            align-items: end;
+            gap: 2px;
+            z-index: 15;
+        }
+
+        .audio-bar {
+            flex: 1;
+            background: linear-gradient(to top, #ff6b6b, #4ecdc4);
+            border-radius: 2px;
+            transition: height 0.1s ease;
+            opacity: 0.8;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .beat-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            z-index: 15;
+            opacity: 0;
+            transition: opacity 0.1s ease;
+        }
+
+        .beat-active {
+            opacity: 1;
+            animation: beatPulse 0.2s ease;
+        }
+
+        @keyframes beatPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
+        .effect-flash {
+            animation: flashEffect 0.3s ease;
+        }
+
+        @keyframes flashEffect {
+            0% { filter: brightness(1) contrast(1); }
+            50% { filter: brightness(1.5) contrast(1.2) saturate(1.3); }
+            100% { filter: brightness(1) contrast(1); }
+        }
+
+        .effect-zoom {
+            animation: zoomEffect 0.5s ease;
+        }
+
+        @keyframes zoomEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .effect-shake {
+            animation: shakeEffect 0.3s ease;
+        }
+
+        @keyframes shakeEffect {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 Auto Beat-Sync Clip Maker</h1>
+            <p>Upload your media and let AI sync it perfectly to the music beat!</p>
+        </div>
+
+        <div class="upload-section">
+            <h3 style="margin-bottom: 20px;">📁 Upload Your Content</h3>
+            <div class="upload-grid">
+                <div class="upload-area" onclick="document.getElementById('audioFile').click()">
+                    <input type="file" id="audioFile" accept="audio/*,video/*" multiple>
+                    <div class="upload-icon">🎵</div>
+                    <h4>Audio/Music</h4>
+                    <p>Upload your track (.mp3, .wav, .mp4)</p>
+                </div>
+                
+                <div class="upload-area" onclick="document.getElementById('mediaFile').click()">
+                    <input type="file" id="mediaFile" accept="image/*,video/*" multiple>
+                    <div class="upload-icon">🎬</div>
+                    <h4>Images/Videos</h4>
+                    <p>Upload your visuals (.jpg, .png, .mp4)</p>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label>🎛️ Effect Style</label>
+                    <select id="effectStyle">
+                        <option value="auto">Auto-Detect</option>
+                        <option value="electronic">Electronic/EDM</option>
+                        <option value="hip-hop">Hip-Hop/Rap</option>
+                        <option value="rock">Rock/Metal</option>
+                        <option value="pop">Pop/Dance</option>
+                        <option value="chill">Chill/Ambient</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label>⚡ Effect Intensity</label>
+                    <input type="range" id="intensity" min="1" max="10" value="7">
+                </div>
+                
+                <div class="control-group">
+                    <label>⏱️ Clip Duration (sec)</label>
+                    <input type="number" id="duration" min="5" max="60" value="15">
+                </div>
+                
+                <div class="control-group">
+                    <label>🎯 Beat Sensitivity</label>
+                    <input type="range" id="sensitivity" min="1" max="10" value="6">
+                </div>
+            </div>
+
+            <button class="generate-btn" id="generateBtn" onclick="generateClip()">
+                🚀 Generate Auto-Synced Clip
+            </button>
+        </div>
+
+        <div class="preview-section">
+            <h3 style="margin-bottom: 20px;">👀 Preview</h3>
+            <div class="preview-container">
+                <div class="preview-content" id="previewContent">
+                    <p style="opacity: 0.7;">Your auto-generated clip will appear here...</p>
+                </div>
+                <div class="effect-overlay" id="effectOverlay"></div>
+                <div class="beat-indicator" id="beatIndicator"></div>
+                <div class="audio-visualizer" id="audioVisualizer"></div>
+            </div>
+            <div class="status" id="status">Ready to create your beat-synced masterpiece!</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let audioContext, analyser, dataArray, audioSource;
+        let currentAudio = null;
+        let currentMedia = [];
+        let isPlaying = false;
+        let beatDetector = null;
+        let effectsTimer = null;
+
+        // Initialize audio visualizer
+        function initAudioVisualizer() {
+            const visualizer = document.getElementById('audioVisualizer');
+            for (let i = 0; i < 50; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'audio-bar';
+                bar.style.height = '5px';
+                visualizer.appendChild(bar);
+            }
+        }
+
+        // File upload handlers
+        document.getElementById('audioFile').addEventListener('change', handleAudioUpload);
+        document.getElementById('mediaFile').addEventListener('change', handleMediaUpload);
+
+        async function handleAudioUpload(event) {
+            const files = Array.from(event.target.files);
+            if (files.length > 0) {
+                const file = files[0];
+                currentAudio = file;
+                updateStatus(`🎵 Audio loaded: ${file.name}`);
+                
+                // Create preview audio element
+                const audio = document.createElement('audio');
+                audio.src = URL.createObjectURL(file);
+                audio.controls = true;
+                audio.style.width = '100%';
+                
+                document.getElementById('previewContent').innerHTML = '';
+                document.getElementById('previewContent').appendChild(audio);
+            }
+        }
+
+        async function handleMediaUpload(event) {
+            const files = Array.from(event.target.files);
+            currentMedia = files;
+            updateStatus(`🎬 ${files.length} media files loaded`);
+        }
+
+        // Audio analysis and beat detection
+        class BeatDetector {
+            constructor(audioContext, analyser) {
+                this.audioContext = audioContext;
+                this.analyser = analyser;
+                this.bufferSize = analyser.frequencyBinCount;
+                this.dataArray = new Uint8Array(this.bufferSize);
+                this.lastBeatTime = 0;
+                this.beatThreshold = 0.3;
+                this.bassRange = [0, 5];
+                this.midRange = [5, 15];
+                this.highRange = [15, 30];
+            }
+
+            detectBeat() {
+                this.analyser.getByteFrequencyData(this.dataArray);
+                
+                // Calculate frequency ranges
+                const bassEnergy = this.getFrequencyRangeEnergy(this.bassRange);
+                const midEnergy = this.getFrequencyRangeEnergy(this.midRange);
+                const highEnergy = this.getFrequencyRangeEnergy(this.highRange);
+                
+                const totalEnergy = bassEnergy + midEnergy + highEnergy;
+                const normalizedEnergy = totalEnergy / 255;
+                
+                const now = this.audioContext.currentTime;
+                const timeSinceLastBeat = now - this.lastBeatTime;
+                
+                // Beat detection logic
+                if (normalizedEnergy > this.beatThreshold && timeSinceLastBeat > 0.2) {
+                    this.lastBeatTime = now;
+                    return {
+                        detected: true,
+                        energy: normalizedEnergy,
+                        bass: bassEnergy / 255,
+                        mid: midEnergy / 255,
+                        high: highEnergy / 255
+                    };
+                }
+                
+                return {
+                    detected: false,
+                    energy: normalizedEnergy,
+                    bass: bassEnergy / 255,
+                    mid: midEnergy / 255,
+                    high: highEnergy / 255
+                };
+            }
+
+            getFrequencyRangeEnergy(range) {
+                let energy = 0;
+                for (let i = range[0]; i < Math.min(range[1], this.dataArray.length); i++) {
+                    energy += this.dataArray[i];
+                }
+                return energy / (range[1] - range[0]);
+            }
+        }
+
+        // Effect system
+        class EffectEngine {
+            constructor() {
+                this.previewContent = document.getElementById('previewContent');
+                this.effectOverlay = document.getElementById('effectOverlay');
+                this.beatIndicator = document.getElementById('beatIndicator');
+                this.currentMedia = null;
+                this.mediaIndex = 0;
+            }
+
+            applyBeatEffect(beatData) {
+                if (!beatData.detected) return;
+
+                // Beat indicator
+                this.beatIndicator.classList.add('beat-active');
+                setTimeout(() => {
+                    this.beatIndicator.classList.remove('beat-active');
+                }, 200);
+
+                // Apply visual effects based on frequency content
+                if (beatData.bass > 0.7) {
+                    this.applyBassEffect();
+                } else if (beatData.high > 0.6) {
+                    this.applyHighEffect();
+                } else {
+                    this.applyMidEffect();
+                }
+
+                // Change media on strong beats
+                if (beatData.energy > 0.8 && currentMedia.length > 1) {
+                    this.switchMedia();
+                }
+            }
+
+            applyBassEffect() {
+                this.previewContent.classList.add('effect-zoom');
+                this.createParticleEffect('bass');
+                setTimeout(() => {
+                    this.previewContent.classList.remove('effect-zoom');
+                }, 500);
+            }
+
+            applyHighEffect() {
+                this.previewContent.classList.add('effect-flash');
+                this.createParticleEffect('high');
+                setTimeout(() => {
+                    this.previewContent.classList.remove('effect-flash');
+                }, 300);
+            }
+
+            applyMidEffect() {
+                this.previewContent.classList.add('effect-shake');
+                setTimeout(() => {
+                    this.previewContent.classList.remove('effect-shake');
+                }, 300);
+            }
+
+            createParticleEffect(type) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '10px';
+                particle.style.height = '10px';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '20';
+                
+                if (type === 'bass') {
+                    particle.style.background = '#ff6b6b';
+                    particle.style.left = '50%';
+                    particle.style.top = '50%';
+                } else if (type === 'high') {
+                    particle.style.background = '#4ecdc4';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                }
+                
+                this.effectOverlay.appendChild(particle);
+                
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 1000);
+            }
+
+            switchMedia() {
+                if (currentMedia.length === 0) return;
+                
+                this.mediaIndex = (this.mediaIndex + 1) % currentMedia.length;
+                const file = currentMedia[this.mediaIndex];
+                
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.className = 'preview-media';
+                    this.previewContent.innerHTML = '';
+                    this.previewContent.appendChild(img);
+                } else if (file.type.startsWith('video/')) {
+                    const video = document.createElement('video');
+                    video.src = URL.createObjectURL(file);
+                    video.className = 'preview-media';
+                    video.muted = true;
+                    video.loop = true;
+                    video.play();
+                    this.previewContent.innerHTML = '';
+                    this.previewContent.appendChild(video);
+                }
+            }
+        }
+
+        // Generate clip function
+        async function generateClip() {
+            if (!currentAudio) {
+                updateStatus('❌ Please upload an audio file first!');
+                return;
+            }
+
+            const generateBtn = document.getElementById('generateBtn');
+            generateBtn.disabled = true;
+            generateBtn.textContent = '🔄 Generating...';
+
+            try {
+                // Initialize audio context
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                
+                // Load and play audio
+                const audioElement = document.createElement('audio');
+                audioElement.src = URL.createObjectURL(currentAudio);
+                audioElement.crossOrigin = 'anonymous';
+                
+                audioSource = audioContext.createMediaElementSource(audioElement);
+                audioSource.connect(analyser);
+                analyser.connect(audioContext.destination);
+                
+                // Initialize beat detector and effects
+                beatDetector = new BeatDetector(audioContext, analyser);
+                const effectEngine = new EffectEngine();
+                
+                // Setup initial media if available
+                if (currentMedia.length > 0) {
+                    effectEngine.switchMedia();
+                }
+                
+                // Start audio
+                audioElement.play();
+                isPlaying = true;
+                
+                // Animation loop for effects and visualization
+                function animate() {
+                    if (!isPlaying) return;
+                    
+                    const beatData = beatDetector.detectBeat();
+                    effectEngine.applyBeatEffect(beatData);
+                    updateAudioVisualizer();
+                    
+                    requestAnimationFrame(animate);
+                }
+                
+                animate();
+                
+                // Auto-stop after duration
+                const duration = parseInt(document.getElementById('duration').value) * 1000;
+                setTimeout(() => {
+                    audioElement.pause();
+                    isPlaying = false;
+                    updateStatus('✅ Clip generation completed!');
+                    generateBtn.disabled = false;
+                    generateBtn.textContent = '🚀 Generate Auto-Synced Clip';
+                }, duration);
+                
+                updateStatus('🎵 Auto-syncing to beat... Watch the magic happen!');
+                
+            } catch (error) {
+                console.error('Error generating clip:', error);
+                updateStatus('❌ Error generating clip. Please try again.');
+                generateBtn.disabled = false;
+                generateBtn.textContent = '🚀 Generate Auto-Synced Clip';
+            }
+        }
+
+        function updateAudioVisualizer() {
+            if (!analyser) return;
+            
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(dataArray);
+            
+            const bars = document.querySelectorAll('.audio-bar');
+            const step = Math.floor(dataArray.length / bars.length);
+            
+            bars.forEach((bar, index) => {
+                const value = dataArray[index * step];
+                const height = Math.max(5, (value / 255) * 60);
+                bar.style.height = height + 'px';
+            });
+        }
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        // Initialize
+        initAudioVisualizer();
+        updateStatus('🎵 Ready! Upload your audio and media files to start creating beat-synced clips!');
+    </script>
+</body>
+</html>
