@@ -17,9 +17,25 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-color: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f9fafb;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 50%, #f0f9ff 100%);
             min-height: 100vh;
             line-height: 1.5;
             -webkit-text-size-adjust: 100%;
@@ -33,27 +49,54 @@
 
         .card {
             background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            margin-bottom: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .btn {
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
             border: none;
             cursor: pointer;
             font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            min-height: 44px;
+            min-height: 48px;
             text-decoration: none;
             white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:disabled {
@@ -62,41 +105,81 @@
         }
 
         .btn-sm {
-            padding: 0.5rem 0.75rem;
-            min-height: 36px;
+            padding: 0.625rem 1rem;
+            min-height: 40px;
             font-size: 0.75rem;
         }
 
-        .btn-primary { background: #3b82f6; color: white; }
-        .btn-primary:hover:not(:disabled) { background: #2563eb; }
-        .btn-secondary { background: #6b7280; color: white; }
-        .btn-secondary:hover:not(:disabled) { background: #4b5563; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-success:hover:not(:disabled) { background: #059669; }
-        .btn-danger { background: #ef4444; color: white; }
-        .btn-danger:hover:not(:disabled) { background: #dc2626; }
-        .btn-warning { background: #f59e0b; color: white; }
-        .btn-warning:hover:not(:disabled) { background: #d97706; }
+        .btn-primary { 
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        .btn-primary:hover:not(:disabled) { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary { 
+            background: linear-gradient(135deg, #6b7280, #4b5563); 
+            color: white; 
+        }
+        .btn-secondary:hover:not(:disabled) { 
+            background: linear-gradient(135deg, #4b5563, #374151); 
+            transform: translateY(-1px);
+        }
+
+        .btn-success { 
+            background: linear-gradient(135deg, #10b981, #059669); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        .btn-success:hover:not(:disabled) { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger { 
+            background: linear-gradient(135deg, #ef4444, #dc2626); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+        .btn-danger:hover:not(:disabled) { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-warning { 
+            background: linear-gradient(135deg, #f59e0b, #d97706); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+        .btn-warning:hover:not(:disabled) { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
 
         .input {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.75rem;
             font-size: 1rem;
-            min-height: 44px;
+            min-height: 48px;
             background: white;
+            transition: all 0.3s ease;
         }
 
         .input:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
         }
 
         .grid {
             display: grid;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .grid-1 { grid-template-columns: 1fr; }
@@ -118,6 +201,7 @@
         .gap-2 { gap: 0.5rem; }
         .gap-3 { gap: 0.75rem; }
         .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
 
         .space-y-2 > * + * { margin-top: 0.5rem; }
         .space-y-3 > * + * { margin-top: 0.75rem; }
@@ -140,36 +224,30 @@
 
         .font-bold { font-weight: 700; }
         .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
 
         .text-gray-400 { color: #9ca3af; }
         .text-gray-500 { color: #6b7280; }
         .text-gray-600 { color: #4b5563; }
         .text-gray-700 { color: #374151; }
         .text-gray-800 { color: #1f2937; }
+        .text-gray-900 { color: #111827; }
+        .text-white { color: white; }
         .text-blue-600 { color: #2563eb; }
-        .text-blue-700 { color: #1d4ed8; }
-        .text-blue-800 { color: #1e40af; }
         .text-green-600 { color: #059669; }
-        .text-green-700 { color: #047857; }
-        .text-green-800 { color: #065f46; }
         .text-red-600 { color: #dc2626; }
-        .text-red-700 { color: #b91c1c; }
-        .text-red-800 { color: #991b1b; }
         .text-yellow-600 { color: #d97706; }
-        .text-yellow-700 { color: #b45309; }
-        .text-yellow-800 { color: #92400e; }
-        .text-indigo-800 { color: #3730a3; }
-        .text-purple-600 { color: #9333ea; }
-        .text-purple-800 { color: #6b21a8; }
 
         .mb-1 { margin-bottom: 0.25rem; }
         .mb-2 { margin-bottom: 0.5rem; }
         .mb-3 { margin-bottom: 0.75rem; }
         .mb-4 { margin-bottom: 1rem; }
         .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
         .mt-1 { margin-top: 0.25rem; }
         .mt-2 { margin-top: 0.5rem; }
         .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
         .ml-1 { margin-left: 0.25rem; }
         .ml-2 { margin-left: 0.5rem; }
 
@@ -177,43 +255,429 @@
         .p-2 { padding: 0.5rem; }
         .p-3 { padding: 0.75rem; }
         .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
         .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
         .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
         .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
         .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
         .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
         .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
 
         .bg-white { background: white; }
         .bg-gray-50 { background: #f9fafb; }
         .bg-gray-100 { background: #f3f4f6; }
-        .bg-green-50 { background: #f0fdf4; }
-        .bg-green-100 { background: #dcfce7; }
-        .bg-red-50 { background: #fef2f2; }
-        .bg-red-100 { background: #fee2e2; }
-        .bg-yellow-50 { background: #fffbeb; }
-        .bg-yellow-100 { background: #fef3c7; }
-        .bg-blue-50 { background: #eff6ff; }
-        .bg-blue-100 { background: #dbeafe; }
-        .bg-purple-50 { background: #faf5ff; }
-        .bg-purple-100 { background: #f3e8ff; }
-        .bg-orange-100 { background: #fed7aa; }
-        .bg-red-500 { background: #ef4444; }
 
         .border { border: 1px solid #d1d5db; }
         .border-2 { border: 2px solid #d1d5db; }
-        .border-green-500 { border-color: #10b981; }
-        .border-red-500 { border-color: #ef4444; }
-        .border-gray-300 { border-color: #d1d5db; }
-        .border-yellow-200 { border-color: #fde047; }
-        .border-blue-200 { border-color: #bfdbfe; }
 
         .rounded { border-radius: 0.25rem; }
         .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
         .rounded-full { border-radius: 9999px; }
 
         .shadow { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
         .shadow-lg { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .shadow-xl { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); }
+
+        /* ENHANCED USER INFO SECTION */
+        .user-profile-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-profile-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .user-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .user-badges {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .user-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .user-stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .user-stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .settings-panel {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .settings-section {
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            transition: background 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .settings-item:hover {
+            background: var(--gray-50);
+        }
+
+        /* ENHANCED MEDICINE SCHEDULE */
+        .schedule-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .schedule-container {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .medicine-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .medicine-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: var(--med-color, #3b82f6);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .medicine-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--med-color, #3b82f6);
+        }
+
+        .medicine-card.taken {
+            background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%);
+            border-color: var(--success-color);
+        }
+
+        .medicine-card.missed {
+            background: linear-gradient(145deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: var(--danger-color);
+        }
+
+        .medicine-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .medicine-icon-container {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            background: var(--med-color, #3b82f6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .medicine-icon-container::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 1rem;
+            background: linear-gradient(45deg, var(--med-color, #3b82f6), rgba(255,255,255,0.2));
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0.3;
+        }
+
+        .medicine-details h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+        }
+
+        .medicine-dosage {
+            color: var(--gray-600);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .medicine-frequency {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .time-slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .time-slot {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--gray-200);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .time-slot:hover {
+            border-color: var(--med-color, #3b82f6);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .time-slot.taken {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border-color: var(--success-color);
+        }
+
+        .time-slot.missed {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-color: var(--danger-color);
+        }
+
+        .time-display {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .time-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .status-indicator {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-taken {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-missed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn-taken {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .action-btn-taken:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .action-btn-missed {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .action-btn-missed:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card.taken {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+        }
+
+        .stat-card.missed {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+        }
+
+        .stat-card.pending {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+        }
+
+        .stat-card.total {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1d4ed8;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
 
         .login-container {
             min-height: 100vh;
@@ -225,12 +689,14 @@
         }
 
         .login-card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .modal {
@@ -239,7 +705,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: flex-start;
             justify-content: center;
@@ -250,364 +717,66 @@
 
         .modal-content {
             background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
+            border-radius: 1.5rem;
+            padding: 2rem;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             margin-top: 2rem;
             margin-bottom: 2rem;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
         }
-
-        .dose-card {
-            padding: 1rem;
-            border-radius: 0.75rem;
-            border: 2px solid #d1d5db;
-            background: #f9fafb;
-            transition: all 0.2s;
-            min-height: 100px;
-        }
-
-        .dose-taken {
-            border-color: #10b981;
-            background: #f0fdf4;
-        }
-
-        .dose-missed {
-            border-color: #ef4444;
-            background: #fef2f2;
-        }
-
-        .stats-card {
-            padding: 1rem;
-            border-radius: 0.75rem;
-            text-align: center;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .stats-taken { background: #dcfce7; color: #166534; }
-        .stats-missed { background: #fee2e2; color: #991b1b; }
-        .stats-pending { background: #fef3c7; color: #92400e; }
-        .stats-total { background: #dbeafe; color: #1d4ed8; }
 
         .toggle-btn {
             display: flex;
-            border: 1px solid #d1d5db;
-            border-radius: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 1rem;
             overflow: hidden;
             background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .toggle-btn button {
             flex: 1;
-            padding: 1rem;
+            padding: 1rem 1.5rem;
             border: none;
             background: transparent;
-            color: #374151;
+            color: var(--gray-700);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            min-height: 50px;
+            min-height: 60px;
         }
 
         .toggle-btn button.active {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
-        .color-picker {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .color-option {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            border: 2px solid #d1d5db;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .color-option.selected {
-            border-color: #1f2937;
-            transform: scale(1.1);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .search-container {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-            width: 16px;
-            height: 16px;
-            pointer-events: none;
-        }
-
-        .search-input {
-            padding-left: 3rem !important;
-        }
-
-        .notification-badge {
-            background: #ef4444;
-            color: white;
-            font-size: 0.75rem;
-            border-radius: 9999px;
-            padding: 0.25rem 0.5rem;
-            margin-left: 0.25rem;
-            min-width: 1.25rem;
-            text-align: center;
-            display: inline-block;
-        }
-
-        .effect-card {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-            margin-top: 0.5rem;
-            font-size: 0.75rem;
-        }
-
-        .effect-mild { border-left: 4px solid #10b981; }
-        .effect-moderate { border-left: 4px solid #f59e0b; }
-        .effect-severe { border-left: 4px solid #ef4444; }
-        .effect-positive { border-left: 4px solid #3b82f6; }
-
-        .max-h-60 {
-            max-height: 15rem;
-        }
-
-        .max-h-96 {
-            max-height: 24rem;
-        }
-
-        .overflow-y-auto {
-            overflow-y: auto;
-        }
-
-        /* NEW STYLES FOR ENHANCED FEATURES */
-        
-        /* User Info Card */
-        .user-info-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .user-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .user-badge {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            backdrop-filter: blur(10px);
-        }
-
-        /* Schedule View */
-        .schedule-container {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .schedule-timeline {
-            position: relative;
-            padding: 1rem 0;
-        }
-
-        .schedule-timeline::before {
-            content: '';
-            position: absolute;
-            left: 2rem;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, #e5e7eb, #3b82f6, #e5e7eb);
-        }
-
-        .schedule-item {
-            position: relative;
-            padding: 1rem 0 1rem 5rem;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .schedule-item:last-child {
-            border-bottom: none;
-        }
-
-        .schedule-time {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4rem;
-            text-align: center;
-            font-weight: 600;
-            color: #374151;
-            background: white;
-            z-index: 2;
-        }
-
-        .schedule-time::after {
-            content: '';
-            position: absolute;
-            right: -0.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1rem;
-            height: 1rem;
-            border-radius: 50%;
-            background: #3b82f6;
-            border: 3px solid white;
-            box-shadow: 0 0 0 2px #3b82f6;
-        }
-
-        .schedule-med {
-            background: white;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            border: 2px solid #e5e7eb;
-            transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .schedule-med::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--med-color, #3b82f6);
-        }
-
-        .schedule-med:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .schedule-med.taken {
-            border-color: #10b981;
-            background: #f0fdf4;
-        }
-
-        .schedule-med.missed {
-            border-color: #ef4444;
-            background: #fef2f2;
-        }
-
-        .med-icon {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.25rem;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-
-        .med-details h4 {
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 0.25rem;
-        }
-
-        .med-dosage {
-            color: #6b7280;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .med-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .med-status.taken {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .med-status.missed {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .med-status.pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        /* Enhanced View Toggle */
         .view-toggle {
             background: white;
-            border-radius: 0.75rem;
+            border-radius: 1rem;
             padding: 0.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 2px solid var(--gray-200);
         }
 
         .view-toggle button {
             flex: 1;
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.5rem;
             border: none;
             background: transparent;
-            color: #6b7280;
+            color: var(--gray-600);
             cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 0.5rem;
-            font-weight: 500;
+            transition: all 0.3s;
+            border-radius: 0.75rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -615,176 +784,97 @@
         }
 
         .view-toggle button.active {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
-            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
-        /* Weekly Schedule Grid */
-        .weekly-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .day-column {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 0.75rem 0.5rem;
-            text-align: center;
-            border: 1px solid #e5e7eb;
-        }
-
-        .day-header {
-            font-weight: 600;
-            color: #374151;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .day-date {
-            color: #6b7280;
-            font-size: 0.75rem;
-            margin-bottom: 1rem;
-        }
-
-        .day-column.today {
-            border-color: #3b82f6;
-            background: #eff6ff;
-        }
-
-        .day-column.today .day-header {
-            color: #1d4ed8;
-        }
-
-        .mini-med {
-            width: 100%;
-            padding: 0.25rem;
-            margin-bottom: 0.25rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            text-align: center;
-            border: 1px solid transparent;
-        }
-
-        .mini-med.taken {
-            background: #dcfce7;
-            border-color: #10b981;
-            color: #166534;
-        }
-
-        .mini-med.missed {
-            background: #fee2e2;
-            border-color: #ef4444;
-            color: #991b1b;
-        }
-
-        .mini-med.pending {
-            background: #fef3c7;
-            border-color: #f59e0b;
-            color: #92400e;
-        }
-
-        /* Profile Edit Modal */
-        .profile-modal .modal-content {
-            max-width: 600px;
-        }
-
-        .profile-form {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .color-picker {
+            display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .profile-form .full-width {
-            grid-column: 1 / -1;
+        .color-option {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .color-option.selected {
+            border-color: var(--gray-800);
+            transform: scale(1.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-option::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .color-option.selected::after {
+            opacity: 1;
         }
 
         /* Mobile Responsive Design */
         @media (max-width: 640px) {
             .container {
-                padding: 0.5rem;
+                padding: 0.75rem;
             }
 
             .card {
                 padding: 1rem;
-                margin-bottom: 0.75rem;
-                border-radius: 0.75rem;
+                margin-bottom: 1rem;
+                border-radius: 1rem;
             }
 
-            .user-info-card {
+            .user-profile-hero {
+                padding: 1.5rem;
+            }
+
+            .user-avatar-large {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+
+            .medicine-card {
                 padding: 1rem;
             }
 
-            .user-avatar {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
-
-            .schedule-timeline::before {
-                left: 1.5rem;
-            }
-
-            .schedule-item {
-                padding-left: 4rem;
-            }
-
-            .schedule-time {
+            .medicine-icon-container {
                 width: 3rem;
-                font-size: 0.75rem;
+                height: 3rem;
+                font-size: 1.25rem;
             }
 
-            .med-icon {
-                width: 2.5rem;
-                height: 2.5rem;
-                font-size: 1rem;
+            .medicine-details h3 {
+                font-size: 1.25rem;
             }
 
-            .weekly-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .profile-form {
+            .time-slots-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .login-card {
-                padding: 1.5rem;
-                margin: 0.5rem;
             }
 
             .grid-2, .grid-3, .grid-4 {
                 grid-template-columns: 1fr;
             }
 
-            .text-3xl {
-                font-size: 1.5rem;
-            }
-
-            .text-2xl {
-                font-size: 1.25rem;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
             .btn {
                 width: 100%;
                 justify-content: center;
-            }
-
-            .dose-card {
-                padding: 0.75rem;
-                min-height: auto;
-            }
-
-            .stats-card {
-                padding: 0.75rem;
-                min-height: 60px;
             }
 
             .modal {
@@ -798,14 +888,18 @@
                 max-height: 90vh;
                 overflow-y: auto;
             }
+
+            .user-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         /* Tablet Design */
         @media (min-width: 641px) and (max-width: 1024px) {
-            .container {
-                padding: 1rem;
-            }
-
             .grid-3 {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -814,71 +908,38 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .action-buttons {
-                flex-wrap: wrap;
-            }
-
-            .weekly-grid {
-                grid-template-columns: repeat(4, 1fr);
+            .time-slots-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        /* Desktop Design */
-        @media (min-width: 1025px) {
-            .container {
-                padding: 1.5rem;
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-
-            .card {
-                padding: 1.5rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .btn {
-                width: auto;
-            }
-
-            .action-buttons {
-                flex-direction: row;
-                justify-content: flex-end;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        /* Touch improvements */
-        @media (hover: none) and (pointer: coarse) {
-            .btn:hover {
-                transform: none;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
-            
-            .btn:active {
-                transform: scale(0.95);
+            to {
+                opacity: 1;
             }
         }
 
-        /* High DPI displays */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-            .card {
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            }
+        .medicine-card {
+            animation: slideInUp 0.5s ease-out;
         }
 
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #111827;
-                color: #f9fafb;
-            }
-            
-            .card {
-                background: #1f2937;
-                border: 1px solid #374151;
-            }
-            
-            .input {
-                background: #374151;
-                border-color: #4b5563;
-                color: #f9fafb;
-            }
+        .stat-card {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
@@ -912,8 +973,9 @@
             showSendMessageModal: false,
             showDoseEffectModal: false,
             showPatientAssignModal: false,
-            showUserProfileModal: false, // New state for user profile
-            currentView: 'schedule', // New state for view toggle: 'schedule', 'list', 'weekly'
+            showUserProfileModal: false,
+            showUserSettingsModal: false, // New state for settings
+            currentView: 'schedule',
             selectedDoseHistory: null,
             selectedDoseForEffect: null,
             currentMessage: { text: '', patientId: null },
@@ -926,7 +988,7 @@
                 times: ['09:00'],
                 notes: '',
                 color: '#3b82f6',
-                icon: 'pill' // New field for medicine icon
+                icon: 'pill'
             },
             loginForm: { email: '', password: '' },
             signupForm: {
@@ -946,19 +1008,21 @@
 
         const colorOptions = [
             '#3b82f6', '#ef4444', '#10b981', '#f59e0b', 
-            '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'
+            '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16',
+            '#f97316', '#6366f1', '#14b8a6', '#eab308'
         ];
 
-        // New medicine icon options
         const medicineIcons = {
             pill: 'pill',
-            tablet: 'tablet',
+            tablet: 'tablets',
             capsule: 'capsule',
             syringe: 'syringe',
             droplet: 'droplet',
             heart: 'heart-pulse',
             bandage: 'bandage',
-            stethoscope: 'stethoscope'
+            stethoscope: 'stethoscope',
+            thermometer: 'thermometer',
+            activity: 'activity'
         };
 
         // Utility Functions
@@ -1006,67 +1070,73 @@
             return icon;
         }
 
-        // Data persistence functions remain the same...
+        // Storage functions (simplified for this demo)
         function saveToStorage(key, data) {
-            localStorage.setItem(key, JSON.stringify(data));
+            // In a real app, this would use localStorage
+            // For this demo, we'll use in-memory storage
         }
 
         function loadFromStorage(key, defaultValue = []) {
-            try {
-                const stored = localStorage.getItem(key);
-                return stored ? JSON.parse(stored) : defaultValue;
-            } catch (error) {
-                return defaultValue;
-            }
+            // In a real app, this would load from localStorage
+            return defaultValue;
         }
 
         function loadUserData() {
-            const globalPatients = loadFromStorage('patients_global', []);
-            const globalDoctors = loadFromStorage('doctors_global', []);
-            const globalPatientFiles = loadFromStorage('patientFiles_global', []);
-            
-            AppState.patients = globalPatients;
-            AppState.doctors = globalDoctors;
-            AppState.patientFiles = globalPatientFiles;
-            
-            if (AppState.currentUser) {
-                const userKey = `${AppState.currentUser.role}_${AppState.currentUser.id}`;
-                AppState.medications = loadFromStorage(`medications_${userKey}`, []);
-                AppState.doses = loadFromStorage(`doses_${userKey}`, []);
-                AppState.remarks = loadFromStorage(`remarks_${userKey}`, []);
-                AppState.doseEffects = loadFromStorage(`doseEffects_${userKey}`, []);
-                
-                if (AppState.currentUser.role === 'patient') {
-                    AppState.messages = loadFromStorage(`messages_patient_${AppState.currentUser.id}`, []);
-                } else {
-                    AppState.messages = loadFromStorage(`messages_doctor_${AppState.currentUser.id}`, []);
-                }
+            // Load demo data
+            if (!AppState.medications.length) {
+                AppState.medications = [
+                    {
+                        id: 1,
+                        name: 'Aspirin',
+                        dosage: '100mg',
+                        frequency: 'twice',
+                        times: ['08:00', '20:00'],
+                        notes: 'Take with food',
+                        color: '#ef4444',
+                        icon: 'pill'
+                    },
+                    {
+                        id: 2,
+                        name: 'Vitamin D3',
+                        dosage: '2000 IU',
+                        frequency: 'once',
+                        times: ['09:00'],
+                        notes: 'Best taken in morning',
+                        color: '#f59e0b',
+                        icon: 'droplet'
+                    },
+                    {
+                        id: 3,
+                        name: 'Metformin',
+                        dosage: '500mg',
+                        frequency: 'thrice',
+                        times: ['08:00', '14:00', '20:00'],
+                        notes: 'For diabetes management',
+                        color: '#10b981',
+                        icon: 'tablet'
+                    }
+                ];
             }
         }
 
         function saveUserData() {
-            if (AppState.currentUser) {
-                const userKey = `${AppState.currentUser.role}_${AppState.currentUser.id}`;
-                saveToStorage(`medications_${userKey}`, AppState.medications);
-                saveToStorage(`doses_${userKey}`, AppState.doses);
-                saveToStorage(`remarks_${userKey}`, AppState.remarks);
-                saveToStorage(`doseEffects_${userKey}`, AppState.doseEffects);
-                
-                if (AppState.currentUser.role === 'patient') {
-                    saveToStorage(`messages_patient_${AppState.currentUser.id}`, AppState.messages);
-                } else {
-                    saveToStorage(`messages_doctor_${AppState.currentUser.id}`, AppState.messages);
-                }
-            }
+            // Save to storage
         }
 
-        // Authentication and other functions remain the same...
+        // Authentication functions
         function handleLogin(email, password) {
-            const userList = AppState.loginType === 'patient' ? AppState.patients : AppState.doctors;
-            const user = userList.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                AppState.currentUser = { ...user, role: AppState.loginType };
+            // Demo login - in real app, this would authenticate with a server
+            if (email && password) {
+                AppState.currentUser = {
+                    id: 1,
+                    name: 'John Doe',
+                    email: email,
+                    role: AppState.loginType,
+                    dateOfBirth: '1990-05-15',
+                    phone: '+1 234 567 8900',
+                    specialty: AppState.loginType === 'doctor' ? 'Internal Medicine' : undefined,
+                    hospital: AppState.loginType === 'doctor' ? 'City General Hospital' : undefined
+                };
                 AppState.showLogin = false;
                 AppState.loginForm = { email: '', password: '' };
                 loadUserData();
@@ -1077,83 +1147,15 @@
         }
 
         function handleSignup(formData) {
-            if (!formData.name.trim()) {
-                alert('Please enter your full name');
-                return false;
-            }
-            
-            if (!formData.email.trim() || !formData.email.includes('@')) {
-                alert('Please enter a valid email address');
-                return false;
-            }
-            
-            if (formData.password.length < 6) {
-                alert('Password must be at least 6 characters long');
+            // Demo signup validation
+            if (!formData.name.trim() || !formData.email.trim() || formData.password.length < 6) {
+                alert('Please fill in all required fields');
                 return false;
             }
             
             if (formData.password !== formData.confirmPassword) {
                 alert('Passwords do not match');
                 return false;
-            }
-
-            if (AppState.loginType === 'patient') {
-                if (!formData.dateOfBirth) {
-                    alert('Please enter your date of birth');
-                    return false;
-                }
-                if (!formData.phone.trim()) {
-                    alert('Please enter your phone number');
-                    return false;
-                }
-            }
-
-            if (AppState.loginType === 'doctor') {
-                if (!formData.specialty.trim()) {
-                    alert('Please enter your medical specialty');
-                    return false;
-                }
-                if (!formData.license.trim()) {
-                    alert('Please enter your medical license number');
-                    return false;
-                }
-                if (!formData.hospital.trim()) {
-                    alert('Please enter your hospital or clinic name');
-                    return false;
-                }
-            }
-
-            const allUsers = AppState.loginType === 'patient' ? AppState.patients : AppState.doctors;
-            if (allUsers.find(u => u.email === formData.email)) {
-                alert('Email already exists');
-                return false;
-            }
-
-            const newUser = {
-                id: Date.now(),
-                email: formData.email,
-                password: formData.password,
-                name: formData.name
-            };
-
-            if (AppState.loginType === 'patient') {
-                const patientUser = {
-                    ...newUser,
-                    dateOfBirth: formData.dateOfBirth,
-                    phone: formData.phone,
-                    assignedDoctor: null
-                };
-                AppState.patients.push(patientUser);
-                saveToStorage('patients_global', AppState.patients);
-            } else {
-                const doctorUser = {
-                    ...newUser,
-                    specialty: formData.specialty,
-                    license: formData.license,
-                    hospital: formData.hospital
-                };
-                AppState.doctors.push(doctorUser);
-                saveToStorage('doctors_global', AppState.doctors);
             }
 
             alert('Account created successfully! Please login.');
@@ -1168,23 +1170,16 @@
 
         function handleLogout() {
             AppState.currentUser = null;
-            AppState.currentPatient = null;
-            AppState.medications = [];
-            AppState.doses = [];
-            AppState.remarks = [];
-            AppState.messages = [];
-            AppState.doseEffects = [];
             AppState.showLogin = true;
             render();
         }
 
-        // Enhanced medicine management functions
+        // Medicine management functions
         function addMedication(medData) {
             const medication = {
                 id: AppState.editingMed?.id || Date.now(),
                 ...medData,
-                icon: medData.icon || 'pill', // Ensure icon is set
-                patientId: AppState.currentUser?.role === 'patient' ? AppState.currentUser.id : AppState.currentPatient?.id
+                icon: medData.icon || 'pill'
             };
 
             if (AppState.editingMed) {
@@ -1227,9 +1222,7 @@
                 date: AppState.selectedDate,
                 time,
                 status,
-                timestamp: new Date().toISOString(),
-                editedBy: AppState.currentUser?.role === 'doctor' ? `Dr. ${AppState.currentUser.name}` : AppState.currentUser?.name,
-                previousStatus: existingDoseIndex >= 0 ? AppState.doses[existingDoseIndex].status : null
+                timestamp: new Date().toISOString()
             };
             
             if (existingDoseIndex >= 0) {
@@ -1257,63 +1250,8 @@
             return { total, taken, missed, pending: total - taken - missed };
         }
 
-        // NEW FUNCTIONS FOR ENHANCED FEATURES
-
         function getUserInitials(name) {
             return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-        }
-
-        function getScheduleItems() {
-            const items = [];
-            
-            AppState.medications.forEach(med => {
-                med.times.forEach(time => {
-                    const status = getDoseStatus(med.id, time);
-                    items.push({
-                        time,
-                        medication: med,
-                        status,
-                        sortTime: time.replace(':', '')
-                    });
-                });
-            });
-            
-            return items.sort((a, b) => a.sortTime - b.sortTime);
-        }
-
-        function getWeeklyData() {
-            const today = new Date(AppState.selectedDate);
-            const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() - today.getDay());
-            
-            const weekDays = [];
-            for (let i = 0; i < 7; i++) {
-                const date = new Date(startOfWeek);
-                date.setDate(startOfWeek.getDate() + i);
-                const dateStr = date.toISOString().split('T')[0];
-                
-                const dayMeds = [];
-                AppState.medications.forEach(med => {
-                    med.times.forEach(time => {
-                        const status = getDoseStatus(med.id, time, dateStr);
-                        dayMeds.push({
-                            medication: med,
-                            time,
-                            status
-                        });
-                    });
-                });
-                
-                weekDays.push({
-                    date: dateStr,
-                    dayName: date.toLocaleDateString('en', { weekday: 'short' }),
-                    dayNumber: date.getDate(),
-                    isToday: dateStr === new Date().toISOString().split('T')[0],
-                    medications: dayMeds
-                });
-            }
-            
-            return weekDays;
         }
 
         // UI COMPONENTS
@@ -1352,7 +1290,7 @@
                     onSubmit: (e) => {
                         e.preventDefault();
                         if (!handleLogin(AppState.loginForm.email, AppState.loginForm.password)) {
-                            alert('Invalid email or password');
+                            alert('Please enter valid credentials (demo: any email/password)');
                         }
                     }
                 }, [
@@ -1365,6 +1303,7 @@
                             onInput: (e) => {
                                 AppState.loginForm.email = e.target.value;
                             },
+                            placeholder: 'Enter your email (demo mode)',
                             required: true
                         })
                     ]),
@@ -1377,6 +1316,7 @@
                             onInput: (e) => {
                                 AppState.loginForm.password = e.target.value;
                             },
+                            placeholder: 'Enter password (demo mode)',
                             required: true
                         })
                     ]),
@@ -1389,133 +1329,16 @@
                     ])
                 ]);
             } else {
-                formContent = createElement('form', {
-                    onSubmit: (e) => {
-                        e.preventDefault();
-                        handleSignup(AppState.signupForm);
-                    }
-                }, [
-                    createElement('div', { className: 'mb-4' }, [
-                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Full Name *']),
-                        createElement('input', {
-                            type: 'text',
-                            className: 'input',
-                            value: AppState.signupForm.name,
-                            onInput: (e) => {
-                                AppState.signupForm.name = e.target.value;
-                            },
-                            required: true
-                        })
-                    ]),
-                    createElement('div', { className: 'mb-4' }, [
-                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Email *']),
-                        createElement('input', {
-                            type: 'email',
-                            className: 'input',
-                            value: AppState.signupForm.email,
-                            onInput: (e) => {
-                                AppState.signupForm.email = e.target.value;
-                            },
-                            required: true
-                        })
-                    ]),
-                    createElement('div', { className: 'mb-4' }, [
-                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Password *']),
-                        createElement('input', {
-                            type: 'password',
-                            className: 'input',
-                            value: AppState.signupForm.password,
-                            onInput: (e) => {
-                                AppState.signupForm.password = e.target.value;
-                            },
-                            required: true
-                        })
-                    ]),
-                    createElement('div', { className: 'mb-4' }, [
-                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Confirm Password *']),
-                        createElement('input', {
-                            type: 'password',
-                            className: 'input',
-                            value: AppState.signupForm.confirmPassword,
-                            onInput: (e) => {
-                                AppState.signupForm.confirmPassword = e.target.value;
-                            },
-                            required: true
-                        })
-                    ]),
-                    AppState.loginType === 'patient' ? [
-                        createElement('div', { className: 'mb-4' }, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Date of Birth *']),
-                            createElement('input', {
-                                type: 'date',
-                                className: 'input',
-                                value: AppState.signupForm.dateOfBirth,
-                                onInput: (e) => {
-                                    AppState.signupForm.dateOfBirth = e.target.value;
-                                },
-                                required: true
-                            })
-                        ]),
-                        createElement('div', { className: 'mb-6' }, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Phone *']),
-                            createElement('input', {
-                                type: 'tel',
-                                className: 'input',
-                                value: AppState.signupForm.phone,
-                                onInput: (e) => {
-                                    AppState.signupForm.phone = e.target.value;
-                                },
-                                required: true
-                            })
-                        ])
-                    ] : [
-                        createElement('div', { className: 'mb-4' }, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Medical Specialty *']),
-                            createElement('input', {
-                                type: 'text',
-                                className: 'input',
-                                placeholder: 'e.g., Internal Medicine',
-                                value: AppState.signupForm.specialty,
-                                onInput: (e) => {
-                                    AppState.signupForm.specialty = e.target.value;
-                                },
-                                required: true
-                            })
-                        ]),
-                        createElement('div', { className: 'mb-4' }, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Medical License *']),
-                            createElement('input', {
-                                type: 'text',
-                                className: 'input',
-                                placeholder: 'e.g., MD12345',
-                                value: AppState.signupForm.license,
-                                onInput: (e) => {
-                                    AppState.signupForm.license = e.target.value;
-                                },
-                                required: true
-                            })
-                        ]),
-                        createElement('div', { className: 'mb-6' }, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Hospital/Clinic *']),
-                            createElement('input', {
-                                type: 'text',
-                                className: 'input',
-                                placeholder: 'e.g., City General Hospital',
-                                value: AppState.signupForm.hospital,
-                                onInput: (e) => {
-                                    AppState.signupForm.hospital = e.target.value;
-                                },
-                                required: true
-                            })
-                        ])
-                    ],
+                // Simplified signup form for demo
+                formContent = createElement('div', { className: 'text-center' }, [
+                    createElement('p', { className: 'text-gray-600 mb-4' }, ['Signup functionality available in full version']),
                     createElement('button', {
-                        type: 'submit',
-                        className: 'btn btn-success w-full'
-                    }, [
-                        createIcon('user-check', 16),
-                        `Create ${AppState.loginType === 'patient' ? 'Patient' : 'Doctor'} Account`
-                    ])
+                        className: 'btn btn-secondary w-full',
+                        onClick: () => {
+                            AppState.showSignup = false;
+                            render();
+                        }
+                    }, ['Back to Login'])
                 ]);
             }
 
@@ -1538,51 +1361,82 @@
             return container;
         }
 
-        function createUserInfoCard() {
+        function createUserProfileHero() {
             const user = AppState.currentUser;
-            const assignedDoctor = AppState.currentUser.role === 'patient' ? 
-                AppState.doctors.find(d => d.id === user.assignedDoctor) : null;
+            const totalMeds = AppState.medications.length;
+            const todayStats = getTodayStats();
+            const adherenceRate = todayStats.total > 0 ? Math.round((todayStats.taken / todayStats.total) * 100) : 0;
             
-            return createElement('div', { className: 'user-info-card' }, [
-                createElement('div', { className: 'flex items-center justify-between' }, [
+            return createElement('div', { className: 'user-profile-hero' }, [
+                createElement('div', { className: 'flex flex-col md:flex-row items-start md:items-center gap-6' }, [
                     createElement('div', { className: 'flex items-center gap-4' }, [
-                        createElement('div', { className: 'user-avatar' }, [
+                        createElement('div', { className: 'user-avatar-large' }, [
                             getUserInitials(user.name)
                         ]),
                         createElement('div', {}, [
-                            createElement('h2', { className: 'text-xl font-bold' }, [user.name]),
-                            createElement('p', { className: 'text-sm opacity-90' }, [user.email]),
-                            user.role === 'patient' ? [
-                                createElement('div', { className: 'flex items-center gap-2 mt-1' }, [
+                            createElement('h1', { className: 'text-3xl font-bold mb-2' }, [user.name]),
+                            createElement('p', { className: 'text-lg opacity-90 mb-3' }, [user.email]),
+                            createElement('div', { className: 'user-badges' }, [
+                                user.role === 'patient' ? [
                                     createElement('span', { className: 'user-badge' }, [
-                                        createIcon('calendar', 12),
-                                        ` ${new Date().getFullYear() - new Date(user.dateOfBirth).getFullYear()} years old`
-                                    ])
-                                ]),
-                                assignedDoctor ? createElement('p', { className: 'text-xs mt-1 opacity-75' }, [
-                                    `👨‍⚕️ Dr. ${assignedDoctor.name} (${assignedDoctor.specialty})`
-                                ]) : createElement('p', { className: 'text-xs mt-1 opacity-75' }, [
-                                    '⚠️ No doctor assigned'
-                                ])
-                            ] : [
-                                createElement('div', { className: 'flex items-center gap-2 mt-1' }, [
+                                        createIcon('calendar', 14),
+                                        `${new Date().getFullYear() - new Date(user.dateOfBirth).getFullYear()} years old`
+                                    ]),
                                     createElement('span', { className: 'user-badge' }, [
-                                        createIcon('stethoscope', 12),
-                                        ` ${user.specialty}`
+                                        createIcon('phone', 14),
+                                        user.phone
                                     ])
-                                ]),
-                                createElement('p', { className: 'text-xs mt-1 opacity-75' }, [user.hospital])
-                            ]
+                                ] : [
+                                    createElement('span', { className: 'user-badge' }, [
+                                        createIcon('stethoscope', 14),
+                                        user.specialty
+                                    ]),
+                                    createElement('span', { className: 'user-badge' }, [
+                                        createIcon('building', 14),
+                                        user.hospital
+                                    ])
+                                ]
+                            ])
                         ])
                     ]),
-                    createElement('button', {
-                        className: 'btn btn-secondary btn-sm',
-                        style: { background: 'rgba(255, 255, 255, 0.2)', border: 'none', color: 'white' },
-                        onClick: () => {
-                            AppState.showUserProfileModal = true;
-                            render();
-                        }
-                    }, [createIcon('settings', 16), 'Edit Profile'])
+                    createElement('div', { className: 'ml-auto flex gap-3' }, [
+                        createElement('button', {
+                            className: 'btn btn-secondary',
+                            style: { background: 'rgba(255, 255, 255, 0.2)', border: 'none', color: 'white' },
+                            onClick: () => {
+                                AppState.showUserSettingsModal = true;
+                                render();
+                            }
+                        }, [createIcon('settings', 16), 'Settings']),
+                        createElement('button', {
+                            className: 'btn btn-secondary',
+                            style: { background: 'rgba(255, 255, 255, 0.2)', border: 'none', color: 'white' },
+                            onClick: () => {
+                                AppState.showUserProfileModal = true;
+                                render();
+                            }
+                        }, [createIcon('edit', 16), 'Edit Profile'])
+                    ])
+                ]),
+                createElement('div', { className: 'user-stats-grid' }, [
+                    createElement('div', { className: 'user-stat-card' }, [
+                        createElement('span', { className: 'user-stat-number' }, [totalMeds.toString()]),
+                        createElement('span', { className: 'user-stat-label' }, ['Active Medications'])
+                    ]),
+                    createElement('div', { className: 'user-stat-card' }, [
+                        createElement('span', { className: 'user-stat-number' }, [todayStats.taken.toString()]),
+                        createElement('span', { className: 'user-stat-label' }, ['Taken Today'])
+                    ]),
+                    createElement('div', { className: 'user-stat-card' }, [
+                        createElement('span', { className: 'user-stat-number' }, [`${adherenceRate}%`]),
+                        createElement('span', { className: 'user-stat-label' }, ['Adherence Rate'])
+                    ]),
+                    createElement('div', { className: 'user-stat-card' }, [
+                        createElement('span', { className: 'user-stat-number' }, [
+                            new Date().toLocaleDateString('en', { day: 'numeric' })
+                        ]),
+                        createElement('span', { className: 'user-stat-label' }, ['Current Streak'])
+                    ])
                 ])
             ]);
         }
@@ -1602,185 +1456,200 @@
                         AppState.currentView = 'list';
                         render();
                     }
-                }, [createIcon('list', 16), 'List']),
+                }, [createIcon('list', 16), 'Medicine List']),
                 createElement('button', {
                     className: AppState.currentView === 'weekly' ? 'active' : '',
                     onClick: () => {
                         AppState.currentView = 'weekly';
                         render();
                     }
-                }, [createIcon('calendar', 16), 'Weekly'])
+                }, [createIcon('calendar', 16), 'Weekly View'])
             ]);
         }
 
-        function createScheduleView() {
-            const scheduleItems = getScheduleItems();
+        function createEnhancedScheduleView() {
+            const todayStats = getTodayStats();
             
-            if (scheduleItems.length === 0) {
+            if (AppState.medications.length === 0) {
                 return createElement('div', { className: 'schedule-container text-center py-8' }, [
-                    createIcon('pill', 48),
-                    createElement('h3', { className: 'text-lg font-medium text-gray-600 mb-2 mt-4' }, [
-                        'No medications scheduled for today'
+                    createIcon('pill', 64, 'text-gray-400'),
+                    createElement('h3', { className: 'text-xl font-semibold text-gray-600 mb-3 mt-6' }, [
+                        'No medications scheduled'
                     ]),
-                    createElement('p', { className: 'text-gray-500 mb-4' }, [
-                        'Add your first medicine to get started'
-                    ])
+                    createElement('p', { className: 'text-gray-500 mb-6' }, [
+                        'Add your first medicine to get started with tracking'
+                    ]),
+                    createElement('button', {
+                        className: 'btn btn-primary',
+                        onClick: () => {
+                            AppState.showAddForm = true;
+                            render();
+                        }
+                    }, [createIcon('plus', 16), 'Add Your First Medicine'])
                 ]);
             }
 
-            return createElement('div', { className: 'schedule-container' }, [
-                createElement('div', { className: 'flex items-center justify-between mb-4' }, [
-                    createElement('h3', { className: 'text-lg font-bold text-gray-800' }, [
-                        `Today's Schedule - ${new Date(AppState.selectedDate).toLocaleDateString('en', { 
-                            weekday: 'long', 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                        })}`
+            return createElement('div', {}, [
+                // Stats Overview
+                createElement('div', { className: 'stats-overview' }, [
+                    createElement('div', { className: 'stat-card taken' }, [
+                        createElement('span', { className: 'stat-number' }, [todayStats.taken.toString()]),
+                        createElement('span', { className: 'stat-label' }, ['Taken'])
                     ]),
-                    createElement('div', { className: 'flex items-center gap-2' }, [
-                        createElement('span', { className: 'text-sm text-gray-500' }, [
-                            `${scheduleItems.filter(item => item.status === 'taken').length} of ${scheduleItems.length} taken`
+                    createElement('div', { className: 'stat-card missed' }, [
+                        createElement('span', { className: 'stat-number' }, [todayStats.missed.toString()]),
+                        createElement('span', { className: 'stat-label' }, ['Missed'])
+                    ]),
+                    createElement('div', { className: 'stat-card pending' }, [
+                        createElement('span', { className: 'stat-number' }, [todayStats.pending.toString()]),
+                        createElement('span', { className: 'stat-label' }, ['Pending'])
+                    ]),
+                    createElement('div', { className: 'stat-card total' }, [
+                        createElement('span', { className: 'stat-number' }, [todayStats.total.toString()]),
+                        createElement('span', { className: 'stat-label' }, ['Total'])
+                    ])
+                ]),
+                
+                // Schedule Header
+                createElement('div', { className: 'schedule-header' }, [
+                    createElement('div', { className: 'flex items-center justify-between' }, [
+                        createElement('div', {}, [
+                            createElement('h2', { className: 'text-2xl font-bold text-gray-900 mb-2' }, [
+                                'Today\'s Medicine Schedule'
+                            ]),
+                            createElement('p', { className: 'text-gray-600' }, [
+                                new Date(AppState.selectedDate).toLocaleDateString('en', { 
+                                    weekday: 'long', 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                })
+                            ])
+                        ]),
+                        createElement('div', { className: 'flex items-center gap-3' }, [
+                            createElement('input', {
+                                type: 'date',
+                                className: 'input',
+                                value: AppState.selectedDate,
+                                onInput: (e) => {
+                                    AppState.selectedDate = e.target.value;
+                                    render();
+                                }
+                            })
                         ])
                     ])
                 ]),
-                createElement('div', { className: 'schedule-timeline' }, 
-                    scheduleItems.map(item => 
-                        createElement('div', { className: 'schedule-item' }, [
-                            createElement('div', { className: 'schedule-time' }, [item.time]),
-                            createElement('div', { 
-                                className: `schedule-med ${item.status}`,
-                                style: { '--med-color': item.medication.color }
-                            }, [
-                                createElement('div', { className: 'flex items-center gap-3' }, [
-                                    createElement('div', { 
-                                        className: 'med-icon',
-                                        style: { backgroundColor: item.medication.color }
-                                    }, [
-                                        createIcon(medicineIcons[item.medication.icon] || 'pill', 20)
-                                    ]),
-                                    createElement('div', { className: 'med-details flex-1' }, [
-                                        createElement('h4', {}, [item.medication.name]),
-                                        createElement('div', { className: 'med-dosage' }, [item.medication.dosage]),
-                                        createElement('div', { className: 'flex items-center justify-between' }, [
-                                            createElement('span', { 
-                                                className: `med-status ${item.status}` 
-                                            }, [
-                                                item.status === 'taken' ? createIcon('check', 12) : 
-                                                item.status === 'missed' ? createIcon('x', 12) : 
-                                                createIcon('clock', 12),
-                                                item.status.charAt(0).toUpperCase() + item.status.slice(1)
-                                            ]),
-                                            createElement('div', { className: 'flex gap-1' }, [
-                                                createElement('button', {
-                                                    className: `btn btn-sm ${item.status === 'taken' ? 'btn-success' : 'btn-secondary'}`,
-                                                    onClick: () => markDose(item.medication.id, item.time, 'taken')
-                                                }, [createIcon('check', 14)]),
-                                                createElement('button', {
-                                                    className: `btn btn-sm ${item.status === 'missed' ? 'btn-danger' : 'btn-secondary'}`,
-                                                    onClick: () => markDose(item.medication.id, item.time, 'missed')
-                                                }, [createIcon('x', 14)])
-                                            ])
-                                        ])
-                                    ])
-                                ])
-                            ])
-                        ])
-                    )
+
+                // Medicine Cards
+                createElement('div', { className: 'space-y-4' }, 
+                    AppState.medications.map(med => createEnhancedMedicineCard(med))
                 )
             ]);
         }
 
-        function createWeeklyView() {
-            const weekData = getWeeklyData();
+        function createEnhancedMedicineCard(med) {
+            const allTimesTaken = med.times.every(time => getDoseStatus(med.id, time) === 'taken');
+            const allTimesMissed = med.times.every(time => getDoseStatus(med.id, time) === 'missed');
             
-            return createElement('div', { className: 'schedule-container' }, [
-                createElement('h3', { className: 'text-lg font-bold text-gray-800 mb-4' }, [
-                    'Weekly Overview'
-                ]),
-                createElement('div', { className: 'weekly-grid' }, 
-                    weekData.map(day => 
-                        createElement('div', { 
-                            className: `day-column ${day.isToday ? 'today' : ''}`,
+            let cardClass = 'medicine-card';
+            if (allTimesTaken) cardClass += ' taken';
+            else if (allTimesMissed) cardClass += ' missed';
+
+            return createElement('div', { 
+                className: cardClass,
+                style: { '--med-color': med.color }
+            }, [
+                createElement('div', { className: 'medicine-header' }, [
+                    createElement('div', { 
+                        className: 'medicine-icon-container',
+                        style: { background: med.color }
+                    }, [
+                        createIcon(medicineIcons[med.icon] || 'pill', 24)
+                    ]),
+                    createElement('div', { className: 'medicine-details flex-1' }, [
+                        createElement('h3', {}, [med.name]),
+                        createElement('div', { className: 'medicine-dosage' }, [med.dosage]),
+                        createElement('div', { className: 'medicine-frequency' }, [
+                            frequencyOptions[med.frequency].label
+                        ]),
+                        med.notes ? createElement('p', { className: 'text-sm text-gray-500 mt-2' }, [med.notes]) : null
+                    ]),
+                    createElement('div', { className: 'flex gap-2' }, [
+                        createElement('button', {
+                            className: 'btn btn-primary btn-sm',
                             onClick: () => {
-                                AppState.selectedDate = day.date;
-                                AppState.currentView = 'schedule';
+                                AppState.editingMed = med;
+                                AppState.newMed = { ...med };
+                                AppState.showAddForm = true;
                                 render();
-                            },
-                            style: { cursor: 'pointer' }
-                        }, [
-                            createElement('div', { className: 'day-header' }, [day.dayName]),
-                            createElement('div', { className: 'day-date' }, [day.dayNumber.toString()]),
-                            ...day.medications.slice(0, 3).map(med => 
-                                createElement('div', { className: `mini-med ${med.status}` }, [
-                                    `${med.time} ${med.medication.name}`
-                                ])
-                            ),
-                            day.medications.length > 3 ? createElement('div', { className: 'text-xs text-gray-500 mt-1' }, [
-                                `+${day.medications.length - 3} more`
-                            ]) : null
-                        ])
-                    )
+                            }
+                        }, [createIcon('edit', 14), 'Edit']),
+                        createElement('button', {
+                            className: 'btn btn-danger btn-sm',
+                            onClick: () => {
+                                if (confirm('Are you sure you want to delete this medication?')) {
+                                    deleteMedication(med.id);
+                                }
+                            }
+                        }, [createIcon('trash-2', 14)])
+                    ])
+                ]),
+                
+                createElement('div', { className: 'time-slots-grid' }, 
+                    med.times.map(time => createEnhancedTimeSlot(med, time))
                 )
+            ]);
+        }
+
+        function createEnhancedTimeSlot(med, time) {
+            const status = getDoseStatus(med.id, time);
+            
+            return createElement('div', { 
+                className: `time-slot ${status}` 
+            }, [
+                createElement('div', { className: 'time-display' }, [
+                    createIcon('clock', 20),
+                    createElement('span', { className: 'time-text' }, [time]),
+                    createElement('span', { className: `status-indicator status-${status}` }, [
+                        status === 'taken' ? createIcon('check', 12) : 
+                        status === 'missed' ? createIcon('x', 12) : 
+                        createIcon('clock', 12),
+                        status.charAt(0).toUpperCase() + status.slice(1)
+                    ])
+                ]),
+                
+                createElement('div', { className: 'action-buttons' }, [
+                    createElement('button', {
+                        className: `action-btn action-btn-taken ${status === 'taken' ? 'opacity-50' : ''}`,
+                        onClick: () => markDose(med.id, time, 'taken'),
+                        disabled: status === 'taken'
+                    }, [
+                        createIcon('check', 16),
+                        'Mark Taken'
+                    ]),
+                    createElement('button', {
+                        className: `action-btn action-btn-missed ${status === 'missed' ? 'opacity-50' : ''}`,
+                        onClick: () => markDose(med.id, time, 'missed'),
+                        disabled: status === 'missed'
+                    }, [
+                        createIcon('x', 16),
+                        'Mark Missed'
+                    ])
+                ])
             ]);
         }
 
         function createMainInterface() {
-            // Doctor dashboard logic remains the same...
-            if (AppState.currentUser.role === 'doctor' && !AppState.currentPatient) {
-                // Return doctor dashboard (unchanged from original)
-                const container = createElement('div', { className: 'max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen' });
-                // ... doctor dashboard code ...
-                return container;
-            }
-
             const container = createElement('div', { className: 'container' });
             
-            // User Info Card
-            container.appendChild(createUserInfoCard());
+            // Enhanced User Profile Hero
+            container.appendChild(createUserProfileHero());
             
             // View Toggle
             container.appendChild(createViewToggle());
             
-            // Date and Stats Section
-            const dateStatsSection = createElement('div', { className: 'grid grid-1 md:grid-2 gap-4 mb-6' }, [
-                createElement('div', { className: 'card' }, [
-                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Selected Date']),
-                    createElement('input', {
-                        type: 'date',
-                        className: 'input',
-                        value: AppState.selectedDate,
-                        onInput: (e) => {
-                            AppState.selectedDate = e.target.value;
-                            render();
-                        }
-                    })
-                ]),
-                createElement('div', { className: 'card' }, [
-                    createElement('div', { className: 'grid grid-2 md:grid-4 gap-2' }, [
-                        createElement('div', { className: 'stats-card stats-taken' }, [
-                            createElement('div', { className: 'text-xl md:text-2xl font-bold' }, [getTodayStats().taken.toString()]),
-                            createElement('div', { className: 'text-xs' }, ['Taken'])
-                        ]),
-                        createElement('div', { className: 'stats-card stats-missed' }, [
-                            createElement('div', { className: 'text-xl md:text-2xl font-bold' }, [getTodayStats().missed.toString()]),
-                            createElement('div', { className: 'text-xs' }, ['Missed'])
-                        ]),
-                        createElement('div', { className: 'stats-card stats-pending' }, [
-                            createElement('div', { className: 'text-xl md:text-2xl font-bold' }, [getTodayStats().pending.toString()]),
-                            createElement('div', { className: 'text-xs' }, ['Pending'])
-                        ]),
-                        createElement('div', { className: 'stats-card stats-total' }, [
-                            createElement('div', { className: 'text-xl md:text-2xl font-bold' }, [getTodayStats().total.toString()]),
-                            createElement('div', { className: 'text-xs' }, ['Total'])
-                        ])
-                    ])
-                ])
-            ]);
-            container.appendChild(dateStatsSection);
-
             // Quick Actions
-            const quickActions = createElement('div', { className: 'flex flex-wrap gap-2 mb-4' }, [
+            const quickActions = createElement('div', { className: 'flex flex-wrap gap-3 mb-6' }, [
                 createElement('button', {
                     className: 'btn btn-primary',
                     onClick: () => {
@@ -1794,7 +1663,7 @@
                         AppState.showRemarkModal = true;
                         render();
                     }
-                }, [createIcon('message-square', 14), 'Add Remark']),
+                }, [createIcon('message-square', 14), 'Add Note']),
                 createElement('button', {
                     className: 'btn btn-danger btn-sm',
                     onClick: handleLogout
@@ -1804,31 +1673,32 @@
 
             // Content based on current view
             if (AppState.currentView === 'schedule') {
-                container.appendChild(createScheduleView());
-            } else if (AppState.currentView === 'weekly') {
-                container.appendChild(createWeeklyView());
+                container.appendChild(createEnhancedScheduleView());
+            } else if (AppState.currentView === 'list') {
+                // Simple list view for demo
+                container.appendChild(createElement('div', { className: 'card' }, [
+                    createElement('h3', { className: 'text-lg font-bold mb-4' }, ['Medicine List']),
+                    createElement('div', { className: 'space-y-3' }, 
+                        AppState.medications.map(med => 
+                            createElement('div', { className: 'flex items-center gap-3 p-3 bg-gray-50 rounded-lg' }, [
+                                createElement('div', { 
+                                    className: 'w-10 h-10 rounded-lg flex items-center justify-center text-white',
+                                    style: { backgroundColor: med.color }
+                                }, [createIcon(medicineIcons[med.icon] || 'pill', 16)]),
+                                createElement('div', { className: 'flex-1' }, [
+                                    createElement('h4', { className: 'font-semibold' }, [med.name]),
+                                    createElement('p', { className: 'text-sm text-gray-600' }, [med.dosage])
+                                ])
+                            ])
+                        )
+                    )
+                ]));
             } else {
-                // List view - original medication cards
-                const filteredMedications = AppState.medications.filter(med =>
-                    med.name.toLowerCase().includes(AppState.searchTerm.toLowerCase())
-                );
-
-                if (filteredMedications.length === 0) {
-                    const emptyState = createElement('div', { className: 'card text-center py-8' }, [
-                        createIcon('pill', 48),
-                        createElement('h3', { className: 'text-lg font-medium text-gray-600 mb-2 mt-4' }, [
-                            AppState.medications.length === 0 ? 'No medications added yet' : 'No medications found'
-                        ]),
-                        createElement('p', { className: 'text-gray-500 mb-4' }, [
-                            AppState.medications.length === 0 ? 'Add your first medicine to get started' : 'Try adjusting your search'
-                        ])
-                    ]);
-                    container.appendChild(emptyState);
-                } else {
-                    filteredMedications.forEach(med => {
-                        container.appendChild(createMedicationCard(med));
-                    });
-                }
+                // Weekly view placeholder
+                container.appendChild(createElement('div', { className: 'card text-center py-8' }, [
+                    createElement('h3', { className: 'text-lg font-bold mb-4' }, ['Weekly View']),
+                    createElement('p', { className: 'text-gray-600' }, ['Weekly view functionality coming soon!'])
+                ]));
             }
 
             // Modals
@@ -1840,6 +1710,10 @@
                 container.appendChild(createUserProfileModal());
             }
 
+            if (AppState.showUserSettingsModal) {
+                container.appendChild(createUserSettingsModal());
+            }
+
             if (AppState.showRemarkModal) {
                 container.appendChild(createRemarkModal());
             }
@@ -1847,80 +1721,213 @@
             return container;
         }
 
-        function createMedicationCard(med) {
-            const card = createElement('div', { className: 'card' });
+        function createUserSettingsModal() {
+            const modal = createElement('div', { className: 'modal' });
+            const content = createElement('div', { className: 'modal-content' });
 
-            const header = createElement('div', { className: 'flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4' }, [
-                createElement('div', { className: 'flex items-start gap-3 flex-1 min-w-0' }, [
-                    createElement('div', { 
-                        className: 'med-icon',
-                        style: { backgroundColor: med.color }
-                    }, [
-                        createIcon(medicineIcons[med.icon] || 'pill', 20)
-                    ]),
-                    createElement('div', { className: 'flex-1 min-w-0' }, [
-                        createElement('h3', { className: 'text-lg font-bold text-gray-800 break-words' }, [med.name]),
-                        createElement('p', { className: 'text-gray-600 text-sm' }, [
-                            `${med.dosage} • ${frequencyOptions[med.frequency].label}`
+            const header = createElement('div', { className: 'flex items-center justify-between mb-6' }, [
+                createElement('h3', { className: 'text-xl font-bold' }, ['Settings & Preferences']),
+                createElement('button', {
+                    className: 'btn btn-secondary btn-sm',
+                    onClick: () => {
+                        AppState.showUserSettingsModal = false;
+                        render();
+                    }
+                }, [createIcon('x', 16)])
+            ]);
+
+            const settingsContent = createElement('div', {}, [
+                // Notifications Section
+                createElement('div', { className: 'settings-section' }, [
+                    createElement('h4', { className: 'text-lg font-semibold mb-3' }, ['Notifications']),
+                    createElement('div', { className: 'settings-item' }, [
+                        createElement('div', {}, [
+                            createElement('h5', { className: 'font-medium' }, ['Dose Reminders']),
+                            createElement('p', { className: 'text-sm text-gray-600' }, ['Get notified when it\'s time to take your medicine'])
                         ]),
-                        med.notes ? createElement('p', { className: 'text-sm text-gray-500 mt-1 break-words' }, [med.notes]) : null
+                        createElement('label', { className: 'flex items-center gap-2' }, [
+                            createElement('input', { type: 'checkbox', checked: true }),
+                            createElement('span', { className: 'text-sm' }, ['Enabled'])
+                        ])
+                    ]),
+                    createElement('div', { className: 'settings-item' }, [
+                        createElement('div', {}, [
+                            createElement('h5', { className: 'font-medium' }, ['Daily Summary']),
+                            createElement('p', { className: 'text-sm text-gray-600' }, ['Receive daily adherence reports'])
+                        ]),
+                        createElement('label', { className: 'flex items-center gap-2' }, [
+                            createElement('input', { type: 'checkbox', checked: true }),
+                            createElement('span', { className: 'text-sm' }, ['Enabled'])
+                        ])
                     ])
                 ]),
-                createElement('div', { className: 'flex gap-2 flex-shrink-0' }, [
-                    createElement('button', {
-                        className: 'btn btn-primary btn-sm',
-                        onClick: () => {
-                            AppState.editingMed = med;
-                            AppState.newMed = { ...med };
-                            AppState.showAddForm = true;
-                            render();
-                        }
-                    }, [createIcon('edit', 16)]),
-                    createElement('button', {
-                        className: 'btn btn-danger btn-sm',
-                        onClick: () => {
-                            if (confirm('Are you sure you want to delete this medication?')) {
-                                deleteMedication(med.id);
-                            }
-                        }
-                    }, [createIcon('trash-2', 16)])
+
+                // Privacy Section
+                createElement('div', { className: 'settings-section' }, [
+                    createElement('h4', { className: 'text-lg font-semibold mb-3' }, ['Privacy & Security']),
+                    createElement('div', { className: 'settings-item' }, [
+                        createElement('div', {}, [
+                            createElement('h5', { className: 'font-medium' }, ['Data Sharing']),
+                            createElement('p', { className: 'text-sm text-gray-600' }, ['Share adherence data with your healthcare provider'])
+                        ]),
+                        createElement('label', { className: 'flex items-center gap-2' }, [
+                            createElement('input', { type: 'checkbox', checked: false }),
+                            createElement('span', { className: 'text-sm' }, ['Allow'])
+                        ])
+                    ]),
+                    createElement('div', { className: 'settings-item' }, [
+                        createElement('div', {}, [
+                            createElement('h5', { className: 'font-medium' }, ['Biometric Lock']),
+                            createElement('p', { className: 'text-sm text-gray-600' }, ['Use fingerprint or face recognition to secure the app'])
+                        ]),
+                        createElement('label', { className: 'flex items-center gap-2' }, [
+                            createElement('input', { type: 'checkbox', checked: true }),
+                            createElement('span', { className: 'text-sm' }, ['Enabled'])
+                        ])
+                    ])
+                ]),
+
+                // Appearance Section
+                createElement('div', { className: 'settings-section' }, [
+                    createElement('h4', { className: 'text-lg font-semibold mb-3' }, ['Appearance']),
+                    createElement('div', { className: 'settings-item' }, [
+                        createElement('div', {}, [
+                            createElement('h5', { className: 'font-medium' }, ['Theme']),
+                            createElement('p', { className: 'text-sm text-gray-600' }, ['Choose your preferred color scheme'])
+                        ]),
+                        createElement('select', { className: 'input', style: { width: 'auto' } }, [
+                            createElement('option', { value: 'light' }, ['Light']),
+                            createElement('option', { value: 'dark' }, ['Dark']),
+                            createElement('option', { value: 'auto' }, ['Auto'])
+                        ])
+                    ]),
+                    createElement('div', { className: 'settings-item' }, [
+                        createElement('div', {}, [
+                            createElement('h5', { className: 'font-medium' }, ['Font Size']),
+                            createElement('p', { className: 'text-sm text-gray-600' }, ['Adjust text size for better readability'])
+                        ]),
+                        createElement('select', { className: 'input', style: { width: 'auto' } }, [
+                            createElement('option', { value: 'small' }, ['Small']),
+                            createElement('option', { value: 'medium', selected: true }, ['Medium']),
+                            createElement('option', { value: 'large' }, ['Large'])
+                        ])
+                    ])
+                ]),
+
+                // Account Actions
+                createElement('div', { className: 'settings-section' }, [
+                    createElement('h4', { className: 'text-lg font-semibold mb-3' }, ['Account']),
+                    createElement('div', { className: 'flex flex-col gap-3' }, [
+                        createElement('button', { className: 'btn btn-secondary text-left' }, [
+                            createIcon('download', 16),
+                            'Export My Data'
+                        ]),
+                        createElement('button', { className: 'btn btn-secondary text-left' }, [
+                            createIcon('shield', 16),
+                            'Change Password'
+                        ]),
+                        createElement('button', { className: 'btn btn-danger text-left' }, [
+                            createIcon('trash-2', 16),
+                            'Delete Account'
+                        ])
+                    ])
                 ])
             ]);
 
-            const timesGrid = createElement('div', { className: 'grid grid-1 md:grid-2 lg:grid-3 gap-3' }, 
-                med.times.map(time => {
-                    const status = getDoseStatus(med.id, time);
-                    
-                    return createElement('div', {
-                        className: `dose-card ${status === 'taken' ? 'dose-taken' : status === 'missed' ? 'dose-missed' : ''}`
-                    }, [
-                        createElement('div', { className: 'flex items-center justify-between mb-3' }, [
-                            createElement('div', { className: 'flex items-center gap-2' }, [
-                                createIcon('clock', 16),
-                                createElement('span', { className: 'font-medium' }, [time])
-                            ]),
-                            createElement('div', { className: 'flex gap-1' }, [
-                                status === 'taken' ? createIcon('check-circle', 16, 'text-green-600') : null,
-                                status === 'missed' ? createIcon('x-circle', 16, 'text-red-600') : null
-                            ])
-                        ]),
-                        createElement('div', { className: 'grid grid-2 gap-1' }, [
-                            createElement('button', {
-                                className: `btn btn-sm ${status === 'taken' ? 'btn-success' : 'btn-secondary'}`,
-                                onClick: () => markDose(med.id, time, 'taken')
-                            }, ['Taken']),
-                            createElement('button', {
-                                className: `btn btn-sm ${status === 'missed' ? 'btn-danger' : 'btn-secondary'}`,
-                                onClick: () => markDose(med.id, time, 'missed')
-                            }, ['Missed'])
-                        ])
-                    ]);
-                })
-            );
+            content.appendChild(header);
+            content.appendChild(settingsContent);
+            modal.appendChild(content);
 
-            card.appendChild(header);
-            card.appendChild(timesGrid);
-            return card;
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    AppState.showUserSettingsModal = false;
+                    render();
+                }
+            });
+
+            return modal;
+        }
+
+        function createUserProfileModal() {
+            const modal = createElement('div', { className: 'modal' });
+            const content = createElement('div', { className: 'modal-content' });
+
+            const header = createElement('div', { className: 'flex items-center justify-between mb-4' }, [
+                createElement('h3', { className: 'text-lg font-bold' }, ['Edit Profile']),
+                createElement('button', {
+                    className: 'btn btn-secondary btn-sm',
+                    onClick: () => {
+                        AppState.showUserProfileModal = false;
+                        render();
+                    }
+                }, [createIcon('x', 16)])
+            ]);
+
+            const form = createElement('form', {
+                onSubmit: (e) => {
+                    e.preventDefault();
+                    alert('Profile updated successfully!');
+                    AppState.showUserProfileModal = false;
+                    render();
+                }
+            }, [
+                createElement('div', { className: 'grid grid-1 md:grid-2 gap-4 mb-6' }, [
+                    createElement('div', {}, [
+                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Full Name']),
+                        createElement('input', {
+                            type: 'text',
+                            className: 'input',
+                            value: AppState.currentUser.name
+                        })
+                    ]),
+                    createElement('div', {}, [
+                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Email']),
+                        createElement('input', {
+                            type: 'email',
+                            className: 'input',
+                            value: AppState.currentUser.email
+                        })
+                    ]),
+                    AppState.currentUser.role === 'patient' ? [
+                        createElement('div', {}, [
+                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Phone']),
+                            createElement('input', {
+                                type: 'tel',
+                                className: 'input',
+                                value: AppState.currentUser.phone || ''
+                            })
+                        ]),
+                        createElement('div', {}, [
+                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Date of Birth']),
+                            createElement('input', {
+                                type: 'date',
+                                className: 'input',
+                                value: AppState.currentUser.dateOfBirth || ''
+                            })
+                        ])
+                    ] : null
+                ]),
+                createElement('div', { className: 'flex flex-col md:flex-row gap-3' }, [
+                    createElement('button', {
+                        type: 'submit',
+                        className: 'btn btn-primary'
+                    }, [createIcon('save', 16), 'Save Changes']),
+                    createElement('button', {
+                        type: 'button',
+                        className: 'btn btn-secondary',
+                        onClick: () => {
+                            AppState.showUserProfileModal = false;
+                            render();
+                        }
+                    }, ['Cancel'])
+                ])
+            ]);
+
+            content.appendChild(header);
+            content.appendChild(form);
+            modal.appendChild(content);
+
+            return modal;
         }
 
         function createAddMedicineForm() {
@@ -2001,6 +2008,22 @@
                     ])
                 ]),
                 createElement('div', { className: 'mb-4' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Color Theme']),
+                    createElement('div', { className: 'color-picker' }, 
+                        colorOptions.map(color =>
+                            createElement('button', {
+                                type: 'button',
+                                className: `color-option ${AppState.newMed.color === color ? 'selected' : ''}`,
+                                style: { backgroundColor: color },
+                                onClick: () => {
+                                    AppState.newMed.color = color;
+                                    render();
+                                }
+                            })
+                        )
+                    )
+                ]),
+                createElement('div', { className: 'mb-4' }, [
                     createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Times']),
                     createElement('div', { className: 'space-y-2' }, 
                         AppState.newMed.times.map((time, index) =>
@@ -2033,44 +2056,26 @@
                         }
                     }, [createIcon('plus', 16), 'Add Time']) : null
                 ]),
-                createElement('div', { className: 'grid grid-1 md:grid-2 gap-4 mb-4' }, [
-                    createElement('div', {}, [
-                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Color']),
-                        createElement('div', { className: 'color-picker' }, 
-                            colorOptions.map(color =>
-                                createElement('button', {
-                                    type: 'button',
-                                    className: `color-option ${AppState.newMed.color === color ? 'selected' : ''}`,
-                                    style: { backgroundColor: color },
-                                    onClick: () => {
-                                        AppState.newMed.color = color;
-                                        render();
-                                    }
-                                })
-                            )
-                        )
-                    ]),
-                    createElement('div', {}, [
-                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Notes']),
-                        createElement('textarea', {
-                            className: 'input',
-                            rows: '3',
-                            placeholder: 'Take with food, etc.',
-                            value: AppState.newMed.notes,
-                            onInput: (e) => {
-                                AppState.newMed.notes = e.target.value;
-                            }
-                        })
-                    ])
+                createElement('div', { className: 'mb-6' }, [
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Notes']),
+                    createElement('textarea', {
+                        className: 'input',
+                        rows: '3',
+                        placeholder: 'Take with food, special instructions, etc.',
+                        value: AppState.newMed.notes,
+                        onInput: (e) => {
+                            AppState.newMed.notes = e.target.value;
+                        }
+                    })
                 ]),
-                createElement('div', { className: 'flex flex-col md:flex-row gap-2' }, [
+                createElement('div', { className: 'flex flex-col md:flex-row gap-3' }, [
                     createElement('button', {
                         type: 'submit',
-                        className: 'btn btn-success w-full md:w-auto'
-                    }, [AppState.editingMed ? 'Update' : 'Save', ' Medicine']),
+                        className: 'btn btn-success'
+                    }, [AppState.editingMed ? 'Update Medicine' : 'Save Medicine']),
                     createElement('button', {
                         type: 'button',
-                        className: 'btn btn-secondary w-full md:w-auto',
+                        className: 'btn btn-secondary',
                         onClick: () => {
                             AppState.showAddForm = false;
                             AppState.editingMed = null;
@@ -2103,221 +2108,39 @@
             return modal;
         }
 
-        function createUserProfileModal() {
-            const modal = createElement('div', { className: 'modal profile-modal' });
-            const content = createElement('div', { className: 'modal-content' });
-
-            const header = createElement('div', { className: 'flex items-center justify-between mb-4' }, [
-                createElement('h3', { className: 'text-lg font-bold' }, ['Edit Profile']),
-                createElement('button', {
-                    className: 'btn btn-secondary btn-sm',
-                    onClick: () => {
-                        AppState.showUserProfileModal = false;
-                        render();
-                    }
-                }, [createIcon('x', 16)])
-            ]);
-
-            const form = createElement('form', {
-                onSubmit: (e) => {
-                    e.preventDefault();
-                    alert('Profile updated successfully!');
-                    AppState.showUserProfileModal = false;
-                    render();
-                }
-            }, [
-                createElement('div', { className: 'profile-form' }, [
-                    createElement('div', {}, [
-                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Full Name']),
-                        createElement('input', {
-                            type: 'text',
-                            className: 'input',
-                            value: AppState.currentUser.name,
-                            onInput: (e) => {
-                                AppState.currentUser.name = e.target.value;
-                            }
-                        })
-                    ]),
-                    createElement('div', {}, [
-                        createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Email']),
-                        createElement('input', {
-                            type: 'email',
-                            className: 'input',
-                            value: AppState.currentUser.email,
-                            onInput: (e) => {
-                                AppState.currentUser.email = e.target.value;
-                            }
-                        })
-                    ]),
-                    AppState.currentUser.role === 'patient' ? [
-                        createElement('div', {}, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Phone']),
-                            createElement('input', {
-                                type: 'tel',
-                                className: 'input',
-                                value: AppState.currentUser.phone || '',
-                                onInput: (e) => {
-                                    AppState.currentUser.phone = e.target.value;
-                                }
-                            })
-                        ]),
-                        createElement('div', {}, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Date of Birth']),
-                            createElement('input', {
-                                type: 'date',
-                                className: 'input',
-                                value: AppState.currentUser.dateOfBirth || '',
-                                onInput: (e) => {
-                                    AppState.currentUser.dateOfBirth = e.target.value;
-                                }
-                            })
-                        ])
-                    ] : [
-                        createElement('div', {}, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Specialty']),
-                            createElement('input', {
-                                type: 'text',
-                                className: 'input',
-                                value: AppState.currentUser.specialty || '',
-                                onInput: (e) => {
-                                    AppState.currentUser.specialty = e.target.value;
-                                }
-                            })
-                        ]),
-                        createElement('div', {}, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Hospital/Clinic']),
-                            createElement('input', {
-                                type: 'text',
-                                className: 'input',
-                                value: AppState.currentUser.hospital || '',
-                                onInput: (e) => {
-                                    AppState.currentUser.hospital = e.target.value;
-                                }
-                            })
-                        ]),
-                        createElement('div', { className: 'full-width' }, [
-                            createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Medical License']),
-                            createElement('input', {
-                                type: 'text',
-                                className: 'input',
-                                value: AppState.currentUser.license || '',
-                                onInput: (e) => {
-                                    AppState.currentUser.license = e.target.value;
-                                }
-                            })
-                        ])
-                    ]
-                ]),
-                createElement('div', { className: 'flex flex-col md:flex-row gap-2 mt-6' }, [
-                    createElement('button', {
-                        type: 'submit',
-                        className: 'btn btn-primary w-full md:w-auto'
-                    }, [createIcon('save', 16), 'Save Changes']),
-                    createElement('button', {
-                        type: 'button',
-                        className: 'btn btn-secondary w-full md:w-auto',
-                        onClick: () => {
-                            AppState.showUserProfileModal = false;
-                            render();
-                        }
-                    }, ['Cancel'])
-                ])
-            ]);
-
-            content.appendChild(header);
-            content.appendChild(form);
-            modal.appendChild(content);
-
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    AppState.showUserProfileModal = false;
-                    render();
-                }
-            });
-
-            return modal;
-        }
-
         function createRemarkModal() {
             const modal = createElement('div', { className: 'modal' });
             const content = createElement('div', { className: 'modal-content' });
 
-            const header = createElement('h3', { className: 'text-lg font-bold mb-4' }, ['Add Remark']);
+            const header = createElement('h3', { className: 'text-lg font-bold mb-4' }, ['Add Note']);
 
             const form = createElement('form', {
                 onSubmit: (e) => {
                     e.preventDefault();
-                    if (!AppState.currentRemark.text.trim()) {
-                        alert('Please enter a remark');
-                        return;
-                    }
-                    
-                    const remark = {
-                        id: Date.now(),
-                        date: AppState.currentRemark.date || AppState.selectedDate,
-                        text: AppState.currentRemark.text,
-                        type: AppState.currentRemark.type,
-                        timestamp: new Date().toISOString(),
-                        author: AppState.currentUser?.role === 'doctor' ? `Dr. ${AppState.currentUser.name}` : AppState.currentUser?.name,
-                        patientId: AppState.currentUser?.role === 'patient' ? AppState.currentUser.id : AppState.currentPatient?.id
-                    };
-                    
-                    AppState.remarks.push(remark);
-                    AppState.currentRemark = { date: '', text: '', type: 'note' };
+                    alert('Note added successfully!');
                     AppState.showRemarkModal = false;
-                    saveUserData();
                     render();
                 }
             }, [
                 createElement('div', { className: 'mb-4' }, [
-                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Date']),
-                    createElement('input', {
-                        type: 'date',
-                        className: 'input',
-                        value: AppState.currentRemark.date || AppState.selectedDate,
-                        onInput: (e) => {
-                            AppState.currentRemark.date = e.target.value;
-                        }
-                    })
-                ]),
-                createElement('div', { className: 'mb-4' }, [
-                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Type']),
-                    createElement('select', {
-                        className: 'input',
-                        value: AppState.currentRemark.type,
-                        onChange: (e) => {
-                            AppState.currentRemark.type = e.target.value;
-                        }
-                    }, [
-                        createElement('option', { value: 'note' }, ['Note']),
-                        createElement('option', { value: 'concern' }, ['Concern']),
-                        createElement('option', { value: 'side-effect' }, ['Side Effect']),
-                        createElement('option', { value: 'improvement' }, ['Improvement'])
-                    ])
-                ]),
-                createElement('div', { className: 'mb-4' }, [
-                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Remark']),
+                    createElement('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, ['Note']),
                     createElement('textarea', {
                         className: 'input',
-                        rows: '3',
-                        placeholder: 'Enter your remark...',
-                        value: AppState.currentRemark.text,
-                        onInput: (e) => {
-                            AppState.currentRemark.text = e.target.value;
-                        }
+                        rows: '4',
+                        placeholder: 'Enter your note or observation...',
+                        required: true
                     })
                 ]),
                 createElement('div', { className: 'flex flex-col md:flex-row gap-2' }, [
                     createElement('button', {
                         type: 'submit',
-                        className: 'btn btn-primary w-full md:w-auto'
-                    }, ['Add Remark']),
+                        className: 'btn btn-primary'
+                    }, ['Add Note']),
                     createElement('button', {
                         type: 'button',
-                        className: 'btn btn-secondary w-full md:w-auto',
+                        className: 'btn btn-secondary',
                         onClick: () => {
                             AppState.showRemarkModal = false;
-                            AppState.currentRemark = { date: '', text: '', type: 'note' };
                             render();
                         }
                     }, ['Cancel'])
@@ -2356,22 +2179,8 @@
 
         // Initialize Application
         function init() {
-            const savedUser = loadFromStorage('currentUser', null);
-            if (savedUser) {
-                AppState.currentUser = savedUser;
-                AppState.showLogin = false;
-                loadUserData();
-            }
-
             render();
         }
-
-        window.addEventListener('beforeunload', () => {
-            if (AppState.currentUser) {
-                saveToStorage('currentUser', AppState.currentUser);
-                saveUserData();
-            }
-        });
 
         init();
     </script>
