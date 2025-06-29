@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#667eea">
-    <title>Beat-Sync Clip Maker</title>
+    <title>Beat-Sync Clip Maker Pro</title>
     <style>
         * {
             margin: 0;
@@ -46,6 +46,7 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
         }
 
         .header h1 {
@@ -62,6 +63,55 @@
             font-size: 0.85rem;
             opacity: 0.9;
             line-height: 1.2;
+        }
+
+        .settings-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn:active {
+            transform: translateY(-50%) scale(0.95);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .subscription-status {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(45deg, #00b894, #55a3ff);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .subscription-status.free {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .subscription-status.premium {
+            background: linear-gradient(45deg, #f9ca24, #f0932b);
+        }
+
+        .subscription-status.pro {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
         }
 
         .workflow-steps {
@@ -157,6 +207,46 @@
             line-height: 1.4;
         }
 
+        .music-tier-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .tier-tab {
+            flex: 1;
+            padding: 12px 8px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .tier-tab.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tier-tab.locked {
+            opacity: 0.6;
+        }
+
+        .tier-tab .lock-icon {
+            font-size: 0.7rem;
+            margin-left: 4px;
+        }
+
+        .tier-tab .tier-price {
+            font-size: 0.6rem;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
         .search-container {
             display: flex;
             flex-direction: column;
@@ -248,6 +338,19 @@
             animation: pulse 2s infinite;
         }
 
+        .music-card.locked {
+            opacity: 0.6;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .music-card.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.2rem;
+        }
+
         @keyframes pulse {
             0%, 100% { box-shadow: 0 0 20px rgba(249, 202, 36, 0.3); }
             50% { box-shadow: 0 0 30px rgba(249, 202, 36, 0.6); }
@@ -265,6 +368,28 @@
             font-size: 0.85rem;
             margin-bottom: 5px;
             line-height: 1.3;
+        }
+
+        .music-tier-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+
+        .music-tier-badge.free {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .music-tier-badge.premium {
+            background: linear-gradient(45deg, #f9ca24, #f0932b);
+        }
+
+        .music-tier-badge.pro {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
         }
 
         .music-controls {
@@ -297,6 +422,11 @@
         .play-btn.playing {
             background: #f9ca24;
             animation: playingPulse 1s infinite;
+        }
+
+        .play-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
         }
 
         @keyframes playingPulse {
@@ -352,6 +482,28 @@
 
         .select-btn.selected {
             background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        }
+
+        .select-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .upgrade-btn {
+            background: linear-gradient(45deg, #f9ca24, #f0932b);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            min-height: 44px;
+        }
+
+        .upgrade-btn:active {
+            transform: scale(0.95);
         }
 
         .upload-section {
@@ -740,6 +892,301 @@
             z-index: 20;
         }
 
+        /* Settings Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:active {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .settings-section {
+            margin-bottom: 25px;
+        }
+
+        .settings-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #4ecdc4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .setting-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .setting-item label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .setting-item input,
+        .setting-item select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .setting-item input[type="range"] {
+            padding: 0;
+            height: 40px;
+            -webkit-appearance: none;
+            background: transparent;
+        }
+
+        .setting-item input[type="range"]::-webkit-slider-track {
+            background: rgba(255, 255, 255, 0.3);
+            height: 6px;
+            border-radius: 3px;
+        }
+
+        .setting-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #4ecdc4;
+            cursor: pointer;
+            margin-top: -7px;
+        }
+
+        .setting-item select option {
+            background: #333;
+            color: white;
+        }
+
+        .setting-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #4ecdc4;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            left: 24px;
+        }
+
+        .subscription-plans {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .plan-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .plan-card.current {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.2);
+        }
+
+        .plan-card.recommended {
+            border-color: #f9ca24;
+            background: rgba(249, 202, 36, 0.2);
+        }
+
+        .plan-card.recommended::before {
+            content: '⭐ RECOMMENDED';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #f9ca24, #f0932b);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .plan-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .plan-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .plan-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4ecdc4;
+            margin-bottom: 5px;
+        }
+
+        .plan-period {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .plan-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .plan-btn.current {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .plan-btn.upgrade {
+            background: linear-gradient(45deg, #f9ca24, #f0932b);
+            color: white;
+        }
+
+        .plan-btn.premium {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .plan-btn:active {
+            transform: scale(0.98);
+        }
+
         /* iOS specific optimizations */
         @supports (-webkit-touch-callout: none) {
             .app-container {
@@ -780,7 +1227,9 @@
             .control-group input,
             .control-group select,
             .search-input,
-            .genre-filter {
+            .genre-filter,
+            .setting-item input,
+            .setting-item select {
                 background: rgba(255, 255, 255, 0.15);
             }
         }
@@ -797,12 +1246,13 @@
         /* Touch feedback for better UX */
         .music-card:active,
         .upload-area:active,
-        .step:active {
+        .step:active,
+        .plan-card:active {
             background: rgba(255, 255, 255, 0.2);
         }
 
         /* Ensure minimum touch target size */
-        button, .play-btn, .select-btn, .remove-btn {
+        button, .play-btn, .select-btn, .remove-btn, .toggle-switch {
             min-height: 44px;
             min-width: 44px;
         }
@@ -810,7 +1260,8 @@
         /* Hide scrollbar on iOS */
         .music-grid::-webkit-scrollbar,
         .main-content::-webkit-scrollbar,
-        .file-list::-webkit-scrollbar {
+        .file-list::-webkit-scrollbar,
+        .modal-body::-webkit-scrollbar {
             display: none;
         }
     </style>
@@ -818,8 +1269,12 @@
 <body>
     <div class="app-container">
         <div class="header">
-            <h1>🎵 Beat-Sync Maker</h1>
-            <p>AI-Powered Music Synchronization</p>
+            <div class="subscription-status" id="subscriptionStatus" onclick="openSubscription()">
+                FREE
+            </div>
+            <h1>🎵 Beat-Sync Pro</h1>
+            <p>AI Music Synchronization</p>
+            <button class="settings-btn" onclick="openSettings()">⚙️</button>
         </div>
 
         <!-- Workflow Steps -->
@@ -856,7 +1311,25 @@
                     <strong>🎯 How to Select:</strong><br>
                     • Tap ▶ to preview tracks<br>
                     • Tap "Select Track" to choose<br>
-                    • Or upload your own music below
+                    • Upgrade for premium content
+                </div>
+
+                <!-- Music Tier Tabs -->
+                <div class="music-tier-tabs">
+                    <div class="tier-tab active" data-tier="free" onclick="switchMusicTier('free')">
+                        <div>FREE</div>
+                        <div class="tier-price">5 Tracks</div>
+                    </div>
+                    <div class="tier-tab" data-tier="premium" onclick="switchMusicTier('premium')">
+                        <div>PREMIUM</div>
+                        <div class="tier-price">$4.99/mo</div>
+                        <div class="lock-icon" id="premiumLock">🔒</div>
+                    </div>
+                    <div class="tier-tab" data-tier="pro" onclick="switchMusicTier('pro')">
+                        <div>PRO</div>
+                        <div class="tier-price">$9.99/mo</div>
+                        <div class="lock-icon" id="proLock">🔒</div>
+                    </div>
                 </div>
 
                 <div class="search-container">
@@ -871,6 +1344,9 @@
                             <option value="techno">Techno</option>
                             <option value="dubstep">Dubstep</option>
                             <option value="trap">Trap</option>
+                            <option value="chill">Chill</option>
+                            <option value="drum-bass">Drum & Bass</option>
+                            <option value="future-bass">Future Bass</option>
                         </select>
                         <button class="search-btn" onclick="searchMusic()">🔍</button>
                     </div>
@@ -1019,6 +1495,254 @@
         </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ Settings</h2>
+                <button class="close-btn" onclick="closeSettings()">×</button>
+            </div>
+            <div class="modal-body">
+                <!-- Audio Settings -->
+                <div class="settings-section">
+                    <h3>🔊 Audio Settings</h3>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label>Master Volume: <span id="masterVolumeValue">80</span>%</label>
+                            <input type="range" id="masterVolume" min="0" max="100" value="80" oninput="updateSettingValue('masterVolume', 'masterVolumeValue')">
+                        </div>
+                        <div class="setting-item">
+                            <label>Preview Volume: <span id="previewVolumeValue">70</span>%</label>
+                            <input type="range" id="previewVolume" min="0" max="100" value="70" oninput="updateSettingValue('previewVolume', 'previewVolumeValue')">
+                        </div>
+                        <div class="setting-item">
+                            <label>Audio Quality</label>
+                            <select id="audioQuality">
+                                <option value="standard">Standard (128kbps)</option>
+                                <option value="high" selected>High (256kbps)</option>
+                                <option value="premium">Premium (320kbps)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item setting-toggle">
+                            <label>Auto-Play Previews</label>
+                            <div class="toggle-switch active" id="autoPlayToggle" onclick="toggleSetting('autoPlayToggle')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Settings -->
+                <div class="settings-section">
+                    <h3>🎨 Visual Settings</h3>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label>Default Video Quality</label>
+                            <select id="videoQuality">
+                                <option value="720p">720p (HD)</option>
+                                <option value="1080p" selected>1080p (Full HD)</option>
+                                <option value="4k">4K (Ultra HD)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Frame Rate</label>
+                            <select id="frameRate">
+                                <option value="24">24 FPS (Cinema)</option>
+                                <option value="30" selected>30 FPS (Standard)</option>
+                                <option value="60">60 FPS (Smooth)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Effect Performance: <span id="effectPerformanceValue">High</span></label>
+                            <input type="range" id="effectPerformance" min="1" max="3" value="3" oninput="updatePerformanceValue()">
+                        </div>
+                        <div class="setting-item setting-toggle">
+                            <label>Hardware Acceleration</label>
+                            <div class="toggle-switch active" id="hwAccelToggle" onclick="toggleSetting('hwAccelToggle')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beat Detection Settings -->
+                <div class="settings-section">
+                    <h3>🎵 Beat Detection</h3>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label>Detection Algorithm</label>
+                            <select id="beatAlgorithm">
+                                <option value="standard">Standard</option>
+                                <option value="advanced" selected>Advanced AI</option>
+                                <option value="precision">High Precision</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Frequency Analysis: <span id="freqAnalysisValue">512</span> bins</label>
+                            <input type="range" id="freqAnalysis" min="256" max="2048" value="512" step="256" oninput="updateSettingValue('freqAnalysis', 'freqAnalysisValue')">
+                        </div>
+                        <div class="setting-item">
+                            <label>Bass Threshold: <span id="bassThresholdValue">60</span>%</label>
+                            <input type="range" id="bassThreshold" min="30" max="90" value="60" oninput="updateSettingValue('bassThreshold', 'bassThresholdValue')">
+                        </div>
+                        <div class="setting-item setting-toggle">
+                            <label>Auto-Calibrate Sensitivity</label>
+                            <div class="toggle-switch active" id="autoCalibToggle" onclick="toggleSetting('autoCalibToggle')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Settings -->
+                <div class="settings-section">
+                    <h3>💾 Export Settings</h3>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label>Default Export Format</label>
+                            <select id="exportFormat">
+                                <option value="mp4" selected>MP4 (H.264)</option>
+                                <option value="webm">WebM (VP9)</option>
+                                <option value="mov">MOV (QuickTime)</option>
+                                <option value="gif">GIF (Animated)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Compression Level</label>
+                            <select id="compression">
+                                <option value="low">Low (Large file)</option>
+                                <option value="medium" selected>Medium (Balanced)</option>
+                                <option value="high">High (Small file)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item setting-toggle">
+                            <label>Auto-Save Projects</label>
+                            <div class="toggle-switch active" id="autoSaveToggle" onclick="toggleSetting('autoSaveToggle')"></div>
+                        </div>
+                        <div class="setting-item setting-toggle">
+                            <label>Include Watermark</label>
+                            <div class="toggle-switch" id="watermarkToggle" onclick="toggleSetting('watermarkToggle')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App Settings -->
+                <div class="settings-section">
+                    <h3>📱 App Settings</h3>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label>Theme</label>
+                            <select id="appTheme">
+                                <option value="auto" selected>Auto (System)</option>
+                                <option value="light">Light Mode</option>
+                                <option value="dark">Dark Mode</option>
+                            </select>
+                        </div>
+                        <div class="setting-item setting-toggle">
+                            <label>Haptic Feedback</label>
+                            <div class="toggle-switch active" id="hapticToggle" onclick="toggleSetting('hapticToggle')"></div>
+                        </div>
+                        <div class="setting-item setting-toggle">
+                            <label>Push Notifications</label>
+                            <div class="toggle-switch" id="notifToggle" onclick="toggleSetting('notifToggle')"></div>
+                        </div>
+                        <div class="setting-item setting-toggle">
+                            <label>Analytics & Crash Reports</label>
+                            <div class="toggle-switch active" id="analyticsToggle" onclick="toggleSetting('analyticsToggle')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset Settings -->
+                <div class="settings-section">
+                    <h3>🔄 Reset & Backup</h3>
+                    <div class="settings-grid">
+                        <div style="display: flex; gap: 10px;">
+                            <button class="plan-btn" style="flex: 1; background: #95a5a6;" onclick="resetSettings()">
+                                Reset All Settings
+                            </button>
+                            <button class="plan-btn" style="flex: 1; background: #4ecdc4;" onclick="exportSettings()">
+                                Export Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Modal -->
+    <div class="modal-overlay" id="subscriptionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⭐ Upgrade Your Experience</h2>
+                <button class="close-btn" onclick="closeSubscription()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="subscription-plans">
+                    <!-- Free Plan -->
+                    <div class="plan-card current">
+                        <div class="plan-header">
+                            <div class="plan-name">Free</div>
+                            <div class="plan-price">$0</div>
+                            <div class="plan-period">forever</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li>5 free music tracks</li>
+                            <li>Basic beat detection</li>
+                            <li>720p export quality</li>
+                            <li>Standard effects library</li>
+                            <li>15-second clips max</li>
+                        </ul>
+                        <button class="plan-btn current">Current Plan</button>
+                    </div>
+
+                    <!-- Premium Plan -->
+                    <div class="plan-card recommended">
+                        <div class="plan-header">
+                            <div class="plan-name">Premium</div>
+                            <div class="plan-price">$4.99</div>
+                            <div class="plan-period">per month</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li>50+ premium music tracks</li>
+                            <li>Advanced AI beat detection</li>
+                            <li>1080p export quality</li>
+                            <li>Premium effects & filters</li>
+                            <li>60-second clips</li>
+                            <li>No watermarks</li>
+                            <li>Cloud storage (5GB)</li>
+                        </ul>
+                        <button class="plan-btn upgrade" onclick="subscribeToPlan('premium')">
+                            Upgrade to Premium
+                        </button>
+                    </div>
+
+                    <!-- Pro Plan -->
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <div class="plan-name">Pro</div>
+                            <div class="plan-price">$9.99</div>
+                            <div class="plan-period">per month</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li>200+ exclusive tracks</li>
+                            <li>AI-powered music creation</li>
+                            <li>4K export quality</li>
+                            <li>Professional effects suite</li>
+                            <li>Unlimited clip length</li>
+                            <li>Commercial license</li>
+                            <li>Cloud storage (50GB)</li>
+                            <li>Priority support</li>
+                            <li>Custom branding</li>
+                        </ul>
+                        <button class="plan-btn premium" onclick="subscribeToPlan('pro')">
+                            Go Pro
+                        </button>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; font-size: 0.8rem; opacity: 0.8;">
+                    ✨ Cancel anytime • 7-day free trial • Secure payment
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Global state
         let currentStep = 1;
@@ -1028,9 +1752,13 @@
         let currentPreviewAudio = null;
         let isPlaying = false;
         let audioContext, analyser, audioSource, beatDetector, effectsEngine;
+        let currentTier = 'free';
+        let currentMusicTier = 'free';
+        let userSubscription = 'free';
 
-        // Sample music database
+        // Expanded music database with tiers
         const freeMusicDatabase = [
+            // Free Tier
             {
                 id: 1,
                 title: "Electric Dreams",
@@ -1038,6 +1766,7 @@
                 genre: "electronic",
                 bpm: 128,
                 duration: "3:45",
+                tier: "free",
                 previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav",
                 tags: ["edm", "electronic", "dance"]
             },
@@ -1048,6 +1777,7 @@
                 genre: "dubstep",
                 bpm: 140,
                 duration: "4:12",
+                tier: "free",
                 previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav",
                 tags: ["dubstep", "bass", "electronic"]
             },
@@ -1058,6 +1788,7 @@
                 genre: "house",
                 bpm: 124,
                 duration: "5:30",
+                tier: "free",
                 previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/ImperialMarch60.wav",
                 tags: ["house", "dance", "party"]
             },
@@ -1068,6 +1799,7 @@
                 genre: "techno",
                 bpm: 132,
                 duration: "6:15",
+                tier: "free",
                 previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav",
                 tags: ["techno", "underground"]
             },
@@ -1078,8 +1810,123 @@
                 genre: "trap",
                 bpm: 150,
                 duration: "3:20",
+                tier: "free",
                 previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/gettysburg10.wav",
                 tags: ["trap", "hip-hop", "urban"]
+            },
+
+            // Premium Tier
+            {
+                id: 6,
+                title: "Neon Nights",
+                artist: "Future Bass Collective",
+                genre: "future-bass",
+                bpm: 140,
+                duration: "4:30",
+                tier: "premium",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav",
+                tags: ["future-bass", "melodic", "emotional"]
+            },
+            {
+                id: 7,
+                title: "Cyber Punk 2099",
+                artist: "Digital Dreams",
+                genre: "electronic",
+                bpm: 135,
+                duration: "5:15",
+                tier: "premium",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav",
+                tags: ["cyberpunk", "dark", "futuristic"]
+            },
+            {
+                id: 8,
+                title: "Liquid Drum & Bass",
+                artist: "Smooth Operators",
+                genre: "drum-bass",
+                bpm: 174,
+                duration: "6:45",
+                tier: "premium",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/ImperialMarch60.wav",
+                tags: ["drum-bass", "liquid", "smooth"]
+            },
+            {
+                id: 9,
+                title: "Festival Anthem",
+                artist: "Mainstage Heroes",
+                genre: "edm",
+                bpm: 128,
+                duration: "4:00",
+                tier: "premium",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav",
+                tags: ["festival", "big-room", "anthem"]
+            },
+            {
+                id: 10,
+                title: "Minimal Techno Journey",
+                artist: "Underground Labs",
+                genre: "techno",
+                bpm: 126,
+                duration: "7:30",
+                tier: "premium",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/gettysburg10.wav",
+                tags: ["minimal", "hypnotic", "deep"]
+            },
+
+            // Pro Tier
+            {
+                id: 11,
+                title: "Epic Orchestral Bass",
+                artist: "Cinematic Sound",
+                genre: "electronic",
+                bpm: 110,
+                duration: "5:45",
+                tier: "pro",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav",
+                tags: ["cinematic", "orchestral", "epic"]
+            },
+            {
+                id: 12,
+                title: "Hybrid Trap Beast",
+                artist: "Bass Monsters",
+                genre: "trap",
+                bpm: 150,
+                duration: "4:20",
+                tier: "pro",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav",
+                tags: ["hybrid", "aggressive", "festival"]
+            },
+            {
+                id: 13,
+                title: "Ambient Dreamscape",
+                artist: "Ethereal Sounds",
+                genre: "chill",
+                bpm: 90,
+                duration: "8:00",
+                tier: "pro",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/ImperialMarch60.wav",
+                tags: ["ambient", "dreamy", "meditation"]
+            },
+            {
+                id: 14,
+                title: "Neurofunk Destroyer",
+                artist: "Matrix Breaks",
+                genre: "drum-bass",
+                bpm: 180,
+                duration: "5:30",
+                tier: "pro",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav",
+                tags: ["neurofunk", "dark", "technical"]
+            },
+            {
+                id: 15,
+                title: "Progressive House Journey",
+                artist: "Melodic Progressions",
+                genre: "house",
+                bpm: 124,
+                duration: "9:15",
+                tier: "pro",
+                previewUrl: "https://www2.cs.uic.edu/~i101/SoundFiles/gettysburg10.wav",
+                tags: ["progressive", "melodic", "journey"]
             }
         ];
 
@@ -1089,6 +1936,7 @@
             loadMusicLibrary();
             setupEventListeners();
             updateStepAvailability();
+            updateSubscriptionDisplay();
             
             // Prevent zoom on double tap
             let lastTouchEnd = 0;
@@ -1102,7 +1950,7 @@
             
             // Prevent scroll bounce
             document.addEventListener('touchmove', function(e) {
-                if (e.target.closest('.main-content, .music-grid, .file-list')) {
+                if (e.target.closest('.main-content, .music-grid, .file-list, .modal-body')) {
                     return;
                 }
                 e.preventDefault();
@@ -1126,6 +1974,126 @@
                 clearTimeout(timeout);
                 timeout = setTimeout(later, wait);
             };
+        }
+
+        // Settings functions
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function openSubscription() {
+            document.getElementById('subscriptionModal').classList.add('active');
+        }
+
+        function closeSubscription() {
+            document.getElementById('subscriptionModal').classList.remove('active');
+        }
+
+        function updateSettingValue(sliderId, displayId) {
+            const value = document.getElementById(sliderId).value;
+            document.getElementById(displayId).textContent = value;
+        }
+
+        function updatePerformanceValue() {
+            const value = document.getElementById('effectPerformance').value;
+            const levels = ['Low', 'Medium', 'High'];
+            document.getElementById('effectPerformanceValue').textContent = levels[value - 1];
+        }
+
+        function toggleSetting(toggleId) {
+            const toggle = document.getElementById(toggleId);
+            toggle.classList.toggle('active');
+        }
+
+        function resetSettings() {
+            if (confirm('Reset all settings to default? This cannot be undone.')) {
+                // Reset all settings to default
+                location.reload();
+            }
+        }
+
+        function exportSettings() {
+            const settings = {
+                masterVolume: document.getElementById('masterVolume').value,
+                previewVolume: document.getElementById('previewVolume').value,
+                audioQuality: document.getElementById('audioQuality').value,
+                // ... add all other settings
+            };
+            
+            const dataStr = JSON.stringify(settings, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'beat-sync-settings.json';
+            link.click();
+            
+            updateStatus('⬇️ Settings exported successfully!');
+        }
+
+        // Subscription functions
+        function updateSubscriptionDisplay() {
+            const statusEl = document.getElementById('subscriptionStatus');
+            statusEl.className = `subscription-status ${userSubscription}`;
+            statusEl.textContent = userSubscription.toUpperCase();
+            
+            // Update tier locks
+            const premiumLock = document.getElementById('premiumLock');
+            const proLock = document.getElementById('proLock');
+            
+            if (userSubscription === 'free') {
+                premiumLock.style.display = 'block';
+                proLock.style.display = 'block';
+            } else if (userSubscription === 'premium') {
+                premiumLock.style.display = 'none';
+                proLock.style.display = 'block';
+            } else {
+                premiumLock.style.display = 'none';
+                proLock.style.display = 'none';
+            }
+        }
+
+        function subscribeToPlan(plan) {
+            // Simulate subscription process
+            updateStatus(`🔄 Processing ${plan} subscription...`);
+            
+            setTimeout(() => {
+                userSubscription = plan;
+                updateSubscriptionDisplay();
+                closeSubscription();
+                updateStatus(`✅ Successfully upgraded to ${plan.toUpperCase()}!`);
+                
+                // Refresh music library to show new tracks
+                loadMusicLibrary();
+            }, 2000);
+        }
+
+        function switchMusicTier(tier) {
+            // Check if user has access to this tier
+            if (tier === 'premium' && userSubscription === 'free') {
+                openSubscription();
+                return;
+            }
+            if (tier === 'pro' && (userSubscription === 'free' || userSubscription === 'premium')) {
+                openSubscription();
+                return;
+            }
+            
+            currentMusicTier = tier;
+            
+            // Update tier tab appearance
+            document.querySelectorAll('.tier-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.tier === tier) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            searchMusic();
         }
 
         // Step navigation
@@ -1202,8 +2170,9 @@
                                     track.tags.some(tag => tag.toLowerCase().includes(searchTerm));
                 
                 const matchesGenre = !genreFilter || track.genre === genreFilter;
+                const matchesTier = track.tier === currentMusicTier;
                 
-                return matchesSearch && matchesGenre;
+                return matchesSearch && matchesGenre && matchesTier;
             });
 
             renderMusicGrid(filteredMusic);
@@ -1214,7 +2183,7 @@
             grid.innerHTML = '';
 
             if (tracks.length === 0) {
-                grid.innerHTML = '<p style="text-align: center; opacity: 0.7; padding: 20px;">No tracks found. Try different search terms!</p>';
+                grid.innerHTML = '<p style="text-align: center; opacity: 0.7; padding: 20px;">No tracks found. Try different search terms or upgrade your plan!</p>';
                 return;
             }
 
@@ -1227,27 +2196,47 @@
         function createMusicCard(track) {
             const card = document.createElement('div');
             card.className = 'music-card';
-            card.onclick = () => selectMusic(track, card);
+            
+            const hasAccess = canAccessTrack(track);
+            if (!hasAccess) {
+                card.classList.add('locked');
+            }
+            
+            card.onclick = () => {
+                if (hasAccess) {
+                    selectMusic(track, card);
+                } else {
+                    openSubscription();
+                }
+            };
 
             card.innerHTML = `
+                <div class="music-tier-badge ${track.tier}">${track.tier.toUpperCase()}</div>
                 <div class="music-info">
                     <h4>${track.title}</h4>
                     <p>by ${track.artist}</p>
                     <p>${track.genre.toUpperCase()} • ${track.bpm} BPM • ${track.duration}</p>
                 </div>
                 <div class="music-controls">
-                    <button class="play-btn" onclick="event.stopPropagation(); togglePreview('${track.previewUrl}', this, '${track.id}')">▶</button>
+                    <button class="play-btn" ${!hasAccess ? 'disabled' : ''} onclick="event.stopPropagation(); ${hasAccess ? `togglePreview('${track.previewUrl}', this, '${track.id}')` : 'openSubscription()'}">▶</button>
                     <div class="waveform">
                         <div class="waveform-progress" id="progress-${track.id}"></div>
                         <div class="waveform-time" id="time-${track.id}">0:00</div>
                     </div>
-                    <button class="select-btn" onclick="event.stopPropagation(); selectMusic('${JSON.stringify(track).replace(/'/g, "\\'")}', this.closest('.music-card'))">
-                        Select
+                    <button class="select-btn ${hasAccess ? '' : 'upgrade-btn'}" ${!hasAccess ? 'disabled' : ''} onclick="event.stopPropagation(); ${hasAccess ? `selectMusic('${JSON.stringify(track).replace(/'/g, "\\'")}', this.closest('.music-card'))` : 'openSubscription()'}">
+                        ${hasAccess ? 'Select' : 'Upgrade'}
                     </button>
                 </div>
             `;
 
             return card;
+        }
+
+        function canAccessTrack(track) {
+            if (track.tier === 'free') return true;
+            if (track.tier === 'premium' && (userSubscription === 'premium' || userSubscription === 'pro')) return true;
+            if (track.tier === 'pro' && userSubscription === 'pro') return true;
+            return false;
         }
 
         function togglePreview(url, button, trackId) {
@@ -1272,7 +2261,8 @@
 
             // Play new track
             currentPreviewAudio = new Audio(url);
-            currentPreviewAudio.volume = 0.7;
+            const previewVolume = document.getElementById('previewVolume').value / 100;
+            currentPreviewAudio.volume = previewVolume;
             
             button.innerHTML = '⏸';
             button.classList.add('playing');
@@ -1313,6 +2303,11 @@
                 track = JSON.parse(track);
             }
             
+            if (!canAccessTrack(track)) {
+                openSubscription();
+                return;
+            }
+            
             if (currentPreviewAudio && !currentPreviewAudio.paused) {
                 currentPreviewAudio.pause();
                 currentPreviewAudio.currentTime = 0;
@@ -1326,14 +2321,18 @@
                 card.classList.remove('selected', 'playing');
             });
             document.querySelectorAll('.select-btn').forEach(btn => {
-                btn.textContent = 'Select';
-                btn.classList.remove('selected');
+                if (!btn.classList.contains('upgrade-btn')) {
+                    btn.textContent = 'Select';
+                    btn.classList.remove('selected');
+                }
             });
             
             cardElement.classList.add('selected');
             const selectBtn = cardElement.querySelector('.select-btn');
-            selectBtn.textContent = 'Selected ✓';
-            selectBtn.classList.add('selected');
+            if (!selectBtn.classList.contains('upgrade-btn')) {
+                selectBtn.textContent = 'Selected ✓';
+                selectBtn.classList.add('selected');
+            }
             
             selectedMusic = track;
             currentAudio = null;
@@ -1366,8 +2365,10 @@
                     card.classList.remove('selected');
                 });
                 document.querySelectorAll('.select-btn').forEach(btn => {
-                    btn.textContent = 'Select';
-                    btn.classList.remove('selected');
+                    if (!btn.classList.contains('upgrade-btn')) {
+                        btn.textContent = 'Select';
+                        btn.classList.remove('selected');
+                    }
                 });
                 
                 const uploadArea = document.getElementById('audioUploadArea');
@@ -1587,11 +2588,14 @@
             try {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 analyser = audioContext.createAnalyser();
-                analyser.fftSize = 256;
+                analyser.fftSize = parseInt(document.getElementById('freqAnalysis')?.value || 512);
                 
                 const audioElement = document.createElement('audio');
                 audioElement.src = URL.createObjectURL(currentAudio);
                 audioElement.crossOrigin = 'anonymous';
+                
+                const masterVolume = document.getElementById('masterVolume')?.value / 100 || 0.8;
+                audioElement.volume = masterVolume;
                 
                 audioSource = audioContext.createMediaElementSource(audioElement);
                 audioSource.connect(analyser);
