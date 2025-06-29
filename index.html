@@ -912,8 +912,8 @@
             showSendMessageModal: false,
             showDoseEffectModal: false,
             showPatientAssignModal: false,
-            showUserProfileModal: false,
-            currentView: 'schedule',
+            showUserProfileModal: false, // New state for user profile
+            currentView: 'schedule', // New state for view toggle: 'schedule', 'list', 'weekly'
             selectedDoseHistory: null,
             selectedDoseForEffect: null,
             currentMessage: { text: '', patientId: null },
@@ -926,7 +926,7 @@
                 times: ['09:00'],
                 notes: '',
                 color: '#3b82f6',
-                icon: 'pill'
+                icon: 'pill' // New field for medicine icon
             },
             loginForm: { email: '', password: '' },
             signupForm: {
@@ -2208,7 +2208,6 @@
                         ])
                     ]
                 ]),
-
                 createElement('div', { className: 'flex flex-col md:flex-row gap-2 mt-6' }, [
                     createElement('button', {
                         type: 'submit',
