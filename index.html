@@ -1,14 +1,50 @@
 import { useState, useRef } from 'react';
-import { Plus, Pill, Clock, CheckCircle, XCircle, Edit, Trash2, Search, Download, Upload } from 'lucide-react';
+import { Plus, Pill, Clock, CheckCircle, XCircle, Edit, Trash2, Search, Download, Upload, Users, Calendar, Copy, RotateCcw, MessageSquare, Eye, FileText, User, LogOut, Lock, UserCheck, Stethoscope } from 'lucide-react';
 
 export default function MedicineTracker() {
+  // Authentication State
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showLogin, setShowLogin] = useState(true);
+  const [loginType, setLoginType] = useState('patient'); // 'patient' or 'doctor'
+  const [showSignup, setShowSignup] = useState(false);
+  
+  // User Management
+  const [patients, setPatients] = useState([
+    { id: 1, email: 'john.doe@email.com', password: 'patient123', name: 'John Doe', dateOfBirth: '1985-06-15', phone: '+1234567890', assignedDoctor: 1 },
+    { id: 2, email: 'jane.smith@email.com', password: 'patient123', name: 'Jane Smith', dateOfBirth: '1990-03-22', phone: '+1234567891', assignedDoctor: 1 }
+  ]);
+  
+  const [doctors, setDoctors] = useState([
+    { id: 1, email: 'dr.wilson@hospital.com', password: 'doctor123', name: 'Dr. Sarah Wilson', specialty: 'Internal Medicine', license: 'MD12345', hospital: 'City General Hospital' },
+    { id: 2, email: 'dr.johnson@clinic.com', password: 'doctor123', name: 'Dr. Michael Johnson', specialty: 'Cardiology', license: 'MD67890', hospital: 'Heart Care Clinic' }
+  ]);
+
+  // App State
+  const [currentPatient, setCurrentPatient] = useState(null);
+  const [patientFiles, setPatientFiles] = useState([]);
+  
   const [medications, setMedications] = useState([]);
   const [doses, setDoses] = useState([]);
+  const [remarks, setRemarks] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingMed, setEditingMed] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [showRemarkModal, setShowRemarkModal] = useState(false);
+  const [currentRemark, setCurrentRemark] = useState({ date: '', text: '', type: 'note' });
+  const [showBulkEdit, setShowBulkEdit] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [selectedDoseHistory, setSelectedDoseHistory] = useState(null);
+  
   const fileInputRef = useRef(null);
+  const patientFileRef = useRef(null);
+
+  // Login Form State
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+  const [signupForm, setSignupForm] = useState({
+    email: '', password: '', confirmPassword: '', name: '', 
+    dateOfBirth: '', phone: '', specialty: '', license: '', hospital: ''
+  });
 
   const [newMed, setNewMed] = useState({
     name: '',
@@ -31,6 +67,131 @@ export default function MedicineTracker() {
     '#3b82f6', '#ef4444', '#10b981', '#f59e0b', 
     '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'
   ];
+
+  // Authentication Functions
+  const handleLogin = (e) => {
+    e.preventDefault();
+    
+    const userList = loginType === 'patient' ? patients : doctors;
+    const user = userList.find(u => u.email === loginForm.email && u.password === loginForm.password);
+    
+    if (user) {
+      setCurrentUser({ ...user, role: loginType });
+      setShowLogin(false);
+      setLoginForm({ email: '', password: '' });
+      
+      // If patient login, load their data
+      if (loginType === 'patient') {
+        // In a real app, this would load from a database
+        setMedications([]);
+        setDoses([]);
+        setRemarks([]);
+      }
+    } else {
+      alert('Invalid email or password');
+    }
+  };
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    
+    if (signupForm.password !== signupForm.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    const newUser = {
+      id: Date.now(),
+      email: signupForm.email,
+      password: signupForm.password,
+      name: signupForm.name
+    };
+
+    if (loginType === 'patient') {
+      const patientUser = {
+        ...newUser,
+        dateOfBirth: signupForm.dateOfBirth,
+        phone: signupForm.phone,
+        assignedDoctor: null
+      };
+      setPatients([...patients, patientUser]);
+    } else {
+      const doctorUser = {
+        ...newUser,
+        specialty: signupForm.specialty,
+        license: signupForm.license,
+        hospital: signupForm.hospital
+      };
+      setDoctors([...doctors, doctorUser]);
+    }
+
+    alert('Account created successfully! Please login.');
+    setShowSignup(false);
+    setSignupForm({
+      email: '', password: '', confirmPassword: '', name: '', 
+      dateOfBirth: '', phone: '', specialty: '', license: '', hospital: ''
+    });
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setCurrentPatient(null);
+    setMedications([]);
+    setDoses([]);
+    setRemarks([]);
+    setShowLogin(true);
+  };
+
+  // Get patients assigned to current doctor
+  const getAssignedPatients = () => {
+    if (!currentUser || currentUser.role !== 'doctor') return [];
+    return patients.filter(p => p.assignedDoctor === currentUser.id);
+  };
+
+  // Patient Management Functions
+  const uploadPatientFile = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        
+        if (data.medications && Array.isArray(data.medications) && 
+            data.doses && Array.isArray(data.doses)) {
+          
+          const patientName = prompt('Enter patient name:');
+          if (!patientName) return;
+          
+          const patientFile = {
+            id: Date.now(),
+            name: patientName,
+            uploadDate: new Date().toISOString(),
+            fileName: file.name,
+            uploadedBy: currentUser.id,
+            data: data
+          };
+          
+          setPatientFiles([...patientFiles, patientFile]);
+          alert('Patient data uploaded successfully!');
+        } else {
+          alert('Invalid file format.');
+        }
+      } catch (error) {
+        alert('Error reading file.');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  };
+
+  const viewPatientFile = (patientFile) => {
+    setCurrentPatient(patientFile);
+    setMedications(patientFile.data.medications || []);
+    setDoses(patientFile.data.doses || []);
+    setRemarks(patientFile.data.remarks || []);
+  };
 
   const handleFrequencyChange = (freq) => {
     setNewMed({
@@ -60,7 +221,8 @@ export default function MedicineTracker() {
 
     const medication = {
       id: editingMed?.id || Date.now(),
-      ...newMed
+      ...newMed,
+      patientId: currentUser?.role === 'patient' ? currentUser.id : currentPatient?.id
     };
 
     if (editingMed) {
@@ -96,28 +258,29 @@ export default function MedicineTracker() {
     setDoses(doses.filter(d => d.medicationId !== id));
   };
 
-  const markDose = (medId, time, status) => {
+  const markDose = (medId, time, status, canEdit = true) => {
+    if (currentUser?.role === 'doctor' && !canEdit) return;
+    
     const doseKey = `${selectedDate}-${medId}-${time}`;
     const existingDoseIndex = doses.findIndex(d => d.key === doseKey);
     
+    const doseData = {
+      key: doseKey,
+      medicationId: medId,
+      date: selectedDate,
+      time,
+      status,
+      timestamp: new Date().toISOString(),
+      editedBy: currentUser?.role === 'doctor' ? `Dr. ${currentUser.name}` : currentUser?.name,
+      previousStatus: existingDoseIndex >= 0 ? doses[existingDoseIndex].status : null
+    };
+    
     if (existingDoseIndex >= 0) {
       const newDoses = [...doses];
-      newDoses[existingDoseIndex] = {
-        ...newDoses[existingDoseIndex],
-        status,
-        timestamp: new Date().toISOString()
-      };
+      newDoses[existingDoseIndex] = doseData;
       setDoses(newDoses);
     } else {
-      const newDose = {
-        key: doseKey,
-        medicationId: medId,
-        date: selectedDate,
-        time,
-        status,
-        timestamp: new Date().toISOString()
-      };
-      setDoses([...doses, newDose]);
+      setDoses([...doses, doseData]);
     }
   };
 
@@ -127,19 +290,110 @@ export default function MedicineTracker() {
     return dose?.status || 'pending';
   };
 
+  const getDoseHistory = (medId, time) => {
+    const doseKey = `${selectedDate}-${medId}-${time}`;
+    return doses.filter(d => d.key === doseKey);
+  };
+
+  const showDoseHistory = (medId, time) => {
+    const history = getDoseHistory(medId, time);
+    setSelectedDoseHistory({ medId, time, history });
+    setShowHistoryModal(true);
+  };
+
+  // Bulk Operations
+  const duplicateSlot = (medId, fromTime, toTime) => {
+    const fromKey = `${selectedDate}-${medId}-${fromTime}`;
+    const fromDose = doses.find(d => d.key === fromKey);
+    
+    if (fromDose) {
+      markDose(medId, toTime, fromDose.status);
+    }
+  };
+
+  const copyDay = (fromDate, toDate) => {
+    const fromDoses = doses.filter(d => d.date === fromDate);
+    fromDoses.forEach(dose => {
+      const newKey = `${toDate}-${dose.medicationId}-${dose.time}`;
+      const newDose = {
+        ...dose,
+        key: newKey,
+        date: toDate,
+        timestamp: new Date().toISOString(),
+        editedBy: 'Copy Operation'
+      };
+      
+      const existingIndex = doses.findIndex(d => d.key === newKey);
+      if (existingIndex >= 0) {
+        const newDoses = [...doses];
+        newDoses[existingIndex] = newDose;
+        setDoses(newDoses);
+      } else {
+        setDoses(prev => [...prev, newDose]);
+      }
+    });
+  };
+
+  const copyWeek = (fromDate) => {
+    const startDate = new Date(fromDate);
+    const dayOfWeek = startDate.getDay();
+    const mondayOfWeek = new Date(startDate);
+    mondayOfWeek.setDate(startDate.getDate() - dayOfWeek + 1);
+    
+    for (let i = 0; i < 7; i++) {
+      const sourceDate = new Date(mondayOfWeek);
+      sourceDate.setDate(mondayOfWeek.getDate() + i);
+      
+      const targetDate = new Date(sourceDate);
+      targetDate.setDate(sourceDate.getDate() + 7);
+      
+      copyDay(sourceDate.toISOString().split('T')[0], targetDate.toISOString().split('T')[0]);
+    }
+    
+    alert('Week copied to next week successfully!');
+  };
+
+  // Remarks System
+  const addRemark = () => {
+    const remark = {
+      id: Date.now(),
+      date: currentRemark.date || selectedDate,
+      text: currentRemark.text,
+      type: currentRemark.type,
+      timestamp: new Date().toISOString(),
+      author: currentUser?.role === 'doctor' ? `Dr. ${currentUser.name}` : currentUser?.name,
+      patientId: currentUser?.role === 'patient' ? currentUser.id : currentPatient?.id
+    };
+    
+    setRemarks([...remarks, remark]);
+    setCurrentRemark({ date: '', text: '', type: 'note' });
+    setShowRemarkModal(false);
+  };
+
+  const getDateRemarks = (date) => {
+    return remarks.filter(r => r.date === date);
+  };
+
+  // Export/Import
   const exportData = () => {
     const data = {
       medications,
       doses,
+      remarks,
+      patientInfo: currentUser?.role === 'patient' ? currentUser : currentPatient,
       exportDate: new Date().toISOString(),
-      version: '1.0'
+      version: '2.0'
     };
     
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `medicine-tracker-${new Date().toISOString().split('T')[0]}.json`;
+    const fileName = currentUser?.role === 'patient' ? 
+      `${currentUser.name}-medicine-tracker-${new Date().toISOString().split('T')[0]}.json` :
+      currentPatient ? `${currentPatient.name}-medicine-tracker-${new Date().toISOString().split('T')[0]}.json` :
+      `medicine-tracker-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = fileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -155,27 +409,21 @@ export default function MedicineTracker() {
       try {
         const data = JSON.parse(e.target.result);
         
-        // Validate the data structure
         if (data.medications && Array.isArray(data.medications) && 
             data.doses && Array.isArray(data.doses)) {
           setMedications(data.medications);
           setDoses(data.doses);
+          setRemarks(data.remarks || []);
           alert('Data imported successfully!');
         } else {
-          alert('Invalid file format. Please select a valid medicine tracker export file.');
+          alert('Invalid file format.');
         }
       } catch (error) {
-        alert('Error reading file. Please make sure it\'s a valid JSON file.');
+        alert('Error reading file.');
       }
     };
     reader.readAsText(file);
-    
-    // Reset the input
     event.target.value = '';
-  };
-
-  const handleImportClick = () => {
-    fileInputRef.current?.click();
   };
 
   const getTodayStats = () => {
@@ -192,16 +440,382 @@ export default function MedicineTracker() {
   );
 
   const stats = getTodayStats();
+  const dateRemarks = getDateRemarks(selectedDate);
+  const isHistoricalDate = selectedDate < new Date().toISOString().split('T')[0];
+
+  // Login/Signup UI
+  if (!currentUser || showLogin) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
+        <div className="max-w-md w-full">
+          {/* Login Type Selector */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div className="flex items-center justify-center mb-6">
+              <Pill className="text-blue-600 mr-2" size={32} />
+              <h1 className="text-2xl font-bold text-gray-800">Medicine Tracker</h1>
+            </div>
+            
+            <div className="flex rounded-lg border border-gray-300 mb-6">
+              <button
+                onClick={() => setLoginType('patient')}
+                className={`flex-1 py-3 px-4 rounded-l-lg flex items-center justify-center gap-2 transition-colors ${
+                  loginType === 'patient' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <User size={18} />
+                Patient
+              </button>
+              <button
+                onClick={() => setLoginType('doctor')}
+                className={`flex-1 py-3 px-4 rounded-r-lg flex items-center justify-center gap-2 transition-colors ${
+                  loginType === 'doctor' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <Stethoscope size={18} />
+                Doctor
+              </button>
+            </div>
+
+            {/* Demo Credentials */}
+            <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <h4 className="text-sm font-medium text-yellow-800 mb-2">Demo Credentials:</h4>
+              <div className="text-xs text-yellow-700">
+                {loginType === 'patient' ? (
+                  <>
+                    <p><strong>Patient:</strong> john.doe@email.com / patient123</p>
+                    <p><strong>Patient:</strong> jane.smith@email.com / patient123</p>
+                  </>
+                ) : (
+                  <>
+                    <p><strong>Doctor:</strong> dr.wilson@hospital.com / doctor123</p>
+                    <p><strong>Doctor:</strong> dr.johnson@clinic.com / doctor123</p>
+                  </>
+                )}
+              </div>
+            </div>
+            
+            {!showSignup ? (
+              <form onSubmit={handleLogin}>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={loginForm.email}
+                    onChange={(e) => setLoginForm({...loginForm, email: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    value={loginForm.password}
+                    onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Lock size={16} />
+                  Sign In as {loginType === 'patient' ? 'Patient' : 'Doctor'}
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleSignup}>
+                <div className="grid grid-cols-1 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                    <input
+                      type="text"
+                      value={signupForm.name}
+                      onChange={(e) => setSignupForm({...signupForm, name: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input
+                      type="email"
+                      value={signupForm.email}
+                      onChange={(e) => setSignupForm({...signupForm, email: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input
+                      type="password"
+                      value={signupForm.password}
+                      onChange={(e) => setSignupForm({...signupForm, password: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                    <input
+                      type="password"
+                      value={signupForm.confirmPassword}
+                      onChange={(e) => setSignupForm({...signupForm, confirmPassword: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                  
+                  {loginType === 'patient' ? (
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                        <input
+                          type="date"
+                          value={signupForm.dateOfBirth}
+                          onChange={(e) => setSignupForm({...signupForm, dateOfBirth: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                        <input
+                          type="tel"
+                          value={signupForm.phone}
+                          onChange={(e) => setSignupForm({...signupForm, phone: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          required
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Specialty</label>
+                        <input
+                          type="text"
+                          value={signupForm.specialty}
+                          onChange={(e) => setSignupForm({...signupForm, specialty: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">License Number</label>
+                        <input
+                          type="text"
+                          value={signupForm.license}
+                          onChange={(e) => setSignupForm({...signupForm, license: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Hospital/Clinic</label>
+                        <input
+                          type="text"
+                          value={signupForm.hospital}
+                          onChange={(e) => setSignupForm({...signupForm, hospital: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          required
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  <UserCheck size={16} />
+                  Create Account
+                </button>
+              </form>
+            )}
+            
+            <div className="mt-4 text-center">
+              <button
+                onClick={() => setShowSignup(!showSignup)}
+                className="text-blue-600 hover:text-blue-800 text-sm"
+              >
+                {showSignup ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Doctor Mode Dashboard
+  if (currentUser.role === 'doctor' && !currentPatient) {
+    const assignedPatients = getAssignedPatients();
+    
+    return (
+      <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+                <Stethoscope className="text-blue-600" />
+                Doctor Dashboard
+              </h1>
+              <p className="text-gray-600">Welcome, Dr. {currentUser.name}</p>
+              <p className="text-sm text-gray-500">{currentUser.specialty} • {currentUser.hospital}</p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2 transition-colors"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-blue-100 p-4 rounded-lg text-center">
+              <div className="text-3xl font-bold text-blue-800">{assignedPatients.length}</div>
+              <div className="text-sm text-blue-600">Assigned Patients</div>
+            </div>
+            <div className="bg-green-100 p-4 rounded-lg text-center">
+              <div className="text-3xl font-bold text-green-800">{patientFiles.length}</div>
+              <div className="text-sm text-green-600">Patient Files</div>
+            </div>
+            <div className="bg-purple-100 p-4 rounded-lg text-center">
+              <div className="text-3xl font-bold text-purple-800">
+                {patientFiles.reduce((sum, p) => sum + (p.data.medications?.length || 0), 0)}
+              </div>
+              <div className="text-sm text-purple-600">Total Medications</div>
+            </div>
+            <div className="bg-orange-100 p-4 rounded-lg text-center">
+              <button
+                onClick={() => patientFileRef.current?.click()}
+                className="w-full bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-colors"
+              >
+                <Upload size={16} />
+                Upload Data
+              </button>
+            </div>
+          </div>
+
+          <input
+            type="file"
+            ref={patientFileRef}
+            onChange={uploadPatientFile}
+            accept=".json"
+            style={{ display: 'none' }}
+          />
+
+          {/* Assigned Patients */}
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Assigned Patients</h2>
+            {assignedPatients.length === 0 ? (
+              <div className="text-center py-4">
+                <p className="text-gray-500">No patients assigned yet</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {assignedPatients.map(patient => (
+                  <div key={patient.id} className="bg-blue-50 p-4 rounded-lg">
+                    <h3 className="font-bold text-gray-800">{patient.name}</h3>
+                    <p className="text-sm text-gray-600">DOB: {patient.dateOfBirth}</p>
+                    <p className="text-sm text-gray-600">Phone: {patient.phone}</p>
+                    <p className="text-sm text-gray-600">Email: {patient.email}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Patient Files */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-gray-800">Patient Files</h2>
+            {patientFiles.length === 0 ? (
+              <div className="text-center py-8">
+                <FileText className="mx-auto text-gray-400 mb-4" size={48} />
+                <h3 className="text-lg font-medium text-gray-600 mb-2">No patient files uploaded yet</h3>
+                <p className="text-gray-500">Upload patient data files to get started</p>
+              </div>
+            ) : (
+              patientFiles.filter(f => f.uploadedBy === currentUser.id).map(patientFile => (
+                <div key={patientFile.id} className="bg-gray-50 p-4 rounded-lg flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-gray-800">{patientFile.name}</h3>
+                    <p className="text-sm text-gray-600">
+                      {patientFile.data.medications?.length || 0} medications • 
+                      Uploaded: {new Date(patientFile.uploadDate).toLocaleDateString()}
+                    </p>
+                    <p className="text-xs text-gray-500">File: {patientFile.fileName}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => viewPatientFile(patientFile)}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
+                    >
+                      <Eye size={16} />
+                      View
+                    </button>
+                    <button
+                      onClick={() => setPatientFiles(patientFiles.filter(p => p.id !== patientFile.id))}
+                      className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center gap-2 transition-colors"
+                    >
+                      <Trash2 size={16} />
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
       <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-            <Pill className="text-blue-600" />
-            Medicine Tracker
-          </h1>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+              <Pill className="text-blue-600" />
+              {currentPatient ? `${currentPatient.name}'s` : `${currentUser.name}'s`} Medicine Tracker
+            </h1>
+            {currentUser.role === 'doctor' && (
+              <p className="text-sm text-gray-600 mt-1">Doctor View - Monitoring Patient</p>
+            )}
+            {currentUser.role === 'patient' && (
+              <p className="text-sm text-gray-600 mt-1">Patient: {currentUser.email}</p>
+            )}
+          </div>
           <div className="flex gap-2">
+            {currentUser.role === 'doctor' && (
+              <button
+                onClick={() => setCurrentPatient(null)}
+                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2 transition-colors"
+              >
+                <Users size={16} />
+                Dashboard
+              </button>
+            )}
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center gap-2 transition-colors"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
             <button
               onClick={exportData}
               className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 transition-colors"
@@ -210,7 +824,7 @@ export default function MedicineTracker() {
               Export
             </button>
             <button
-              onClick={handleImportClick}
+              onClick={() => fileInputRef.current?.click()}
               className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center gap-2 transition-colors"
             >
               <Upload size={16} />
@@ -226,7 +840,6 @@ export default function MedicineTracker() {
           </div>
         </div>
 
-        {/* Hidden file input */}
         <input
           type="file"
           ref={fileInputRef}
@@ -239,7 +852,7 @@ export default function MedicineTracker() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Selected Date
+              Selected Date {isHistoricalDate && <span className="text-orange-600">(Historical)</span>}
             </label>
             <input
               type="date"
@@ -267,6 +880,44 @@ export default function MedicineTracker() {
             </div>
           </div>
         </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-2 mb-4">
+          <button
+            onClick={() => setShowRemarkModal(true)}
+            className="bg-yellow-600 text-white px-3 py-2 rounded-lg hover:bg-yellow-700 flex items-center gap-2 transition-colors text-sm"
+          >
+            <MessageSquare size={14} />
+            Add Remark
+          </button>
+          <button
+            onClick={() => setShowBulkEdit(true)}
+            className="bg-cyan-600 text-white px-3 py-2 rounded-lg hover:bg-cyan-700 flex items-center gap-2 transition-colors text-sm"
+          >
+            <Copy size={14} />
+            Bulk Actions
+          </button>
+          <button
+            onClick={() => copyWeek(selectedDate)}
+            className="bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 flex items-center gap-2 transition-colors text-sm"
+          >
+            <Calendar size={14} />
+            Copy Week
+          </button>
+        </div>
+
+        {/* Date Remarks */}
+        {dateRemarks.length > 0 && (
+          <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h4 className="font-medium text-yellow-800 mb-2">Remarks for {selectedDate}:</h4>
+            {dateRemarks.map(remark => (
+              <div key={remark.id} className="text-sm text-yellow-700 mb-1">
+                <span className="font-medium">[{remark.author}]</span> {remark.text}
+                <span className="text-xs text-yellow-600 ml-2">({remark.type})</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Search */}
         <div className="relative mb-6">
@@ -412,6 +1063,127 @@ export default function MedicineTracker() {
         </div>
       )}
 
+      {/* Remark Modal */}
+      {showRemarkModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96">
+            <h3 className="text-lg font-bold mb-4">Add Remark</h3>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+              <input
+                type="date"
+                value={currentRemark.date || selectedDate}
+                onChange={(e) => setCurrentRemark({...currentRemark, date: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
+              <select
+                value={currentRemark.type}
+                onChange={(e) => setCurrentRemark({...currentRemark, type: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="note">Note</option>
+                <option value="concern">Concern</option>
+                <option value="side-effect">Side Effect</option>
+                <option value="improvement">Improvement</option>
+              </select>
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Remark</label>
+              <textarea
+                value={currentRemark.text}
+                onChange={(e) => setCurrentRemark({...currentRemark, text: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                rows="3"
+                placeholder="Enter your remark..."
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={addRemark}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Add Remark
+              </button>
+              <button
+                onClick={() => setShowRemarkModal(false)}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Edit Modal */}
+      {showBulkEdit && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96">
+            <h3 className="text-lg font-bold mb-4">Bulk Actions</h3>
+            <div className="space-y-3">
+              <button
+                onClick={() => {
+                  const fromDate = prompt('Copy FROM date (YYYY-MM-DD):');
+                  const toDate = prompt('Copy TO date (YYYY-MM-DD):');
+                  if (fromDate && toDate) {
+                    copyDay(fromDate, toDate);
+                    setShowBulkEdit(false);
+                  }
+                }}
+                className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Copy Day
+              </button>
+              <button
+                onClick={() => {
+                  copyWeek(selectedDate);
+                  setShowBulkEdit(false);
+                }}
+                className="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                Copy Current Week to Next Week
+              </button>
+              <button
+                onClick={() => setShowBulkEdit(false)}
+                className="w-full bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* History Modal */}
+      {showHistoryModal && selectedDoseHistory && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96 max-h-96 overflow-y-auto">
+            <h3 className="text-lg font-bold mb-4">Dose History</h3>
+            <div className="space-y-2">
+              {selectedDoseHistory.history.map((dose, index) => (
+                <div key={index} className="p-3 bg-gray-50 rounded border">
+                  <div className="font-medium">Status: {dose.status}</div>
+                  <div className="text-sm text-gray-600">Time: {new Date(dose.timestamp).toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">By: {dose.editedBy || 'Patient'}</div>
+                  {dose.previousStatus && (
+                    <div className="text-sm text-gray-500">Previous: {dose.previousStatus}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowHistoryModal(false)}
+              className="mt-4 w-full bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Medications List */}
       <div className="space-y-4">
         {filteredMedications.length === 0 ? (
@@ -425,7 +1197,7 @@ export default function MedicineTracker() {
             </p>
             {medications.length === 0 && (
               <div className="text-sm text-gray-400">
-                <p>💡 Tip: Use the Export button to save your data as a file, and Import to restore it later!</p>
+                <p>💡 Welcome! Your medication data is secure and private.</p>
               </div>
             )}
           </div>
@@ -463,6 +1235,8 @@ export default function MedicineTracker() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {med.times.map(time => {
                   const status = getDoseStatus(med.id, time);
+                  const canEdit = currentUser.role === 'patient' || isHistoricalDate;
+                  
                   return (
                     <div
                       key={time}
@@ -479,26 +1253,40 @@ export default function MedicineTracker() {
                           <Clock size={16} className="text-gray-600" />
                           <span className="font-medium">{time}</span>
                         </div>
-                        {status === 'taken' && <CheckCircle size={16} className="text-green-600" />}
-                        {status === 'missed' && <XCircle size={16} className="text-red-600" />}
+                        <div className="flex gap-1">
+                          {status === 'taken' && <CheckCircle size={16} className="text-green-600" />}
+                          {status === 'missed' && <XCircle size={16} className="text-red-600" />}
+                          <button
+                            onClick={() => showDoseHistory(med.id, time)}
+                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                          >
+                            <RotateCcw size={12} />
+                          </button>
+                        </div>
                       </div>
                       <div className="flex gap-1">
                         <button
-                          onClick={() => markDose(med.id, time, 'taken')}
+                          onClick={() => markDose(med.id, time, 'taken', canEdit)}
+                          disabled={!canEdit}
                           className={`flex-1 py-1 px-2 rounded text-xs transition-colors ${
                             status === 'taken'
                               ? 'bg-green-600 text-white'
-                              : 'bg-gray-200 text-gray-700 hover:bg-green-100'
+                              : canEdit
+                              ? 'bg-gray-200 text-gray-700 hover:bg-green-100'
+                              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                           }`}
                         >
                           Taken
                         </button>
                         <button
-                          onClick={() => markDose(med.id, time, 'missed')}
+                          onClick={() => markDose(med.id, time, 'missed', canEdit)}
+                          disabled={!canEdit}
                           className={`flex-1 py-1 px-2 rounded text-xs transition-colors ${
                             status === 'missed'
                               ? 'bg-red-600 text-white'
-                              : 'bg-gray-200 text-gray-700 hover:bg-red-100'
+                              : canEdit
+                              ? 'bg-gray-200 text-gray-700 hover:bg-red-100'
+                              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                           }`}
                         >
                           Missed
