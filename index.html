@@ -1625,17 +1625,47 @@
 
         // Authentication functions
         function handleLogin(email, password) {
-            const userList = AppState.loginType === 'patient' ? AppState.patients : AppState.doctors;
-            const user = userList.find(u => u.email === email && u.password === password);
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return false;
+            }
+
+            // First, let's check both patient and doctor lists regardless of toggle
+            const patientUser = AppState.patients.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+            const doctorUser = AppState.doctors.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+            
+            let user = null;
+            let userRole = null;
+            
+            if (patientUser) {
+                user = patientUser;
+                userRole = 'patient';
+            } else if (doctorUser) {
+                user = doctorUser;
+                userRole = 'doctor';
+            }
             
             if (user) {
-                AppState.currentUser = { ...user, role: AppState.loginType };
+                // Update the toggle to match the found user type
+                AppState.loginType = userRole;
+                
+                AppState.currentUser = { ...user, role: userRole };
                 AppState.showLogin = false;
                 AppState.loginForm = { email: '', password: '' };
                 saveToStorage('currentUser', AppState.currentUser);
                 loadUserData();
                 render();
+                
+                showNotificationSuccess(`Welcome back, ${user.name}! 👋`);
                 return true;
+            }
+            
+            // If not found, show helpful error message
+            const totalUsers = AppState.patients.length + AppState.doctors.length;
+            if (totalUsers === 0) {
+                alert('No accounts found. Please sign up first.');
+            } else {
+                alert('Invalid email or password. Please check your credentials and try again.');
             }
             return false;
         }
@@ -3171,13 +3201,13 @@
 
             render();
             
-            // Set up periodic notification checks (every minute)
+            // Set up periodic notification checks (every 5 minutes)
             setInterval(() => {
                 if (AppState.currentUser && AppState.notifications.enabled) {
                     // Check for any new doses that need reminders
                     checkForUpcomingReminders();
                 }
-            }, 60000); // Check every minute
+            }, 300000); // Check every 5 minutes
         }
 
         // Check for upcoming reminders that need to be scheduled
@@ -3212,16 +3242,17 @@
             });
         }
 
-        // Auto-save user data periodically
-        setInterval(() => {
-            if (AppState.currentUser) {
-                saveUserData();
-            }
-        }, 30000); // Save every 30 seconds
-
+        // Save data when page is about to close
         window.addEventListener('beforeunload', () => {
             if (AppState.currentUser) {
                 saveToStorage('currentUser', AppState.currentUser);
+                saveUserData();
+            }
+        });
+
+        // Save data when page loses focus (mobile app switching)
+        window.addEventListener('blur', () => {
+            if (AppState.currentUser) {
                 saveUserData();
             }
         });
