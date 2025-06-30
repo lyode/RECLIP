@@ -1159,7 +1159,109 @@
             activity: 'activity'
         };
 
-        // NOTIFICATION SYSTEM FUNCTIONS
+        // RESET FUNCTIONS
+        function resetAllData() {
+            const confirmMessage = `⚠️ COMPLETE DATA RESET ⚠️
+
+This will permanently delete:
+• All user accounts (${AppState.patients.length + AppState.doctors.length} total)
+• All medications and dose history
+• All settings and preferences
+• All notifications
+
+This action CANNOT be undone!
+
+Type "DELETE" to confirm:`;
+
+            const confirmation = prompt(confirmMessage);
+            
+            if (confirmation === 'DELETE') {
+                // Clear all localStorage
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (
+                        key.includes('patients_global') ||
+                        key.includes('doctors_global') ||
+                        key.includes('currentUser') ||
+                        key.includes('medications_') ||
+                        key.includes('doses_') ||
+                        key.includes('remarks_') ||
+                        key.includes('notifications_') ||
+                        key.includes('notificationHistory_') ||
+                        key.includes('messages_')
+                    )) {
+                        keysToRemove.push(key);
+                    }
+                }
+                
+                console.log('Clearing localStorage keys:', keysToRemove);
+                keysToRemove.forEach(key => localStorage.removeItem(key));
+                
+                // Reset application state
+                AppState.currentUser = null;
+                AppState.showLogin = true;
+                AppState.loginType = 'patient';
+                AppState.showSignup = false;
+                AppState.patients = [];
+                AppState.doctors = [];
+                AppState.medications = [];
+                AppState.doses = [];
+                AppState.remarks = [];
+                AppState.messages = [];
+                AppState.doseEffects = [];
+                AppState.patientFiles = [];
+                AppState.notificationHistory = [];
+                AppState.activeNotifications = [];
+                
+                // Clear all scheduled notifications
+                clearAllScheduledNotifications();
+                
+                // Reset forms
+                AppState.loginForm = { email: '', password: '' };
+                AppState.signupForm = {
+                    email: '', password: '', confirmPassword: '', name: '', 
+                    dateOfBirth: '', phone: '', specialty: '', license: '', hospital: ''
+                };
+                
+                // Reset notification settings
+                AppState.notifications = {
+                    enabled: false,
+                    permission: 'default',
+                    reminderMinutes: 15,
+                    missedDoseMinutes: 30,
+                    refillDays: 7,
+                    sounds: {
+                        reminder: 'gentle',
+                        missed: 'urgent',
+                        refill: 'soft'
+                    },
+                    settings: {
+                        doseReminders: true,
+                        missedDoseAlerts: true,
+                        refillReminders: true,
+                        dailySummary: true
+                    }
+                };
+                
+                // Show success message and re-render
+                console.log('=== FULL RESET COMPLETED ===');
+                alert('✅ All data has been completely erased!\n\nThe app has been reset to factory settings.\nYou can now create a fresh account.');
+                
+                // Force re-render
+                render();
+                
+            } else if (confirmation !== null) {
+                alert('❌ Reset cancelled. You must type "DELETE" exactly to confirm.');
+            }
+        }
+
+        // Emergency reset function
+        function emergencyReset() {
+            localStorage.clear();
+            alert('🚨 Emergency reset completed! Page will reload...');
+            location.reload();
+        }
 
         // Request notification permission
         async function requestNotificationPermission() {
@@ -1418,6 +1520,53 @@
                 createElement('div', { className: 'flex items-center gap-2' }, [
                     createIcon('check-circle', 16),
                     createElement('span', {}, [message])
+                ]),
+
+                // Data Management Section
+                createElement('div', { className: 'settings-section' }, [
+                    createElement('h4', { className: 'text-lg font-semibold mb-3' }, ['Data Management']),
+                    createElement('div', { className: 'flex flex-col gap-3' }, [
+                        createElement('button', { 
+                            className: 'btn btn-secondary text-left',
+                            onClick: () => {
+                                const dataExport = {
+                                    user: AppState.currentUser,
+                                    medications: AppState.medications,
+                                    doses: AppState.doses,
+                                    remarks: AppState.remarks,
+                                    exportDate: new Date().toISOString()
+                                };
+                                
+                                const blob = new Blob([JSON.stringify(dataExport, null, 2)], {type: 'application/json'});
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `medicine-tracker-data-${new Date().toISOString().split('T')[0]}.json`;
+                                a.click();
+                                URL.revokeObjectURL(url);
+                                
+                                showNotificationSuccess('📁 Data exported successfully!');
+                            }
+                        }, [
+                            createIcon('download', 16),
+                            'Export My Data'
+                        ]),
+                        createElement('button', { className: 'btn btn-secondary text-left' }, [
+                            createIcon('shield', 16),
+                            'Change Password'
+                        ]),
+                        createElement('button', { 
+                            className: 'btn btn-danger text-left',
+                            onClick: () => {
+                                AppState.showUserSettingsModal = false;
+                                render();
+                                setTimeout(() => resetAllData(), 100);
+                            }
+                        }, [
+                            createIcon('trash-2', 16),
+                            'Reset All Data'
+                        ])
+                    ])
                 ])
             ]);
             
@@ -1717,17 +1866,21 @@
                 }
             }
 
-            const allUsers = AppState.loginType === 'patient' ? AppState.patients : AppState.doctors;
-            if (allUsers.find(u => u.email === formData.email)) {
-                alert('Email already exists');
+            // Check if email already exists in both lists
+            const emailExists = 
+                AppState.patients.find(u => u.email.toLowerCase() === formData.email.toLowerCase()) ||
+                AppState.doctors.find(u => u.email.toLowerCase() === formData.email.toLowerCase());
+                
+            if (emailExists) {
+                alert('Email already exists. Please use a different email or try logging in.');
                 return false;
             }
 
             const newUser = {
                 id: Date.now(),
-                email: formData.email,
+                email: formData.email.toLowerCase().trim(),
                 password: formData.password,
-                name: formData.name,
+                name: formData.name.trim(),
                 createdAt: new Date().toISOString()
             };
 
@@ -1735,28 +1888,32 @@
                 const patientUser = {
                     ...newUser,
                     dateOfBirth: formData.dateOfBirth,
-                    phone: formData.phone,
+                    phone: formData.phone.trim(),
                     assignedDoctor: null
                 };
                 AppState.patients.push(patientUser);
                 saveToStorage('patients_global', AppState.patients);
+                console.log('Patient account created:', patientUser.email);
             } else {
                 const doctorUser = {
                     ...newUser,
-                    specialty: formData.specialty,
-                    license: formData.license,
-                    hospital: formData.hospital
+                    specialty: formData.specialty.trim(),
+                    license: formData.license.trim(),
+                    hospital: formData.hospital.trim()
                 };
                 AppState.doctors.push(doctorUser);
                 saveToStorage('doctors_global', AppState.doctors);
+                console.log('Doctor account created:', doctorUser.email);
             }
 
-            alert('Account created successfully! Please login.');
+            alert(`${AppState.loginType === 'patient' ? 'Patient' : 'Doctor'} account created successfully! You can now login with your credentials.`);
             AppState.showSignup = false;
             AppState.signupForm = {
                 email: '', password: '', confirmPassword: '', name: '', 
                 dateOfBirth: '', phone: '', specialty: '', license: '', hospital: ''
             };
+            
+            // Keep the same user type for login
             render();
             return true;
         }
@@ -1885,14 +2042,14 @@
                         AppState.loginType = 'patient';
                         render();
                     }
-                }, [createIcon('user', 18), 'Patient']),
+                }, [createIcon('user', 18), 'Patient Login']),
                 createElement('button', {
                     className: AppState.loginType === 'doctor' ? 'active' : '',
                     onClick: () => {
                         AppState.loginType = 'doctor';
                         render();
                     }
-                }, [createIcon('stethoscope', 18), 'Doctor'])
+                }, [createIcon('stethoscope', 18), 'Doctor Login'])
             ]);
 
             let formContent;
@@ -2091,7 +2248,45 @@
                         AppState.showSignup = !AppState.showSignup;
                         render();
                     }
-                }, [AppState.showSignup ? 'Already have an account? Sign In' : 'Need an account? Sign Up'])
+                }, [AppState.showSignup ? 'Already have an account? Sign In' : 'Need an account? Sign Up']),
+                
+                // Reset button
+                createElement('div', { className: 'mt-4 p-3 bg-red-50 border border-red-200 rounded-lg' }, [
+                    createElement('div', { className: 'text-center mb-2' }, [
+                        createElement('p', { className: 'text-xs text-red-700 mb-2' }, [
+                            `Current Data: ${AppState.patients.length + AppState.doctors.length} accounts stored`
+                        ]),
+                        createElement('button', {
+                            className: 'text-red-600 hover:text-red-800 text-sm font-medium bg-red-100 hover:bg-red-200 px-3 py-2 rounded-lg transition-colors',
+                            onClick: () => {
+                                resetAllData();
+                            }
+                        }, ['🗑️ ERASE ALL DATA & START FRESH'])
+                    ]),
+                    
+                    // Debug info for troubleshooting
+                    createElement('div', { className: 'text-center border-t border-red-200 pt-2 mt-2' }, [
+                        createElement('div', { className: 'text-xs text-gray-500' }, [
+                            createElement('button', {
+                                className: 'underline text-gray-500 hover:text-gray-700',
+                                onClick: () => {
+                                    console.log('=== LOGIN DEBUG INFO ===');
+                                    console.log('Current login type:', AppState.loginType);
+                                    console.log('Patients in storage:', AppState.patients);
+                                    console.log('Doctors in storage:', AppState.doctors);
+                                    console.log('LocalStorage patients:', loadFromStorage('patients_global', []));
+                                    console.log('LocalStorage doctors:', loadFromStorage('doctors_global', []));
+                                    alert('Debug info logged to console (F12 → Console)');
+                                }
+                            }, ['🔍 Debug & Troubleshoot']),
+                            createElement('span', { className: 'mx-2 text-gray-300' }, ['|']),
+                            createElement('button', {
+                                className: 'underline text-gray-500 hover:text-gray-700',
+                                onClick: emergencyReset
+                            }, ['🚨 Emergency Reset'])
+                        ])
+                    ])
+                ])
             ]);
 
             card.appendChild(header);
@@ -3208,6 +3403,16 @@
                     checkForUpcomingReminders();
                 }
             }, 300000); // Check every 5 minutes
+            
+            // Add keyboard shortcut for reset (Ctrl+Shift+R)
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                    e.preventDefault();
+                    if (confirm('🔄 Reset all data with Ctrl+Shift+R?')) {
+                        resetAllData();
+                    }
+                }
+            });
         }
 
         // Check for upcoming reminders that need to be scheduled
