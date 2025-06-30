@@ -84,6 +84,7 @@
             color: white !important;
             border: 2px solid #16a34a !important;
             box-shadow: 0 2px 4px rgba(22, 163, 74, 0.3) !important;
+            animation: greenPulse 2s ease-in-out infinite;
         }
 
         .btn-taken:hover:not(:disabled) {
@@ -98,6 +99,7 @@
             color: white !important;
             border: 2px solid #dc2626 !important;
             box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3) !important;
+            animation: redPulse 2s ease-in-out infinite;
         }
 
         .btn-missed:hover:not(:disabled) {
@@ -119,6 +121,16 @@
             border-color: #d97706 !important;
             box-shadow: 0 4px 8px rgba(245, 158, 11, 0.4) !important;
             transform: translateY(-1px);
+        }
+
+        @keyframes greenPulse {
+            0%, 100% { box-shadow: 0 2px 4px rgba(22, 163, 74, 0.3); }
+            50% { box-shadow: 0 4px 12px rgba(22, 163, 74, 0.5); }
+        }
+
+        @keyframes redPulse {
+            0%, 100% { box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3); }
+            50% { box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5); }
         }
 
         .input {
@@ -311,13 +323,15 @@
         }
 
         .dose-taken {
-            border-color: #10b981;
+            border-color: #16a34a;
             background: #f0fdf4;
+            box-shadow: 0 2px 4px rgba(22, 163, 74, 0.1);
         }
 
         .dose-missed {
-            border-color: #ef4444;
+            border-color: #dc2626;
             background: #fef2f2;
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
         }
 
         .stats-card {
@@ -330,10 +344,10 @@
             justify-content: center;
         }
 
-        .stats-taken { background: #dcfce7; color: #166534; }
-        .stats-missed { background: #fee2e2; color: #991b1b; }
-        .stats-pending { background: #fef3c7; color: #92400e; }
-        .stats-total { background: #dbeafe; color: #1d4ed8; }
+        .stats-taken { background: #dcfce7; color: #15803d; border: 2px solid #16a34a; }
+        .stats-missed { background: #fee2e2; color: #b91c1c; border: 2px solid #dc2626; }
+        .stats-pending { background: #fef3c7; color: #d97706; border: 2px solid #f59e0b; }
+        .stats-total { background: #dbeafe; color: #1d4ed8; border: 2px solid #3b82f6; }
 
         .toggle-btn {
             display: flex;
@@ -573,13 +587,15 @@
         }
 
         .schedule-med.taken {
-            border-color: #10b981;
+            border-color: #16a34a;
             background: #f0fdf4;
+            box-shadow: 0 2px 8px rgba(22, 163, 74, 0.15);
         }
 
         .schedule-med.missed {
-            border-color: #ef4444;
+            border-color: #dc2626;
             background: #fef2f2;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
         }
 
         .med-icon {
@@ -619,17 +635,20 @@
 
         .med-status.taken {
             background: #dcfce7;
-            color: #166534;
+            color: #15803d;
+            border: 1px solid #16a34a;
         }
 
         .med-status.missed {
             background: #fee2e2;
-            color: #991b1b;
+            color: #b91c1c;
+            border: 1px solid #dc2626;
         }
 
         .med-status.pending {
             background: #fef3c7;
-            color: #92400e;
+            color: #d97706;
+            border: 1px solid #f59e0b;
         }
 
         /* Enhanced View Toggle */
@@ -713,20 +732,23 @@
 
         .mini-med.taken {
             background: #dcfce7;
-            border-color: #10b981;
-            color: #166534;
+            border-color: #16a34a;
+            color: #15803d;
+            font-weight: 600;
         }
 
         .mini-med.missed {
             background: #fee2e2;
-            border-color: #ef4444;
-            color: #991b1b;
+            border-color: #dc2626;
+            color: #b91c1c;
+            font-weight: 600;
         }
 
         .mini-med.pending {
             background: #fef3c7;
             border-color: #f59e0b;
-            color: #92400e;
+            color: #d97706;
+            font-weight: 600;
         }
 
         /* Profile Edit Modal */
@@ -1709,20 +1731,19 @@
                                             createElement('span', { 
                                                 className: `med-status ${item.status}` 
                                             }, [
-                                                item.status === 'taken' ? createIcon('check', 12) : 
-                                                item.status === 'missed' ? createIcon('x', 12) : 
-                                                createIcon('clock', 12),
-                                                item.status.charAt(0).toUpperCase() + item.status.slice(1)
+                                                item.status === 'taken' ? [createIcon('check-circle', 12), ' Taken'] : 
+                                                item.status === 'missed' ? [createIcon('x-circle', 12), ' Missed'] : 
+                                                [createIcon('clock', 12), ' Pending']
                                             ]),
                                             createElement('div', { className: 'flex gap-1' }, [
                                                 createElement('button', {
-                                                    className: `btn btn-sm ${item.status === 'taken' ? 'btn-success' : 'btn-secondary'}`,
+                                                    className: `btn btn-sm ${item.status === 'taken' ? 'btn-taken' : 'btn-secondary'}`,
                                                     onClick: () => markDose(item.medication.id, item.time, 'taken')
-                                                }, [createIcon('check', 14)]),
+                                                }, [createIcon('check', 14), 'Taken']),
                                                 createElement('button', {
-                                                    className: `btn btn-sm ${item.status === 'missed' ? 'btn-danger' : 'btn-secondary'}`,
+                                                    className: `btn btn-sm ${item.status === 'missed' ? 'btn-missed' : 'btn-secondary'}`,
                                                     onClick: () => markDose(item.medication.id, item.time, 'missed')
-                                                }, [createIcon('x', 14)])
+                                                }, [createIcon('x', 14), 'Missed'])
                                             ])
                                         ])
                                     ])
@@ -1944,18 +1965,19 @@
                             ]),
                             createElement('div', { className: 'flex gap-1' }, [
                                 status === 'taken' ? createIcon('check-circle', 16, 'text-green-600') : null,
-                                status === 'missed' ? createIcon('x-circle', 16, 'text-red-600') : null
+                                status === 'missed' ? createIcon('x-circle', 16, 'text-red-600') : null,
+                                status === 'pending' ? createIcon('clock', 16, 'text-yellow-600') : null
                             ])
                         ]),
                         createElement('div', { className: 'grid grid-2 gap-1' }, [
                             createElement('button', {
-                                className: `btn btn-sm ${status === 'taken' ? 'btn-success' : 'btn-secondary'}`,
+                                className: `btn btn-sm ${status === 'taken' ? 'btn-taken' : 'btn-secondary'}`,
                                 onClick: () => markDose(med.id, time, 'taken')
-                            }, ['Taken']),
+                            }, [createIcon('check', 12), 'Taken']),
                             createElement('button', {
-                                className: `btn btn-sm ${status === 'missed' ? 'btn-danger' : 'btn-secondary'}`,
+                                className: `btn btn-sm ${status === 'missed' ? 'btn-missed' : 'btn-secondary'}`,
                                 onClick: () => markDose(med.id, time, 'missed')
-                            }, ['Missed'])
+                            }, [createIcon('x', 12), 'Missed'])
                         ])
                     ]);
                 })
