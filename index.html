@@ -71,12 +71,55 @@
         .btn-primary:hover:not(:disabled) { background: #2563eb; }
         .btn-secondary { background: #6b7280; color: white; }
         .btn-secondary:hover:not(:disabled) { background: #4b5563; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-success:hover:not(:disabled) { background: #059669; }
-        .btn-danger { background: #ef4444; color: white; }
-        .btn-danger:hover:not(:disabled) { background: #dc2626; }
+        .btn-success { background: #16a34a; color: white; }
+        .btn-success:hover:not(:disabled) { background: #15803d; }
+        .btn-danger { background: #dc2626; color: white; }
+        .btn-danger:hover:not(:disabled) { background: #b91c1c; }
         .btn-warning { background: #f59e0b; color: white; }
         .btn-warning:hover:not(:disabled) { background: #d97706; }
+
+        /* Enhanced Taken/Missed Button Styles */
+        .btn-taken {
+            background: #16a34a !important;
+            color: white !important;
+            border: 2px solid #16a34a !important;
+            box-shadow: 0 2px 4px rgba(22, 163, 74, 0.3) !important;
+        }
+
+        .btn-taken:hover:not(:disabled) {
+            background: #15803d !important;
+            border-color: #15803d !important;
+            box-shadow: 0 4px 8px rgba(22, 163, 74, 0.4) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-missed {
+            background: #dc2626 !important;
+            color: white !important;
+            border: 2px solid #dc2626 !important;
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3) !important;
+        }
+
+        .btn-missed:hover:not(:disabled) {
+            background: #b91c1c !important;
+            border-color: #b91c1c !important;
+            box-shadow: 0 4px 8px rgba(220, 38, 38, 0.4) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-pending {
+            background: #f59e0b !important;
+            color: white !important;
+            border: 2px solid #f59e0b !important;
+            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3) !important;
+        }
+
+        .btn-pending:hover:not(:disabled) {
+            background: #d97706 !important;
+            border-color: #d97706 !important;
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.4) !important;
+            transform: translateY(-1px);
+        }
 
         .input {
             width: 100%;
